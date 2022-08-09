@@ -33,7 +33,7 @@ class LatestValueFragment : Fragment() {
     private fun initRcView() = with(binding){
         recyclerLatest.layoutManager = LinearLayoutManager(activity)
         adapter = ConvertAdapter()
-        recyclerLatest.adapter
+        recyclerLatest.adapter = adapter
         val list = listOf(
             Information("1", "2", "3"),
             Information("4", "5", "6"),

@@ -12,12 +12,6 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Converter">
         <activity
-            android:name=".Settings"
-            android:exported="false" />
-        <activity
-            android:name=".Convert"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

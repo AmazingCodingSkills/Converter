@@ -8,9 +8,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import android.view.Menu
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.example.converter.databinding.ActivityMainBinding
 import com.example.converter.fragment.HistoricalFragment
 import com.example.converter.fragment.LatestValueFragment
