@@ -15,7 +15,7 @@ class ConvertAdapter: ListAdapter<Information, ConvertAdapter.Holder>(Comparator
         val binding = ListItemBinding.bind(view)
         fun bind (item: Information) = with(binding){
         date.text = item.dateValue
-        name.text = item.money
+        currencyName.text = item.base
         nowValueText.text = item.nowValue
         }
     }

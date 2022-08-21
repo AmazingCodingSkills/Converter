@@ -1,7 +1,9 @@
 package com.example.converter.adapters
 
+
 data class Information(
-    val money: String,
+
+    val base: String,
     val nowValue: String,
     val dateValue: String
 )
