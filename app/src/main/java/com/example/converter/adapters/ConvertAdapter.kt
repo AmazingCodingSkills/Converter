@@ -10,21 +10,21 @@ import com.example.converter.R
 import com.example.converter.databinding.*
 import kotlin.Comparator
 
-class ConvertAdapter: ListAdapter<Information, ConvertAdapter.Holder>(Comparator()) {
-    class Holder(view: View) : RecyclerView.ViewHolder(view){
+class ConvertAdapter: ListAdapter<Response, ConvertAdapter.Holder>(Comparator()) {
+    class Holder(view: View):RecyclerView.ViewHolder(view){
         val binding = ListItemBinding.bind(view)
-        fun bind (item: Information) = with(binding){
-        date.text = item.dateValue
+        fun bind (item: Response) = with(binding){
+        date.text = item.date
         currencyName.text = item.base
-        nowValueText.text = item.nowValue
+        nowValueText.text = item.rates.toString() // это
         }
     }
-    class Comparator : DiffUtil.ItemCallback<Information>() {
-        override fun areItemsTheSame(oldItem: Information, newItem: Information): Boolean {
+    class Comparator : DiffUtil.ItemCallback<Response>() {
+        override fun areItemsTheSame(oldItem: Response, newItem: Response): Boolean {
             return oldItem==newItem
         }
 
-        override fun areContentsTheSame(oldItem: Information, newItem: Information): Boolean {
+        override fun areContentsTheSame(oldItem: Response, newItem: Response): Boolean {
             return oldItem==newItem
         }
 

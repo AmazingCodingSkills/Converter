@@ -1,6 +1,8 @@
 package com.example.converter.Common
 
 import com.example.converter.Interface.RetrofitServices
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -9,6 +11,7 @@ object Common {
         Retrofit.Builder()
             .baseUrl("https://api.currencyscoop.com/v1/")
             .addConverterFactory(GsonConverterFactory.create())
+            //.client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).build())
             .build()
     }
     val api: RetrofitServices by lazy {
