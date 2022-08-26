@@ -1,4 +1,4 @@
-package com.example.converter.adapters
+package com.example.converter.adaptersLatest
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,23 +8,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
 import com.example.converter.databinding.*
-import kotlin.Comparator
 
-class ConvertAdapter: ListAdapter<Information, ConvertAdapter.Holder>(Comparator()) {
-    class Holder(view: View) : RecyclerView.ViewHolder(view){
+class ConvertAdapter: ListAdapter<ItemModel, ConvertAdapter.Holder>(Comparator()) {
+    class Holder(view: View):RecyclerView.ViewHolder(view){
         val binding = ListItemBinding.bind(view)
-        fun bind (item: Information) = with(binding){
-        date.text = item.dateValue
-        name.text = item.money
-        nowValueText.text = item.nowValue
+        fun bind (item: ItemModel) = with(binding){
+        date.text = item.date
+        currencyName.text = item.base
+        nowValueText.text = item.currency.toString()
         }
     }
-    class Comparator : DiffUtil.ItemCallback<Information>() {
-        override fun areItemsTheSame(oldItem: Information, newItem: Information): Boolean {
+    class Comparator : DiffUtil.ItemCallback<ItemModel>() {
+        override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean {
             return oldItem==newItem
         }
 
-        override fun areContentsTheSame(oldItem: Information, newItem: Information): Boolean {
+        override fun areContentsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean {
             return oldItem==newItem
         }
 
