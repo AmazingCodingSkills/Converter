@@ -6,18 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import com.example.converter.Common.Common
-import com.example.converter.Interface.RetrofitServices
-import com.example.converter.MainViewModel
-import com.example.converter.R
-import com.example.converter.adapters.ConvertAdapter
-import com.example.converter.adapters.Information
-import com.example.converter.adapters.TestResponse
+import com.example.converter.adaptersLatest.ConvertAdapter
+import com.example.converter.adaptersLatest.ItemModel
+import com.example.converter.adaptersLatest.TestResponse
+import com.example.converter.adaptersLatest.ValueCurrency
 import com.example.converter.databinding.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +23,6 @@ class LatestValueFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var adapter: ConvertAdapter
-
 
 
     override fun onCreateView(
@@ -49,7 +42,6 @@ class LatestValueFragment : Fragment() {
 
 
     private fun initRcView() = with(binding) {
-        recyclerLatest.setHasFixedSize(true)
         recyclerLatest.layoutManager = LinearLayoutManager(activity)
         adapter = ConvertAdapter()
         recyclerLatest.adapter = adapter
@@ -64,17 +56,25 @@ class LatestValueFragment : Fragment() {
                 Log.d("commontag", "${t}")
             }
 
-
-
-
             override fun onResponse(
                 call: Call<TestResponse>,
                 response: Response<TestResponse>
             ) {
 
                 Log.d("responsetag", "OK 2")
-                adapter.submitList(listOf(response.body()?.response))
-                Log.d("responsetag", "${response.body()?.response}")
+                val response = response.body()?.response
+                val itemModels = response?.let {
+                listOf(ItemModel(
+                    date = it.date,
+                    currency = ValueCurrency(
+                        currency = "RUB",
+                        value = it.rates.RUB
+                    ),
+                    base = it.base
+                ))
+                }
+                adapter.submitList(itemModels)
+                Log.d("responsetag", "${itemModels}")
 
             }
         })

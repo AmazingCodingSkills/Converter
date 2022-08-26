@@ -1,4 +1,4 @@
-package com.example.converter.adapters
+package com.example.converter.adaptersLatest
 
 data class Response(
     val base: String,
