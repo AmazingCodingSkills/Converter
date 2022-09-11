@@ -22,7 +22,7 @@ class LatestValueFragment : Fragment() {
 
 
     private lateinit var binding: FragmentLatestValueBinding
-    private lateinit var adapter: ConvertAdapter
+    private lateinit var adapter: ConvertAdapter/*ОПА*/
 
 
 
