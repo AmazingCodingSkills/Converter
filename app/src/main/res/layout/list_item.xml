@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="3dp"
     android:backgroundTint="@color/converter_main_theme"
     app:cardCornerRadius="5dp"
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="22 /12/2022"
+            tools:text="22 /12/2022"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="16sp"
-            android:text="Money"
+            tools:text="Money"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/date"
@@ -41,16 +42,30 @@
 
         <TextView
             android:id="@+id/nowValueText"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="345 "
             android:textColor="@color/white"
             android:textSize="17sp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/date"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="345" />
+
+        <TextView
+            android:id="@+id/rightValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            tools:text="test"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nowValueText"
+
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

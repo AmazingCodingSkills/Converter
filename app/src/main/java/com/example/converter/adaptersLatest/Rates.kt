@@ -1,7 +1,9 @@
 package com.example.converter.adaptersLatest
 
 data class Rates(
-    val RUB: Double,
-    val EUR: Double,
-    val KZT: Double
+    val RUB: String,
+    /*val HKD: String,
+    val KZT: String*/
 )
+
+
