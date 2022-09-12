@@ -2,10 +2,11 @@ package com.example.converter.adaptersLatest
 
 data class ItemModel(
     val date: String,
-    val currency: ValueCurrency,
-    val base: String
+    val referenceCurrency: ValueCurrency,
+    val baseCurrencyName: String
 )
+
 data class ValueCurrency(
-    val currency: String,
-    //val value: String
-    )
+    val name: String,
+    val value: Double
+)

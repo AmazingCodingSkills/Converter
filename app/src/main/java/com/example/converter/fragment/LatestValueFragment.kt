@@ -25,8 +25,6 @@ class LatestValueFragment : Fragment() {
     private lateinit var adapter: ConvertAdapter
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,21 +66,13 @@ class LatestValueFragment : Fragment() {
 
                 val response = response.body()?.response
                 val itemModels = response?.let {
-                    listOf(
+                    it.rates.map { entry ->
                         ItemModel(
-
-                            date = it.date,
-                            currency = ValueCurrency(currency = it.rates.toString() /*, value = it.rates.RUB*/),
-                            base = it.base),
-                        /*ItemModel(
-                            date = it.date,
-                            currency = ValueCurrency(currency = it.ratex.toString(), value = it.rates.KZT),
-                            base = it.base),
-                        ItemModel(
-                            date = it.date,
-                            currency = ValueCurrency(currency = "HKD", value = it.rates.HKD),
-                            base = it.base)*/
-                    )
+                            date = response.date,
+                            referenceCurrency = ValueCurrency(name = entry.key, value = entry.value),
+                            baseCurrencyName = response.base
+                        )
+                    }
                 }
                 adapter.submitList(itemModels)
                 Log.d("responsetag", "${itemModels}")
@@ -90,7 +80,6 @@ class LatestValueFragment : Fragment() {
             }
         })
     }
-
 
 
     companion object {

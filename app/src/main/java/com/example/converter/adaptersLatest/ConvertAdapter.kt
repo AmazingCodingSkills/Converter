@@ -14,9 +14,9 @@ class ConvertAdapter : ListAdapter<ItemModel, ConvertAdapter.Holder>(Comparator(
         val binding = ListItemBinding.bind(view)
         fun bind(item: ItemModel) = with(binding) {
             date.text = item.date
-            currencyName.text = item.base
-            nowValueText.text = item.currency.currency // посмотреть вот сюда
-           // rightValue.text = item.currency.value // везде поменял на String toString тоже было вариантом
+            currencyName.text = item.baseCurrencyName
+            nowValueText.text = item.referenceCurrency.name
+            rightValue.text = item.referenceCurrency.value.toString()
         }
     }
 

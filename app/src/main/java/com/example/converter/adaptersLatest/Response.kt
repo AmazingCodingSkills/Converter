@@ -5,5 +5,5 @@ import com.example.converter.adaptersCurrencies.Fiats
 data class Response(
     val base: String,
     val date: String,
-    val rates: Rates,
+    val rates: Map<String, Double>
 )
