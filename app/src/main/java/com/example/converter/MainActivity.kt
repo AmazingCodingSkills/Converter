@@ -1,11 +1,14 @@
 package com.example.converter
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.converter.databinding.ActivityMainBinding
+import com.example.converter.databinding.FragmentSettingsBinding
 import com.example.converter.fragment.CurrencyFragment
 import com.example.converter.fragment.LatestValueFragment
+import com.example.converter.fragment.SettingsFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         val latestValueFragment = LatestValueFragment.newInstance()
         val historicalFragment = CurrencyFragment.newInstance()
+        val settingsFragment = SettingsFragment()
 
         makeCurrentFragment(latestValueFragment)
 
@@ -27,6 +31,9 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.ic_home -> makeCurrentFragment(latestValueFragment)
                 R.id.ic_convert -> makeCurrentFragment(historicalFragment)
+                R.id.ic_settings -> {val intent = Intent (this,SettingsActivity::class.java)
+                    startActivity(intent)
+                }
             }
             true
         }
@@ -38,3 +45,4 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 }
+
