@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
 import com.example.converter.databinding.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ConvertAdapter : ListAdapter<ItemModel, ConvertAdapter.Holder>(Comparator()) {
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ListItemBinding.bind(view)
         fun bind(item: ItemModel) = with(binding) {
-            date.text = item.date
+            date.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(item.date)
             currencyName.text = item.baseCurrencyName
             nowValueText.text = item.referenceCurrency.name
             rightValue.text = item.referenceCurrency.value.toString()

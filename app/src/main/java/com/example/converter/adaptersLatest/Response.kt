@@ -1,9 +1,9 @@
 package com.example.converter.adaptersLatest
 
-import com.example.converter.adaptersCurrencies.Fiats
+import java.util.*
 
 data class Response(
     val base: String,
-    val date: String,
+    val date: Date,
     val rates: Map<String, Double>
 )
