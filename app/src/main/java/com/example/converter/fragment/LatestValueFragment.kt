@@ -56,22 +56,23 @@ class LatestValueFragment : Fragment() {
                 Log.d("commontag", "${t}")
             }
 
+
             override fun onResponse(
                 call: Call<TestResponse>,
                 response: Response<TestResponse>
             ) {
 
                 Log.d("responsetag", "OK 2")
+
                 val response = response.body()?.response
                 val itemModels = response?.let {
-                listOf(ItemModel(
-                    date = it.date,
-                    currency = ValueCurrency(
-                        currency = "RUB",
-                        value = it.rates.RUB
-                    ),
-                    base = it.base
-                ))
+                    it.rates.map { entry ->
+                        ItemModel(
+                            date = response.date,
+                            referenceCurrency = ValueCurrency(name = entry.key, value = entry.value),
+                            baseCurrencyName = response.base
+                        )
+                    }
                 }
                 adapter.submitList(itemModels)
                 Log.d("responsetag", "${itemModels}")
@@ -79,6 +80,7 @@ class LatestValueFragment : Fragment() {
             }
         })
     }
+
 
     companion object {
         fun newInstance() = LatestValueFragment()

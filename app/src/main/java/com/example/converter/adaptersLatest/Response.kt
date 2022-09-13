@@ -1,7 +1,9 @@
 package com.example.converter.adaptersLatest
 
+import java.util.*
+
 data class Response(
     val base: String,
-    val date: String,
-    val rates: Rates
+    val date: Date,
+    val rates: Map<String, Double>
 )

@@ -8,7 +8,6 @@ import com.example.converter.fragment.CurrencyFragment
 import com.example.converter.fragment.LatestValueFragment
 
 
-const val API_KEY = "10c6aafaa5395ef3ffa5d47d973cfd26"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -32,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+
     private fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_wrapper, fragment)
