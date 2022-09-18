@@ -1,5 +1,7 @@
 package com.example.converter.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ import com.example.converter.databinding.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.prefs.Preferences
 
 
 class LatestValueFragment : Fragment() {
@@ -23,6 +26,13 @@ class LatestValueFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var adapter: ConvertAdapter
+
+    private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
+        requireActivity().applicationContext.getSharedPreferences(
+            "SettingsPreferences",
+            Context.MODE_PRIVATE
+        )
+    }
 
 
     override fun onCreateView(
@@ -69,7 +79,10 @@ class LatestValueFragment : Fragment() {
                     it.rates.map { entry ->
                         ItemModel(
                             date = response.date,
-                            referenceCurrency = ValueCurrency(name = entry.key, value = entry.value),
+                            referenceCurrency = ValueCurrency(
+                                name = entry.key,
+                                value = entry.value
+                            ),
                             baseCurrencyName = response.base
                         )
                     }
