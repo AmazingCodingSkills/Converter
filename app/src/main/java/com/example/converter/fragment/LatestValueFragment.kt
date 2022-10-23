@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.converter.Common.Common
+import com.example.converter.R
 import com.example.converter.adaptersLatest.ConvertAdapter
 import com.example.converter.adaptersLatest.ItemModel
 import com.example.converter.adaptersLatest.TestResponse
@@ -47,6 +49,14 @@ class LatestValueFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRcView()
+
+        binding.favouriteButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,FavouritesFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
 
     }
 
@@ -94,7 +104,11 @@ class LatestValueFragment : Fragment() {
         })
     }
 
-
+    /*private fun makeCurrentFragment(fragment: Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_wrapper, fragment)
+            commit()
+        }*/
     companion object {
         fun newInstance() = LatestValueFragment()
     }

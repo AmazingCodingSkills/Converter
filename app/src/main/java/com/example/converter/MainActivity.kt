@@ -12,9 +12,12 @@ import com.example.converter.fragment.SettingsFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var currentTab: Int = R.id.ic_home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        getActionBar()?.setTitle("Main")
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -25,14 +28,25 @@ class MainActivity : AppCompatActivity() {
 
         makeCurrentFragment(latestValueFragment)
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener {
+        binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.ic_home -> makeCurrentFragment(latestValueFragment)
-                R.id.ic_convert -> makeCurrentFragment(historicalFragment)
-                R.id.ic_settings -> makeCurrentFragment(settingsFragment)
+                R.id.ic_home -> {
+                    makeCurrentFragment(latestValueFragment)
+                    currentTab = R.id.ic_home
+                }
+                R.id.ic_convert -> {
+                    makeCurrentFragment(historicalFragment)
+                    currentTab = R.id.ic_convert
+                }
+                R.id.ic_settings -> {
+                    makeCurrentFragment(settingsFragment)
+                    currentTab = R.id.ic_settings
+                }
             }
             true
         }
+        binding.bottomNavigation.selectedItemId = currentTab
+
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =

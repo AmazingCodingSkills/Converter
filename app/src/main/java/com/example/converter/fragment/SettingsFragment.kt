@@ -13,6 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.example.converter.R
+import com.example.converter.adaptersLatest.ItemModel
 import com.example.converter.databinding.FragmentSettings2Binding
 import com.example.converter.databinding.FragmentSettingsBinding
 
@@ -88,3 +89,10 @@ class SettingsFragment : Fragment() {
         const val Email = "EmailKey"
     }
 }
+
+/*data class UserCurrency(
+    val itemModel: ItemModel,
+    val favorite: Boolean
+)
+
+val list = listOf()*/

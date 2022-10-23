@@ -8,6 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="money_value">#887845</color>
-    <color name="converter_second_theme">#ECC23C</color>
-    <color name="converter_main_theme">#CFB14F</color>
+    <color name="converter_second_theme">#F8F8F8</color>
+    <color name="converter_main_theme">#FFFFFF</color>
+    <color name="converter_nav_bar">#6A6262</color>
+    <color name="first_screen_button">#0069BD</color>
+    <color name="background">#CACACA</color>
+
 </resources>
