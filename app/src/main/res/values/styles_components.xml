@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BottomNavigation">
+        <item name="itemIconTint">@drawable/child_select</item>
+        <item name="itemTextColor">@drawable/child_select</item>
+    </style>
+</resources>

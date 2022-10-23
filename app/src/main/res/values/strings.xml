@@ -3,4 +3,9 @@
     <string name="latest_value">Latest Value</string>
     <string name="historical">Historical</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_name">Your name</string>
+    <string name="save_button">Save</string>
+    <string name="money">Курсы валют</string>
+    <string name="textViewToolbar">Главная</string>
+    <string name="buttonToolbar">Изменить</string>
 </resources>

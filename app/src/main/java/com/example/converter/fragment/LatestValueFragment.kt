@@ -1,13 +1,17 @@
 package com.example.converter.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.converter.Common.Common
+import com.example.converter.R
 import com.example.converter.adaptersLatest.ConvertAdapter
 import com.example.converter.adaptersLatest.ItemModel
 import com.example.converter.adaptersLatest.TestResponse
@@ -16,6 +20,7 @@ import com.example.converter.databinding.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.prefs.Preferences
 
 
 class LatestValueFragment : Fragment() {
@@ -23,6 +28,13 @@ class LatestValueFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var adapter: ConvertAdapter
+
+    private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
+        requireActivity().applicationContext.getSharedPreferences(
+            "SettingsPreferences",
+            Context.MODE_PRIVATE
+        )
+    }
 
 
     override fun onCreateView(
@@ -37,6 +49,14 @@ class LatestValueFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRcView()
+
+        binding.favouriteButton.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_wrapper,FavouritesFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
 
     }
 
@@ -69,7 +89,10 @@ class LatestValueFragment : Fragment() {
                     it.rates.map { entry ->
                         ItemModel(
                             date = response.date,
-                            referenceCurrency = ValueCurrency(name = entry.key, value = entry.value),
+                            referenceCurrency = ValueCurrency(
+                                name = entry.key,
+                                value = entry.value
+                            ),
                             baseCurrencyName = response.base
                         )
                     }
@@ -81,7 +104,11 @@ class LatestValueFragment : Fragment() {
         })
     }
 
-
+    /*private fun makeCurrentFragment(fragment: Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_wrapper, fragment)
+            commit()
+        }*/
     companion object {
         fun newInstance() = LatestValueFragment()
     }
