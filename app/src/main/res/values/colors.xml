@@ -12,6 +12,6 @@
     <color name="converter_main_theme">#FFFFFF</color>
     <color name="converter_nav_bar">#6A6262</color>
     <color name="first_screen_button">#0069BD</color>
-    <color name="background">#CACACA</color>
+    <color name="background">#F3F2F8</color>
 
 </resources>

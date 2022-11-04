@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/converter_main_theme</item>
         <item name="colorPrimaryVariant">@color/converter_main_theme</item>
         <item name="colorOnPrimary">@color/purple_700</item>
-        <item name="android:windowBackground">@color/purple_700</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:actionMenuTextColor">@color/converter_nav_bar</item>
         <!-- Secondary brand color. -->
