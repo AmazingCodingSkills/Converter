@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="Theme.Converter" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/converter_main_theme</item>
+        <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/converter_main_theme</item>
         <item name="colorOnPrimary">@color/purple_700</item>
-        <item name="android:windowBackground">@color/purple_700</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:actionMenuTextColor">@color/converter_nav_bar</item>
         <!-- Secondary brand color. -->
@@ -15,6 +15,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <!-- Customize your theme here. -->
+    </style>
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
 
