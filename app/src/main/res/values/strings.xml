@@ -8,4 +8,6 @@
     <string name="money">Курсы валют</string>
     <string name="textViewToolbar">Главная</string>
     <string name="buttonToolbar">Изменить</string>
+    <string name="name_favourite_screen">Избранное</string>
+    <string name="tabItem_two">Все</string>
 </resources>
