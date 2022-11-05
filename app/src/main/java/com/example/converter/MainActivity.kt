@@ -1,12 +1,13 @@
 package com.example.converter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.converter.databinding.ActivityMainBinding
 import com.example.converter.fragment.CurrencyFragment
 import com.example.converter.fragment.LatestValueFragment
 import com.example.converter.fragment.SettingsFragment
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -55,3 +56,7 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 }
+
+
+
+

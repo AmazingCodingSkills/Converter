@@ -4,11 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.converter.Common.Common
 import com.example.converter.R
@@ -16,11 +15,10 @@ import com.example.converter.adaptersLatest.ConvertAdapter
 import com.example.converter.adaptersLatest.ItemModel
 import com.example.converter.adaptersLatest.TestResponse
 import com.example.converter.adaptersLatest.ValueCurrency
-import com.example.converter.databinding.*
+import com.example.converter.databinding.FragmentLatestValueBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.prefs.Preferences
 
 
 class LatestValueFragment : Fragment() {
@@ -52,7 +50,7 @@ class LatestValueFragment : Fragment() {
 
         binding.favouriteButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper,FavouritesFragment())
+                replace(R.id.fl_wrapper,FavoritesFragment())
                 addToBackStack(null)
                 commit()
             }
@@ -112,4 +110,5 @@ class LatestValueFragment : Fragment() {
     companion object {
         fun newInstance() = LatestValueFragment()
     }
+
 }
