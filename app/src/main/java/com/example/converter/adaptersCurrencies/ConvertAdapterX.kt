@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
-import com.example.converter.databinding.*
+import com.example.converter.databinding.ListItemBinding
 
-class ConvertAdapterX : ListAdapter<ItemModelX, ConvertAdapterX.Holder>(Comparator()) {
+ class ConvertAdapterX : ListAdapter<ItemModelX, ConvertAdapterX.Holder>(Comparator()) {
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ListItemBinding.bind(view)
         fun bind(item: ItemModelX) = with(binding) {
-            date.text = item.countries.toString()
-            currencyName.text = item.code
-            nowValueText.text = item.name
+           // date.text = item.countries.toString()
+            //currencyName.text = item.currencyName
+            nowValueText.text = item.currencyCode
         }
     }
 

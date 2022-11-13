@@ -1,7 +1,6 @@
 package com.example.converter.adaptersCurrencies
 
 
-data class ResponseCurrencies(
-    val meta: Meta,
-    val response: ResponseX
+data class ResponseCurrencies (
+    val fiats: Map<String, CurrencyModel>
 )
