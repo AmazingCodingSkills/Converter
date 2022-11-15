@@ -6,7 +6,7 @@ import android.util.Log
 import com.example.converter.Common.Common
 import com.example.converter.adaptersCurrencies.ItemModelX
 import com.example.converter.adaptersCurrencies.TestResponseCurrencies
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,37 +42,28 @@ class MyCustomApplicationClass : Application() {
                     }
                 }
                 Log.d("responsetat", "${itemModels}")
-                ModelPreferencesManager.put(itemModels,"KEY_ONE")
+                ModelPreferencesManager.put(itemModels, "KEY_ONE")
             }
         })
     }
+
     object ModelPreferencesManager {
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
 
-        fun with(application: Application){
+        fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
         }
+
         fun <T> put(`object`: T, key: String) {
-            val jsonString = Gson().toJson(`object`, object: TypeToken<T>(){}.type)//GsonBuilder().create().toJson(`object`)
+            val jsonString = GsonBuilder().create().toJson(`object`)
             sp.edit().putString(key, jsonString).apply()
-
-            Log.d("success","Save $jsonString")
         }
 
-        fun get (key: String): List<ItemModelX> {
+        inline fun <reified T> get(key: String): T? {
             val value = sp.getString(key, null)
-            val from = Gson().fromJson(value, object : TypeToken<Collection<ItemModelX>>(){}.type)
-            Log.d("success","From ${from!!::class.java}")
-            return from
+            return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)
         }
-
-        /*inline fun <reified T> get(key: String): T? {
-            val value = sp.getString(key, null)
-            val from = Gson().fromJson(value, T::class.java)
-            Log.d("success","From ${from!!::class.java}")
-            return from
-        }*/
     }
 
 }
