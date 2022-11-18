@@ -13,9 +13,9 @@ import com.example.converter.databinding.ListItemBinding
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ListItemBinding.bind(view)
         fun bind(item: ItemModelX) = with(binding) {
-           // date.text = item.countries.toString()
+           date.text = item.countries.toString()
             //currencyName.text = item.currencyName
-            nowValueText.text = item.currencyCode
+            //nowValueText.text = item.currencyCode
         }
     }
 

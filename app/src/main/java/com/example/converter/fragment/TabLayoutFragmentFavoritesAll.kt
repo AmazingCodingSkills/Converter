@@ -41,14 +41,6 @@ class TabLayoutFragmentFavoritesAll : Fragment() {
         adapterX.submitList(allCurrencys)
     }
 
-    /*binding.recyclerFavoriteAll.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = ConvertAdapterX(allCurrencys)
-            /*adapterX = ConvertAdapterX()
-            binding.recyclerFavoriteAll.adapter = adapterX*/
-val allCurrency: List<ItemModelX>? = MyCustomApplicationClass.ModelPreferencesManager.get<List<ItemModelX>>("KEY_ONE")
- Log.d("qwerty", "${allCurrency}")
-        }*/
     companion object {
         fun newInstance() = TabLayoutFragmentFavoritesAll()
     }
