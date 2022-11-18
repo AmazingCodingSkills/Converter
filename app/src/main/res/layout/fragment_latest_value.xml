@@ -22,12 +22,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/firstScreenLogo"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:src="@drawable/main_logo" />
+                android:background="@drawable/main_button"
+                android:src="@drawable/main_logo"
+                android:scaleType="fitXY"
+                />
 
             <TextView
                 android:id="@+id/textTitleFirstScreen"
