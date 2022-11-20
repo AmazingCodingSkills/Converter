@@ -42,7 +42,7 @@ class MyCustomApplicationClass : Application() {
                     }
                 }
                 Log.d("responsetat", "${itemModels}")
-                ModelPreferencesManager.put(itemModels,"KEY_ONE")
+                ModelPreferencesManager.put(itemModels, "KEY_ONE")
             }
         })
     }
@@ -50,9 +50,10 @@ class MyCustomApplicationClass : Application() {
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
 
-        fun with(application: Application){
+        fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
         }
+
         fun <T> put(`object`: T, key: String) {
             val jsonString = GsonBuilder().create().toJson(`object`)
             sp.edit().putString(key, jsonString).apply()
