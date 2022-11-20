@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Converter">Kotlin ListView</string>
+    <string-array name="countries_list">
+        <item>Россия</item>
+        <item>Казахстан</item>
+        <item>Азербайджан</item>
+        <item>Армения</item>
+        <item>Грузия</item>
+        <item>Узбекистан</item>
+        <item>Кыргызстан</item>
+        <item>Беларусь</item>
+        <item>Таджикистан</item>
+        <item>Молдова</item>
+        <item>Туркменистан</item>
+        <item>Украина</item>
+    </string-array>
+</resources>

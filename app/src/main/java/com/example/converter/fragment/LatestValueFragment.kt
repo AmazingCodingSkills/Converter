@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.converter.Common.Common
@@ -26,6 +27,8 @@ class LatestValueFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var adapter: ConvertAdapter
+    lateinit var btnChangeCountries: Button
+
 
     private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
         requireActivity().applicationContext.getSharedPreferences(
@@ -50,12 +53,17 @@ class LatestValueFragment : Fragment() {
 
         binding.favouriteButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper,FavoritesFragment())
+                replace(R.id.fl_wrapper, FavoritesFragment())
                 addToBackStack(null)
                 commit()
             }
         }
+        binding.firstScreenLogo.setOnClickListener{
+                val bottomSheet = BottomSheet()
+                    bottomSheet.show(childFragmentManager,"TAG")
 
+
+            }
     }
 
 
@@ -107,6 +115,8 @@ class LatestValueFragment : Fragment() {
             replace(R.id.fl_wrapper, fragment)
             commit()
         }*/
+
+
     companion object {
         fun newInstance() = LatestValueFragment()
     }
