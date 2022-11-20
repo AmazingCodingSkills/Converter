@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:padding="3dp"
         tools:itemCount="3"
-        tools:listitem="@layout/list_item" />
+        tools:listitem="@layout/list_item_favorite" />
 
 </FrameLayout>
