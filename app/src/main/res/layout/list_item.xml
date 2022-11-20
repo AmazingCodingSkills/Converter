@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-
-
-    android:layout_marginTop="10dp"
     android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="5dp"
@@ -24,11 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            tools:text="22 /12/2022"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="22 /12/2022" />
 
         <TextView
             android:id="@+id/currencyName"
@@ -36,12 +35,12 @@
             android:layout_height="23dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textSize="16sp"
-            tools:text="Money"
             android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/date"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintTop_toBottomOf="@+id/date"
+            tools:text="Money" />
 
 
         <TextView
@@ -62,14 +61,13 @@
             android:id="@+id/rightValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            tools:text="test"
             android:gravity="center"
-            app:layout_constraintStart_toEndOf="@id/date"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/date"
             app:layout_constraintTop_toBottomOf="@id/nowValueText"
+            tools:text="test" />
 
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

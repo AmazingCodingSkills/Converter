@@ -1,21 +1,13 @@
 package com.example.converter.fragment
 
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
-import com.example.converter.R
-import com.example.converter.adaptersLatest.ItemModel
+import androidx.fragment.app.Fragment
 import com.example.converter.databinding.FragmentSettings2Binding
-import com.example.converter.databinding.FragmentSettingsBinding
 
 
 class SettingsFragment : Fragment() {

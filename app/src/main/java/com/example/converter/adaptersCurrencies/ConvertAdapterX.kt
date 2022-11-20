@@ -7,15 +7,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
-import com.example.converter.databinding.*
+import com.example.converter.databinding.ListItemFavoriteBinding
 
-class ConvertAdapterX : ListAdapter<ItemModelX, ConvertAdapterX.Holder>(Comparator()) {
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = ListItemBinding.bind(view)
+class ConvertAdapterX constructor(
+    private val onItemClickListener: (ItemModelX) -> Unit
+) : ListAdapter<ItemModelX, ConvertAdapterX.Holder>(Comparator()) {
+
+    class Holder(view: View, private val onItemClickListener: (ItemModelX) -> Unit) :
+        RecyclerView.ViewHolder(view) {
+
+        private val binding = ListItemFavoriteBinding.bind(view)
+        private lateinit var currency: ItemModelX
+
+        init {
+            binding.root.setOnClickListener {
+                currency.let { onItemClickListener.invoke(currency) }
+            }
+        }
+
         fun bind(item: ItemModelX) = with(binding) {
-            date.text = item.countries.toString()
-            currencyName.text = item.code
-            nowValueText.text = item.name
+            currency = item
+            nameCountryForFavorite.text = item.countries.toString()
         }
     }
 
@@ -31,11 +43,13 @@ class ConvertAdapterX : ListAdapter<ItemModelX, ConvertAdapterX.Holder>(Comparat
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return Holder(view)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.list_item_favorite, parent, false)
+        return Holder(view, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
     }
+
 }

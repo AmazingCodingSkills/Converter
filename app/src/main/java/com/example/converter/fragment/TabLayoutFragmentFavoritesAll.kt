@@ -1,17 +1,26 @@
 package com.example.converter.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.converter.MyCustomApplicationClass
+import com.example.converter.adaptersCurrencies.ConvertAdapterX
+import com.example.converter.adaptersCurrencies.ItemModelX
 import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
 
 
 class TabLayoutFragmentFavoritesAll : Fragment() {
-private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
+    private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
+    private lateinit var adapterX: ConvertAdapterX
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,9 +30,25 @@ private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerFavoriteAll.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapterX = ConvertAdapterX({ item ->
+                Toast.makeText(activity, "${item.countries.first()}", Toast.LENGTH_SHORT)
+                    .show()
+            })
+            binding.recyclerFavoriteAll.adapter = adapterX
 
-
-        companion object {
-            fun newInstance() = TabLayoutFragmentFavoritesAll()
         }
+        val allCurrencys =
+            MyCustomApplicationClass.ModelPreferencesManager.get<List<ItemModelX>>("KEY_ONE")
+                .orEmpty()
+        Log.d("qwerty", "${allCurrencys::class.java}")
+        adapterX.submitList(allCurrencys)
+    }
+
+    companion object {
+        fun newInstance() = TabLayoutFragmentFavoritesAll()
+    }
 }
