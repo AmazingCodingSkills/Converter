@@ -53,7 +53,7 @@ class LatestValueFragment : Fragment() {
 
         binding.favouriteButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, FavoritesFragment())
+                replace(R.id.fl_wrapper,FavoritesFragment())
                 addToBackStack(null)
                 commit()
             }
@@ -115,8 +115,6 @@ class LatestValueFragment : Fragment() {
             replace(R.id.fl_wrapper, fragment)
             commit()
         }*/
-
-
     companion object {
         fun newInstance() = LatestValueFragment()
     }

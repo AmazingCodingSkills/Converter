@@ -18,9 +18,6 @@ class TabLayoutFragmentFavoritesAll : Fragment() {
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterX: ConvertAdapterX
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +29,22 @@ class TabLayoutFragmentFavoritesAll : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.recyclerFavoriteAll.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapterX = ConvertAdapterX({ item ->
-                Toast.makeText(activity, "${item.countries.first()}", Toast.LENGTH_SHORT)
+            adapterX = ConvertAdapterX { item ->
+                Toast.makeText(activity, item.currencyName, Toast.LENGTH_SHORT)
                     .show()
-            })
+            }
+
+
+            /*adapterX = ConvertAdapterX {
+                if (it.countries.let { true }){
+                    Toast.makeText(activity, "${item.countries.first()}", Toast.LENGTH_SHORT)
+                        .show()}
+                else(it.countries.let { false })*/
+                /*Toast.makeText(activity, "${item.countries.first()}", Toast.LENGTH_SHORT)
+                    .show()*/
             binding.recyclerFavoriteAll.adapter = adapterX
 
         }
@@ -46,9 +53,17 @@ class TabLayoutFragmentFavoritesAll : Fragment() {
                 .orEmpty()
         Log.d("qwerty", "${allCurrencys::class.java}")
         adapterX.submitList(allCurrencys)
-    }
+    } // совместить два списка + из шеред преференс
 
-    companion object {
+private operator fun Boolean.invoke(value: Any) {
+
+}
+
+companion object {
         fun newInstance() = TabLayoutFragmentFavoritesAll()
     }
 }
+/*{ item ->
+                Toast.makeText(activity, "${item.countries.first()}", Toast.LENGTH_SHORT)
+                    .show()
+            } это в adterX = ConvertAdapterX()*/

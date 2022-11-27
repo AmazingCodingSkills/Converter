@@ -8,20 +8,19 @@ import com.example.converter.fragment.CurrencyFragment
 import com.example.converter.fragment.LatestValueFragment
 import com.example.converter.fragment.SettingsFragment
 
-
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var currentTab: Int = R.id.ic_home
+    private val someClass = LatestValueFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         getActionBar()?.setTitle("Main")
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
         val latestValueFragment = LatestValueFragment.newInstance()
         val historicalFragment = CurrencyFragment.newInstance()
@@ -50,11 +49,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun makeCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fl_wrapper, fragment)
-            commit()
-        }
+    private fun makeCurrentFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fl_wrapper, fragment)
+        transaction.commit()
+    }
 }
 
 

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.example.converter.R
 import com.example.converter.adapters.VpAdapter
 import com.example.converter.databinding.FragmentFavouritesBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -37,11 +36,15 @@ class FavoritesFragment() : Fragment() {
         init()
 
         binding.arrowBackMain.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().apply {
+            val fr = requireActivity().supportFragmentManager
+            if (fr.backStackEntryCount > 0) {
+                fr.popBackStack()
+            }
+           /* requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper, LatestValueFragment())
                 addToBackStack(null)
                 commit()
-            }
+            }*/
         }
     }
 

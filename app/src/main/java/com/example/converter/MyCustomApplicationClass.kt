@@ -35,9 +35,8 @@ class MyCustomApplicationClass : Application() {
                 val itemModels: List<ItemModelX>? = response?.let {
                     it.fiats.map {
                         ItemModelX(
-                            //currencyName = it.value.currency_name,
-                            //currencyCode = it.value.currency_code,
-                            countries = it.value.countries1
+                            currencyName = it.value.currency_name,
+                            isFavorite = it.value.favorite
                         )
                     }
                 }
@@ -46,6 +45,7 @@ class MyCustomApplicationClass : Application() {
             }
         })
     }
+
     object ModelPreferencesManager {
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
@@ -57,10 +57,12 @@ class MyCustomApplicationClass : Application() {
         fun <T> put(`object`: T, key: String) {
             val jsonString = GsonBuilder().create().toJson(`object`)
             sp.edit().putString(key, jsonString).apply()
-
         }
 
-        inline fun <reified T> get(key: String): T? {
+        /*fun <T> get(key: String): T? {
+            val value = sp.getString(key, null)
+            return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)*/
+        inline fun <reified T> get(key: String): T? { // Вот про это спросить + опять проблема Tree Map если верхняя запись
             val value = sp.getString(key, null)
             return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)
         }

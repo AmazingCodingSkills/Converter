@@ -3,6 +3,7 @@ package com.example.converter.fragment
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class SettingsFragment : Fragment() {
                 name = name,
                 email = email
             )
+            Log.d("opachcki","Settings")
         }
 
         binding.clearButton.setOnClickListener {
@@ -72,7 +74,7 @@ class SettingsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // посмотреть на утечки памяти, так правильно, если этого нет будут утечки
     }
 
     private companion object {

@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
-import com.example.converter.databinding.*
+import com.example.converter.databinding.ListItemBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ConvertAdapter : ListAdapter<ItemModel, ConvertAdapter.Holder>(Comparator()) {
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
+class ConvertAdapter : ListAdapter<ItemModel, ConvertAdapter.Holder>(Comparator()) { // по форме записи еще раз
+    class Holder(view: View) : RecyclerView.ViewHolder(view) { // ??
         val binding = ListItemBinding.bind(view)
         fun bind(item: ItemModel) = with(binding) {
             date.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(item.date)
@@ -22,7 +22,7 @@ class ConvertAdapter : ListAdapter<ItemModel, ConvertAdapter.Holder>(Comparator(
         }
     }
 
-    class Comparator : DiffUtil.ItemCallback<ItemModel>() {
+    class Comparator : DiffUtil.ItemCallback<ItemModel>() { // ??
         override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean {
             return oldItem == newItem
         }
