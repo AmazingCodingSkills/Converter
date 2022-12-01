@@ -1,4 +1,4 @@
-package com.example.converter.countryname
+package com.currency.converter.features.rate.countryname
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ class CountryAdapter(private val countryNames: List<String>) :
     RecyclerView.Adapter<CountryAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameCountries: TextView = itemView.findViewById(R.id.nameCountries)
+        val nameCountries: TextView = itemView.findViewById(R.id.nameCountryForFavorite)
 
     }
 

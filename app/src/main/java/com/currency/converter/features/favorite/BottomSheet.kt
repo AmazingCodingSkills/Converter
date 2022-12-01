@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.converter.R
-import com.example.converter.countryname.CountryAdapter
+import com.currency.converter.features.rate.countryname.CountryAdapter
 import com.example.converter.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

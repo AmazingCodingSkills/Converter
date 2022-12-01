@@ -13,11 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.base.RetrofitProvider
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.example.converter.R
-import com.example.converter.adaptersLatest.ConvertAdapter
-import com.example.converter.adaptersLatest.ItemModel
-import com.example.converter.adaptersLatest.TestResponse
-import com.example.converter.adaptersLatest.ValueCurrency
 import com.example.converter.databinding.FragmentLatestValueBinding
+import com.example.converter.fragment.BottomSheet
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
