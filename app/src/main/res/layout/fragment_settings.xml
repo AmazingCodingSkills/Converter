@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context=".MainActivity">
+    tools:context="com.currency.converter.MainActivity">
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
