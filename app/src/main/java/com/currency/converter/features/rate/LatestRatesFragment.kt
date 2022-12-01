@@ -54,7 +54,7 @@ class LatestRatesFragment : Fragment() {
             
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper, MainFavoriteFragment())
-                addToBackStack(null) //??
+                addToBackStack(null)
                 commit()
                 // (1) -> (2)
             }

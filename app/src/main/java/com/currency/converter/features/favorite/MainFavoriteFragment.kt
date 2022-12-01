@@ -38,7 +38,7 @@ class MainFavoriteFragment() : Fragment() {
         binding.arrowBackMain.setOnClickListener {
             val fr = requireActivity().supportFragmentManager
             if (fr.backStackEntryCount > 0) {
-                fr.popBackStack()
+                fr.popBackStack() // если в этой коробке что-то лежит, то на экран назад
             }
            /* requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper, LatestValueFragment())
