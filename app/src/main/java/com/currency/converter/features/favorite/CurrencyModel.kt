@@ -7,6 +7,5 @@ data class CurrencyModel (
     val countries1: List<String>,
     val currency_code: String,
     val currency_name: String,
-    val decimal_units: String,
-    val favorite: Boolean)
+    val decimal_units: String)
 

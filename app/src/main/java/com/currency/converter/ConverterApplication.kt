@@ -13,6 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ConverterApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
         Log.d("APP", "I'ts fine")
@@ -36,12 +37,14 @@ class ConverterApplication : Application() {
                     it.fiats.map {
                         CurrencyItem(
                             currencyName = it.value.currency_name,
-                            isFavorite = it.value.favorite
+                            isFavorite = false
                         )
                     }
                 }
                 Log.d("responsetat", "${itemModels}")
                 ModelPreferencesManager.put(itemModels, "KEY_ONE")
+
+
             }
         })
     }
@@ -62,7 +65,7 @@ class ConverterApplication : Application() {
         /*fun <T> get(key: String): T? {
             val value = sp.getString(key, null)
             return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)*/
-        inline fun <reified T> get(key: String): T? { // Вот про это спросить + опять проблема Tree Map если верхняя запись
+        inline fun <reified T> get(key: String): T? {
             val value = sp.getString(key, null)
             return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)
         }
