@@ -40,11 +40,11 @@ class MainFavoriteFragment() : Fragment() {
             if (fr.backStackEntryCount > 0) {
                 fr.popBackStack() // если в этой коробке что-то лежит, то на экран назад
             }
-           /* requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, LatestValueFragment())
-                addToBackStack(null)
-                commit()
-            }*/
+            /* requireActivity().supportFragmentManager.beginTransaction().apply {
+                 replace(R.id.fl_wrapper, LatestValueFragment())
+                 addToBackStack(null)
+                 commit()
+             }*/
         }
     }
 
@@ -52,10 +52,12 @@ class MainFavoriteFragment() : Fragment() {
         val adapter = VpAdapter(activity as FragmentActivity, flist)
         viewPager.adapter = adapter
         TabLayoutMediator(tablayout, viewPager) {
-tab, pos -> tab.text = tList[pos]
+                tab, pos -> tab.text = tList[pos]
         }.attach()
     }
 }
+
+
 
 
 
