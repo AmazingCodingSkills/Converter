@@ -48,7 +48,7 @@ class LatestRatesFragment : Fragment() {
         initRcView()
 
         binding.favouriteButton.setOnClickListener {
-            
+            binding.favouriteButton.setTextColor(resources.getColor(android.R.color.black))
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_wrapper, MainFavoriteFragment())
                 addToBackStack(null)

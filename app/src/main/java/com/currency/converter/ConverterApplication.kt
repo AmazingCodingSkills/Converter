@@ -3,6 +3,7 @@ package com.currency.converter
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
+import com.currency.converter.ConverterApplication.ModelPreferencesManager.ALL_LIST_KEY
 import com.currency.converter.base.RetrofitProvider
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MetaCurrenciesResponse
@@ -11,6 +12,45 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+
+interface Programmer {
+    fun writeCode()
+}
+
+class Senior : Programmer {
+    override fun writeCode() {
+        println("OK!")
+    }
+
+    fun test() {
+
+    }
+}
+
+class Junior : Programmer {
+
+    override fun writeCode() {
+        throw RuntimeException("TEST")
+    }
+
+    fun test() {
+
+    }
+}
+
+class Work {
+    val senior = Senior()
+    val junior = Junior()
+    val programmers = listOf<Programmer>(senior, junior)
+
+    fun doSomeStaff() {
+        programmers.forEach { programmer ->
+            programmer.writeCode()
+        }
+    }
+}
+
 
 class ConverterApplication : Application() {
 
@@ -42,7 +82,7 @@ class ConverterApplication : Application() {
                     }
                 }
                 Log.d("responsetat", "${itemModels}")
-                ModelPreferencesManager.put(itemModels, "KEY_ONE")
+                ModelPreferencesManager.put(itemModels, ALL_LIST_KEY)
 
 
             }
@@ -52,6 +92,9 @@ class ConverterApplication : Application() {
     object ModelPreferencesManager {
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
+
+        const val FAVORITE_KEY = "favorite_currencies_key"
+        const val ALL_LIST_KEY = "all_currencies_key"
 
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)

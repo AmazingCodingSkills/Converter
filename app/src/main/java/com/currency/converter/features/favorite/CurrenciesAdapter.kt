@@ -31,7 +31,7 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         // Вызывается один раз при создании класса +++
         init {
             binding.favoriteImageButton.setOnClickListener {
-                onItemClickListener.invoke(currency)
+                onItemClickListener(currency)
             }
         }
 
@@ -46,6 +46,7 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         }
     }
 
+
     class Comparator : DiffUtil.ItemCallback<CurrencyItem>() {
         override fun areItemsTheSame(oldItem: CurrencyItem, newItem: CurrencyItem): Boolean {
             return oldItem == newItem  //equals and hashcode
@@ -54,18 +55,20 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         override fun areContentsTheSame(oldItem: CurrencyItem, newItem: CurrencyItem): Boolean {
             return oldItem == newItem
         }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.list_item_favorite, parent, false)
-        return Holder(view, onItemClickListener)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_favorite, parent, false)
+            return Holder(view, onItemClickListener)
+        }
+
+        override fun onBindViewHolder(holder: Holder, position: Int) {
+            holder.bind(getItem(position))
+
+        }
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(getItem(position))
 
-    }
 
-}

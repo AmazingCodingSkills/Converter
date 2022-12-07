@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.currency.converter.features.favorite.CurrenciesAdapter
 import com.example.converter.databinding.FragmentCurrencyBinding
 
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentCurrencyBinding
-    private lateinit var adapter: CurrenciesAdapter
+
 
 
     override fun onCreateView(

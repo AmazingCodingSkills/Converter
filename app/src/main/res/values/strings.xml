@@ -11,4 +11,6 @@
     <string name="name_favourite_screen">Избранное</string>
     <string name="tabItem_two">Все</string>
     <string name="name_country">Страна</string>
+    <string name="only_favorite">Избранное</string>
+    <string name="all_favorite">Все</string>
 </resources>
