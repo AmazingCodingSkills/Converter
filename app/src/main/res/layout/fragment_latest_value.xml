@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/firstScreenLogo"
+                android:id="@+id/bottom_sheet_button"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -45,7 +45,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/favouriteButton"
+                android:id="@+id/changeCurrencyButton"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

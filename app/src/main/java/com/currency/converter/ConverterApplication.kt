@@ -3,7 +3,7 @@ package com.currency.converter
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
-import com.currency.converter.ConverterApplication.ModelPreferencesManager.ALL_LIST_KEY
+import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.base.RetrofitProvider
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MetaCurrenciesResponse
@@ -58,43 +58,46 @@ class ConverterApplication : Application() {
         super.onCreate()
         Log.d("APP", "I'ts fine")
         getAllInformationListApplication()
-        ModelPreferencesManager.with(this)
+        PreferencesManager.with(this)
     }
 
     private fun getAllInformationListApplication() {
-        RetrofitProvider.api.getInformationListX().enqueue(object : Callback<MetaCurrenciesResponse> {
-            override fun onFailure(call: Call<MetaCurrenciesResponse>, t: Throwable) {
-                Log.d("commontag", "${t}")
-            }
-
-            override fun onResponse(
-                call: Call<MetaCurrenciesResponse>,
-                response: Response<MetaCurrenciesResponse>
-            ) {
-                Log.d("responsetat", "OK 3")
-                val response = response.body()?.response
-                val itemModels: List<CurrencyItem>? = response?.let {
-                    it.fiats.map {
-                        CurrencyItem(
-                            currencyName = it.value.currency_name,
-                            isFavorite = false
-                        )
-                    }
+        RetrofitProvider.api.getNameCountryCurrency()
+            .enqueue(object : Callback<MetaCurrenciesResponse> {
+                override fun onFailure(call: Call<MetaCurrenciesResponse>, t: Throwable) {
+                    Log.d("commontag", "${t}")
                 }
-                Log.d("responsetat", "${itemModels}")
-                ModelPreferencesManager.put(itemModels, ALL_LIST_KEY)
+
+                override fun onResponse(
+                    call: Call<MetaCurrenciesResponse>,
+                    response: Response<MetaCurrenciesResponse>
+                ) {
+                    Log.d("responsetat", "OK 3")
+                    val response = response.body()?.response
+                    val itemModels: List<CurrencyItem>? = response?.let {
+                        it.fiats.map {
+                            CurrencyItem(
+                                id = it.value.currency_code,
+                                currencyName = it.value.currency_name,
+                                isFavorite = false
+                            )
+                        }
+                    }
+                    Log.d("responsetat", "${itemModels}")
+                    PreferencesManager.put(itemModels, ALL_CURRENCY_KEY)
 
 
-            }
-        })
+                }
+            })
     }
 
-    object ModelPreferencesManager {
+    object PreferencesManager {
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
 
-        const val FAVORITE_KEY = "favorite_currencies_key"
-        const val ALL_LIST_KEY = "all_currencies_key"
+        const val SELECT_KEY = "favorite_currencies_key"
+        const val ALL_CURRENCY_KEY = "all_currencies_key"
+        const val FAVORITE_CURRENCIES_KEY = "only_selected_currencies"
 
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
@@ -105,9 +108,6 @@ class ConverterApplication : Application() {
             sp.edit().putString(key, jsonString).apply()
         }
 
-        /*fun <T> get(key: String): T? {
-            val value = sp.getString(key, null)
-            return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)*/
         inline fun <reified T> get(key: String): T? {
             val value = sp.getString(key, null)
             return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)
