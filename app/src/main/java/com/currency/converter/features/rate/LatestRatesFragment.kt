@@ -103,7 +103,7 @@ class LatestRatesFragment : Fragment() {
                      }.orEmpty()
                      val items = favoriteCurrencies.ifEmpty { rateItems }
                     latestRatesAdapter.submitList(items)
-                    Log.d("responsetag", "${rateItems}")
+                    Log.d("responsetag", "${items}")
 
                 }
             })
