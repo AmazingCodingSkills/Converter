@@ -8,13 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
+import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_KEY
 import com.currency.converter.base.RetrofitProvider
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MainFavoriteFragment
+import com.currency.converter.features.rate.countryname.CountryModel
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
-import com.example.converter.fragment.BottomSheet
+import com.example.converter.fragment.BottomSheetCountry
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +26,7 @@ class LatestRatesFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +50,13 @@ class LatestRatesFragment : Fragment() {
                 // (1) -> (2)
             }
         }
+        binding.testStatus.setOnClickListener{
+            val x = ConverterApplication.PreferencesManager.get<CountryModel>(
+                BASE_CURRENCIES_FOR_VARIOUS_COUNTRY)
+            Log.d("Save1","$x")
+        }
         binding.bottomSheetButton.setOnClickListener {
-            val bottomSheet = BottomSheet()
+            val bottomSheet = BottomSheetCountry()
             bottomSheet.show(childFragmentManager, "TAG")
 
 
@@ -68,7 +76,7 @@ class LatestRatesFragment : Fragment() {
     private fun getLatestValueForSelectCurrency() {
        /* val favorites =
             ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(FAVORITE_CURRENCIES_KEY)
-                ?.map { it.id }?.takeIf { it.isEmpty().not() }*/
+                ?.map { it.id }?.takeIf { it.isEmpty().not() }*/ // вариант работы с запросом через API
         RetrofitProvider.api.getLatestValueCurrency()
             .enqueue(object : Callback<RatesMetaResponse> {
                 override fun onFailure(call: Call<RatesMetaResponse>, t: Throwable) {
@@ -104,7 +112,6 @@ class LatestRatesFragment : Fragment() {
                      val items = favoriteCurrencies.ifEmpty { rateItems }
                     latestRatesAdapter.submitList(items)
                     Log.d("responsetag", "${items}")
-
                 }
             })
     }

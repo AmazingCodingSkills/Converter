@@ -85,7 +85,7 @@ class CurrenciesFragment : Fragment() {
         ConverterApplication.PreferencesManager.put(favoriteAllCurrencies, SELECT_KEY)
         //обновляем в шаредах чтобы работало между перезапусками приложения
         //....
-        Log.d("qwerty", "${selectFavoriteCurrency::class.java}")
+        Log.d("qwerty", "${favoriteAllCurrencies}")
         //обновляем на UI новым списком
 
         adapterCurrencies.submitList(favoriteAllCurrencies)

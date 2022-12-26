@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/latestScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.currency.converter.features.rate.LatestRatesFragment">
@@ -27,10 +27,9 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:src="@drawable/main_logo"
                 android:background="@drawable/main_button"
                 android:scaleType="fitXY"
-                />
+                android:src="@drawable/main_logo" />
             <!--Если бы у TextView не было бы id то данные бы подтягивались из ресурсов, а если есть то bundle бы взял по id -->
 
             <TextView
@@ -85,5 +84,12 @@
         tools:itemCount="3"
         tools:listitem="@layout/list_item" />
 
+    <Button
+        android:id="@+id/test_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerLatest">
+
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

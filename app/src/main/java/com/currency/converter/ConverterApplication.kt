@@ -98,6 +98,7 @@ class ConverterApplication : Application() {
         const val SELECT_KEY = "favorite_currencies_key"
         const val ALL_CURRENCY_KEY = "all_currencies_key"
         const val FAVORITE_CURRENCIES_KEY = "only_selected_currencies"
+        const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "base_currency"
 
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
