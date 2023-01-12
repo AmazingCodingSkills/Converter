@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         getActionBar()?.setTitle("Main")
 
-            binding = ActivityMainBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val latestValueFragment = LatestRatesFragment.newInstance()
         val historicalFragment = CalculatorFragment.newInstance()
@@ -52,8 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeCurrentFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fl_wrapper, fragment)
-       // transaction.addToBackStack(null) пока явно не добавлю, с любого фрагмента с боттом навигейшн будет останавливаться приложение
+        transaction.replace(R.id.bottom_navigation_replacement, fragment)
         transaction.commit()
     }
 }

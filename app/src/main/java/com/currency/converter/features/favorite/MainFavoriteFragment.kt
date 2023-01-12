@@ -12,16 +12,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MainFavoriteFragment() : Fragment() {
-    private val flist = listOf(
-        OnlyFavoritesFragment.newInstance(),
-        CurrenciesFragment.newInstance()
-    )
-    private val tList = listOf(
-        "Избранное",
-        "Все"
-    )
-    private lateinit var binding: FragmentFavouritesBinding
 
+    private val flist = listOf(OnlyFavoritesFragment.newInstance(),CurrenciesFragment.newInstance())
+    private val tList = listOf("Избранное", "Все")
+    private lateinit var binding: FragmentFavouritesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,25 +28,19 @@ class MainFavoriteFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
         binding.arrowBackMain.setOnClickListener {
             val fr = requireActivity().supportFragmentManager
             if (fr.backStackEntryCount > 0) {
                 fr.popBackStack() // если в этой коробке что-то лежит, то на экран назад
             }
-            /* requireActivity().supportFragmentManager.beginTransaction().apply {
-                 replace(R.id.fl_wrapper, LatestValueFragment())
-                 addToBackStack(null)
-                 commit()
-             }*/
         }
     }
 
     private fun init() = with(binding) {
         val adapter = VpAdapter(activity as FragmentActivity, flist)
         viewPager.adapter = adapter
-        TabLayoutMediator(tablayout, viewPager) {
-                tab, pos -> tab.text = tList[pos]
+        TabLayoutMediator(tablayout, viewPager) { tab, pos ->
+            tab.text = tList[pos]
         }.attach()
     }
 }

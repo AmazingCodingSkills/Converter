@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
+import com.currency.converter.ConverterApplication.PreferencesManager.FAVORITE_CURRENCIES_KEY
 import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
 
 
 class OnlyFavoritesFragment : Fragment() {
-    private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
-    private lateinit var adapterSelected: CurrenciesAdapter
 
+    private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
+    private lateinit var adapterSelectedFavorite: CurrenciesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,36 +26,37 @@ class OnlyFavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerFavoriteAll.apply {
+        binding.recyclerFavoriteItem.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapterSelected = CurrenciesAdapter{ item -> removeFavorite(item)}
-            binding.recyclerFavoriteAll.adapter = adapterSelected
+            adapterSelectedFavorite = CurrenciesAdapter { item -> removeFavorite(item) }
+            binding.recyclerFavoriteItem.adapter = adapterSelectedFavorite
             this.itemAnimator = null
         }
-
     }
 
     override fun onResume() {
         super.onResume()
         val favoriteItemFromSP =
-            ConverterApplication.ModelPreferencesManager.get<List<CurrencyItem>>(
-                ConverterApplication.ModelPreferencesManager.FAVORITE_KEY
+            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
+                ConverterApplication.PreferencesManager.SELECT_KEY
             ).orEmpty()
 
-        val onlySelectedItemFromSP = favoriteItemFromSP.filter { it.isFavorite }
-        adapterSelected.submitList(onlySelectedItemFromSP)
+        val onlySelectedFavoriteItem = favoriteItemFromSP.filter { it.isFavorite }
+        ConverterApplication.PreferencesManager.put(onlySelectedFavoriteItem,FAVORITE_CURRENCIES_KEY)
+        adapterSelectedFavorite.submitList(onlySelectedFavoriteItem)
     }
 
-   private fun removeFavorite(removeItem: CurrencyItem) {
-        val removeItemList =
-            adapterSelected.currentList.toMutableList()
+    private fun removeFavorite(removeItem: CurrencyItem) {
+        val removeItemFromAllList =
+            adapterSelectedFavorite.currentList.toMutableList()
         val removeElementIndex =
-            removeItemList.indexOf(removeItem)
-       removeItemList.removeAt(removeElementIndex)
-       ConverterApplication.ModelPreferencesManager.put(removeItemList,
-           ConverterApplication.ModelPreferencesManager.FAVORITE_KEY
-       )
-       adapterSelected.submitList(removeItemList)
+            removeItemFromAllList.indexOf(removeItem)
+        removeItemFromAllList.removeAt(removeElementIndex)
+        ConverterApplication.PreferencesManager.put(
+            removeItemFromAllList,
+            ConverterApplication.PreferencesManager.SELECT_KEY
+        )
+        adapterSelectedFavorite.submitList(removeItemFromAllList)
     }
 
     companion object {

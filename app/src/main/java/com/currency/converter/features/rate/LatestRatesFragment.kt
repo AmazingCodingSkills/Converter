@@ -1,38 +1,30 @@
 package com.currency.converter.features.rate
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.currency.converter.ConverterApplication
+import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_KEY
+import com.currency.converter.base.EventBus.subject
+import com.currency.converter.base.Observer
 import com.currency.converter.base.RetrofitProvider
+import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MainFavoriteFragment
+import com.currency.converter.features.rate.countryname.CountryModel
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
-import com.example.converter.fragment.BottomSheet
+import com.example.converter.fragment.BottomSheetCountry
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LatestRatesFragment : Fragment() {
 
-
     private lateinit var binding: FragmentLatestValueBinding
-    private lateinit var adapter: LatestRatesAdapter
-    lateinit var btnChangeCountries: Button
-
-
-    private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
-        requireActivity().applicationContext.getSharedPreferences(
-            "SettingsPreferences",
-            Context.MODE_PRIVATE
-        )
-    }
+    private lateinit var latestRatesAdapter: LatestRatesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,80 +34,74 @@ class LatestRatesFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRcView()
-
-        binding.favouriteButton.setOnClickListener {
-            binding.favouriteButton.setTextColor(resources.getColor(android.R.color.black))
+        binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, MainFavoriteFragment())
+                replace(R.id.bottom_navigation_replacement, MainFavoriteFragment())
                 addToBackStack(null)
                 commit()
-                // (1) -> (2)
             }
         }
-        binding.firstScreenLogo.setOnClickListener{
-                val bottomSheet = BottomSheet()
-                    bottomSheet.show(childFragmentManager,"TAG")
-
-
-            }
+        binding.bottomSheetButton.setOnClickListener {
+            val bottomSheet = BottomSheetCountry()
+            bottomSheet.show(childFragmentManager, "TAG")
+        }
     }
-
 
     private fun initRcView() = with(binding) {
         recyclerLatest.layoutManager = LinearLayoutManager(activity)
-        adapter = LatestRatesAdapter()
-        recyclerLatest.adapter = adapter
+        latestRatesAdapter = LatestRatesAdapter()
+        recyclerLatest.adapter = latestRatesAdapter
+        subject.addObserver(object : Observer<CountryModel?> {
 
-        getAllInformationList()
-    }
-
-
-    private fun getAllInformationList() {
-        RetrofitProvider.api.getInformationList().enqueue(object : Callback<RatesMetaResponse> {
-            override fun onFailure(call: Call<RatesMetaResponse>, t: Throwable) {
-                Log.d("commontag", "${t}")
-            }
-
-
-            override fun onResponse(
-                call: Call<RatesMetaResponse>,
-                response: Response<RatesMetaResponse>
-            ) {
-
-                Log.d("responsetag", "OK 2")
-
-                val response = response.body()?.ratesResponse
-                val rateItems = response?.let {
-                    it.rates.map { entry -> // ??
-                        RateItem(
-                            date = response.date,
-                            referenceCurrency = Currency(
-                                name = entry.key,
-                                value = entry.value
-                            ),
-                            baseCurrencyName = response.base
-                        )
-                    }
+            override fun update(value: CountryModel?) {
+                if (value != null) {
+                    getLatestValueForSelectCurrency(value.baseCurrency)
                 }
-                adapter.submitList(rateItems)
-                Log.d("responsetag", "${rateItems}")
-
             }
         })
+        getLatestValueForSelectCurrency("USD")
     }
 
-    /*private fun makeCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fl_wrapper, fragment)
-            commit()
-        }*/
+    private fun getLatestValueForSelectCurrency(base: String) {
+        RetrofitProvider.api.getLatestValueCurrency(base = base)
+            .enqueue(object : Callback<RatesMetaResponse> {
+
+                override fun onFailure(call: Call<RatesMetaResponse>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<RatesMetaResponse>,
+                    response: Response<RatesMetaResponse>
+                ) {
+                    val response = response.body()?.ratesResponse
+                    val rateItems = response?.let {
+                        it.rates.map { entry -> // ??
+                            RateItem(
+                                date = response.date,
+                                referenceCurrency = Currency(
+                                    name = entry.key,
+                                    value = entry.value
+                                ),
+                                baseCurrencyName = response.base
+                            )
+                        }
+                    }
+                    val favorites =
+                        ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(SELECT_KEY)
+                            ?.filter { it.isFavorite }.orEmpty()
+                    val favoriteCurrencies = rateItems?.filter { item ->
+                        favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null
+                    }.orEmpty()
+                    val items = favoriteCurrencies.ifEmpty { rateItems }
+                    latestRatesAdapter.submitList(items)
+                }
+            })
+    }
 
     companion object {
         fun newInstance() = LatestRatesFragment()
     }
-
 }

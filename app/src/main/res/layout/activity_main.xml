@@ -12,7 +12,7 @@
         android:layout_height="?actionBarSize" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fl_wrapper"
+        android:id="@+id/bottom_navigation_replacement"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation" />
