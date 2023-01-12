@@ -8,26 +8,16 @@ import com.currency.converter.features.rate.countryname.CountryAdapter.MyViewHol
 import com.example.converter.R
 import com.example.converter.databinding.ListItemFavoriteBinding
 
-class CountryAdapter(
-    val onClick: (CountryItem) -> Unit
-) : RecyclerView.Adapter<MyViewHolder>() {
-    /*var countryNames: List<CountryItem> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }*/
-    private var countryNames: List<CountryItem> = mutableListOf()
+class CountryAdapter(val onClick: (CountryItem) -> Unit) : RecyclerView.Adapter<MyViewHolder>() {
 
-    fun addAll(items: List<CountryItem>) {
-        countryNames = items
-        notifyDataSetChanged()
-    }
+    var countryNames: List<CountryItem> = mutableListOf()
 
-   inner class MyViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    fun addAll(items: List<CountryItem>) {countryNames = items }
+
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var binding = ListItemFavoriteBinding.bind(itemView)
-        private lateinit var country: CountryItem
+        lateinit var country: CountryItem
 
         fun bind(item: CountryItem) = with(binding) {
             country = item
@@ -57,9 +47,7 @@ class CountryAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-        val country =
-            countryNames[position]///[position] // вот эту строчку не мог написать 2 дня
+        val country = countryNames[position]
         holder.bind(country)
     }
 

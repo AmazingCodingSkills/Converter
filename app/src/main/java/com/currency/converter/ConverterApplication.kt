@@ -13,45 +13,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-interface Programmer {
-    fun writeCode()
-}
-
-class Senior : Programmer {
-    override fun writeCode() {
-        println("OK!")
-    }
-
-    fun test() {
-
-    }
-}
-
-class Junior : Programmer {
-
-    override fun writeCode() {
-        throw RuntimeException("TEST")
-    }
-
-    fun test() {
-
-    }
-}
-
-class Work {
-    val senior = Senior()
-    val junior = Junior()
-    val programmers = listOf<Programmer>(senior, junior)
-
-    fun doSomeStaff() {
-        programmers.forEach { programmer ->
-            programmer.writeCode()
-        }
-    }
-}
-
-
 class ConverterApplication : Application() {
 
     override fun onCreate() {
@@ -83,10 +44,7 @@ class ConverterApplication : Application() {
                             )
                         }
                     }
-                    Log.d("responsetat", "${itemModels}")
                     PreferencesManager.put(itemModels, ALL_CURRENCY_KEY)
-
-
                 }
             })
     }
@@ -94,7 +52,6 @@ class ConverterApplication : Application() {
     object PreferencesManager {
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
-
         const val SELECT_KEY = "favorite_currencies_key"
         const val ALL_CURRENCY_KEY = "all_currencies_key"
         const val FAVORITE_CURRENCIES_KEY = "only_selected_currencies"
@@ -115,5 +72,4 @@ class ConverterApplication : Application() {
         }
 
     }
-
 }

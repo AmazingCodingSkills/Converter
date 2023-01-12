@@ -12,9 +12,9 @@ import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
 
 
 class OnlyFavoritesFragment : Fragment() {
+
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterSelectedFavorite: CurrenciesAdapter
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +32,6 @@ class OnlyFavoritesFragment : Fragment() {
             binding.recyclerFavoriteItem.adapter = adapterSelectedFavorite
             this.itemAnimator = null
         }
-
     }
 
     override fun onResume() {

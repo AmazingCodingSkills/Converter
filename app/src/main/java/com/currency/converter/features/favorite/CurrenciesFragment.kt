@@ -13,11 +13,11 @@ import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
 
 
 class CurrenciesFragment : Fragment() {
+
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterCurrencies: CurrenciesAdapter
     private lateinit var allCurrency: List<CurrencyItem>
     private lateinit var selectFavoriteCurrency: List<CurrencyItem>
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,13 +29,11 @@ class CurrenciesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerFavoriteItem.apply {
             layoutManager = LinearLayoutManager(activity)
             adapterCurrencies = CurrenciesAdapter(onItemClickListener = { item ->
                 updateFavorite(item)
             })
-
             binding.recyclerFavoriteItem.adapter = adapterCurrencies
             this.itemAnimator =
                 null // это позволяет в Recycler View убрать анимацию клика одного контейнера
@@ -60,7 +58,6 @@ class CurrenciesFragment : Fragment() {
                 chooseFavoriteItem[index] = item
             }
         }
-        Log.d("qwerty", "${allCurrency::class.java}")
         adapterCurrencies.submitList(chooseFavoriteItem)
     }
 
@@ -69,31 +66,24 @@ class CurrenciesFragment : Fragment() {
             adapterCurrencies.currentList // [0]..[178], [0] - currencyItem1, [1] - currencyItem2
         val updatedElementIndex =
             currentAllCurrencyItem.indexOf(updatedItem) // индекс для конкретного элемента, который сейчас выбран
-
         //делаем избранным
         // CurrencyItem("RUB", false) - before
         // CurrentItem("RUB",true) - after
         val newAllCurrencyItem = updatedItem.copy(
             isFavorite = updatedItem.isFavorite.not()
         )
-
         //создаем новый список с измененным элементом
         val favoriteAllCurrencies = currentAllCurrencyItem.toMutableList().also { currencies ->
             currencies[updatedElementIndex] =
-                newAllCurrencyItem // если я тут указываю как ты писал вместо list-> list[] -> it[] разницы нет??
+                newAllCurrencyItem
         }
         ConverterApplication.PreferencesManager.put(favoriteAllCurrencies, SELECT_KEY)
-        //обновляем в шаредах чтобы работало между перезапусками приложения
-        //....
         Log.d("qwerty", "${favoriteAllCurrencies}")
         //обновляем на UI новым списком
-
         adapterCurrencies.submitList(favoriteAllCurrencies)
-
     }
 
     companion object {
         fun newInstance() = CurrenciesFragment()
     }
-
 }

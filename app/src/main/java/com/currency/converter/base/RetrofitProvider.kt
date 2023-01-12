@@ -18,9 +18,11 @@ object RetrofitProvider {
         Retrofit.Builder()
             .baseUrl("https://api.currencyscoop.com/v1/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().addInterceptor(
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            ).build())
+            .client(
+                OkHttpClient.Builder().addInterceptor(
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                ).build()
+            )
             .build()
     }
     val api: CurrencyService by lazy {

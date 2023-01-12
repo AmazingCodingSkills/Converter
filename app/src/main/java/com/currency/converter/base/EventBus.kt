@@ -1,17 +1,27 @@
 package com.currency.converter.base
 
+import com.currency.converter.features.rate.countryname.CountryModel
+import java.util.*
+
 object EventBus {
 
-    private val value = 0
+    val subject = Subject<CountryModel>()
 
-    fun set() {
+    open class Subject<T>(initial: T? = null) : Observable<T?>, Observer<T?> {
 
+        override val observers: MutableList<Observer<T?>> = LinkedList()
+        private var value: T? = initial
+        override fun update(value: T?) {
+            this.value = value
+            observers.forEach { it.update(value) }
+        }
+
+        override fun removeObserver(observer: Observer<T?>) {
+            observers.remove(observer)
+        }
+
+        override fun addObserver(observer: Observer<T?>) {
+            observers.add(observer)
+        }
     }
-
-    fun get() {
-
-    }
-
-    fun observe() {}
-
 }

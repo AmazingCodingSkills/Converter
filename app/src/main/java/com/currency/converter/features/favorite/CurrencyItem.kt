@@ -5,7 +5,3 @@ data class CurrencyItem(
    val currencyName: String,
    val isFavorite: Boolean
 )
-
-//Item("rub", false)
-
-// item.copy("rur"))

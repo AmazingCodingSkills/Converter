@@ -9,16 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
 import com.example.converter.databinding.ListItemFavoriteBinding
 
-
-// ListAdapter (immutable, diff-util, additional methods)
-
-// Recycler.Adapter
-
-
-// Сущность для работы со списком
-// SOLID, OOP+
-// S - single responsibility principle +++
-
 class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyItem) -> Unit) :
     ListAdapter<CurrencyItem, CurrenciesAdapter.Holder>(Comparator()) {
 
@@ -46,7 +36,6 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         }
     }
 
-
     class Comparator : DiffUtil.ItemCallback<CurrencyItem>() {
         override fun areItemsTheSame(oldItem: CurrencyItem, newItem: CurrencyItem): Boolean {
             return oldItem == newItem  //equals and hashcode
@@ -57,18 +46,18 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         }
     }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_favorite, parent, false)
-            return Holder(view, onItemClickListener)
-        }
-
-        override fun onBindViewHolder(holder: Holder, position: Int) {
-            holder.bind(getItem(position))
-
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_favorite, parent, false)
+        return Holder(view, onItemClickListener)
     }
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(getItem(position))
+
+    }
+}
 
 
 
