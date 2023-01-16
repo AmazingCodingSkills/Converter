@@ -5,8 +5,10 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.base.RetrofitProvider
+import com.currency.converter.features.favorite.CountryService
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MetaCurrenciesResponse
+import com.currency.converter.features.rate.countryname.CountryModel
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -20,6 +22,15 @@ class ConverterApplication : Application() {
         Log.d("APP", "I'ts fine")
         getAllInformationListApplication()
         PreferencesManager.with(this)
+        saveItem(CountryService.countryList().first())
+    }
+
+    private fun saveItem(item: CountryModel) {
+        PreferencesManager.put(
+            item,
+            PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+        )
+
     }
 
     private fun getAllInformationListApplication() {

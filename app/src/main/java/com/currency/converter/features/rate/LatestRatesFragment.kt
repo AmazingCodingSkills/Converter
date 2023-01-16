@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
+import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_KEY
 import com.currency.converter.base.EventBus.subject
 import com.currency.converter.base.Observer
@@ -58,14 +59,22 @@ class LatestRatesFragment : Fragment() {
 
             override fun update(value: CountryModel?) {
                 if (value != null) {
-                    getLatestValueForSelectCurrency(value.baseCurrency)
+                    getLatestValueForSelectCurrency(value.baseCurrency, value.icon)
                 }
             }
         })
-        getLatestValueForSelectCurrency("USD")
+
+        val selectedCountries = ConverterApplication.PreferencesManager.get<CountryModel>(
+            BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+        )
+
+        if (selectedCountries != null) {
+            getLatestValueForSelectCurrency(selectedCountries.baseCurrency,selectedCountries.icon)
+        }
     }
 
-    private fun getLatestValueForSelectCurrency(base: String) {
+    private fun getLatestValueForSelectCurrency(base: String, icon: Int) {
+        binding.bottomSheetButton.setImageResource(icon)
         RetrofitProvider.api.getLatestValueCurrency(base = base)
             .enqueue(object : Callback<RatesMetaResponse> {
 
