@@ -22,14 +22,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/bottom_sheet_button"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+            <androidx.cardview.widget.CardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:elevation="12dp"
+                android:id="@+id/view2"
                 android:layout_gravity="center"
-                android:background="@drawable/main_button"
-                android:scaleType="fitXY"
-                android:src="@drawable/main_logo" />
+                app:cardCornerRadius="40dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:id="@+id/bottom_sheet_button"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"/>
+            </androidx.cardview.widget.CardView>
             <!--Если бы у TextView не было бы id то данные бы подтягивались из ресурсов, а если есть то bundle бы взял по id -->
 
             <TextView

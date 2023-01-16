@@ -7,6 +7,7 @@ object EventBus {
 
     val subject = Subject<CountryModel>()
 
+
     open class Subject<T>(initial: T? = null) : Observable<T?>, Observer<T?> {
 
         override val observers: MutableList<Observer<T?>> = LinkedList()

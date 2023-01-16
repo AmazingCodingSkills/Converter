@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.base.EventBus.subject
+import com.currency.converter.features.favorite.CountryService.countryList
 import com.currency.converter.features.rate.countryname.CountryAdapter
 import com.currency.converter.features.rate.countryname.CountryItem
 import com.currency.converter.features.rate.countryname.CountryModel
@@ -64,24 +65,6 @@ class BottomSheetCountry : BottomSheetDialogFragment() {
             BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
         )
         Log.d("qwerty", "${saveSelectCountry}")
-    }
-
-    private fun countryList(): List<CountryModel> {
-        val listOfCountries = listOf(
-            CountryModel("Россия", "RUB"),
-            CountryModel("Казахстан", "KZT"),
-            CountryModel("Азербайджан", "AZN"),
-            CountryModel("Армения", "AMD"),
-            CountryModel("Грузия", "GEL"),
-            CountryModel("Узбекистан", "UZS"),
-            CountryModel("Кыргызстан", "KGS"),
-            CountryModel("Беларусь", "BYN"),
-            CountryModel("Таджикистан", "TJS"),
-            CountryModel("Молдова", "MDL"),
-            CountryModel("Туркменистан", "TMT"),
-            CountryModel("Украина", "UAH")
-        )
-        return listOfCountries
     }
 }
 
