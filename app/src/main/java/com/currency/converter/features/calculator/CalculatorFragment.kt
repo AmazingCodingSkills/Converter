@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -36,8 +35,7 @@ class CalculatorFragment : Fragment() {
     private lateinit var binding: FragmentConverterBinding
     var baseCurrency = "USD"
     var convertedToCurrency = "EUR"
-    var baseEditFrom = 1.0
-
+    var baseEdit = "0"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,49 +50,63 @@ class CalculatorFragment : Fragment() {
         clickSearchButtons()
         binding.currencyFrom.text = baseCurrency
         binding.currencyTo.text = convertedToCurrency
-        binding.etFirstConversion.text.toString()
+       binding.etFirstConversion.setText(baseEdit)
+        binding.etSecondConversion.setText(baseEdit)
+        // val setValueEdit = Double.parseDouble(binding.etFirstConversion.text.toString()) не дает засетать значение по умолчанию
+        // пробвал разные варианты
+        // binding.etFirstConversion.text.toString().toDouble() = baseEditFrom
+        // var x =  binding.etFirstConversion.text.toString().toDouble()
+        // x = baseEditFrom
 
         binding.etFirstConversion.addTextChangedListener {
-
             val itemFrom = ConverterApplication.PreferencesManager.get<String>("QWERTY")
-
-            if (itemFrom == null) {
-                CurrencyRatesRepository.getLatestApiResult(baseCurrency) { rates ->
+            if (itemFrom == baseCurrency) {
+                CurrencyRatesRepository.getLatestApiResult(itemFrom) { rates ->
                     val findItemFrom =
                         rates?.find { it.referenceCurrency.name == convertedToCurrency }
                     val baseEditFrom = findItemFrom?.referenceCurrency?.value
-                    ConverterApplication.PreferencesManager.put(baseEditFrom, "XXX")
+                    val resultFrom = ((binding.etFirstConversion.text.toString()
+                        .toDouble()) * baseEditFrom!!).toString()
+                    binding.etSecondConversion.setText(resultFrom)
                     Log.d("baseEdit", "$baseEditFrom")
-                    //val x =  binding.etFirstConversion.toString().toDouble() *  1.0 //z.toString().toDouble()
-
-
-                    // decimalFormatter
-
                 }
-
             }
-            getApiResult()
-            if (itemFrom != null) {
+
+            if (itemFrom != null && itemFrom != baseCurrency) {
                 CurrencyRatesRepository.getLatestApiResult(itemFrom) { rates ->
                     val findItemFrom =
                         rates?.find { it.referenceCurrency.name == convertedToCurrency }
                     val valueCurrencyTo = findItemFrom?.referenceCurrency?.value
-                    binding.etSecondConversion.text
-                    // decimalFormatter
+                    ConverterApplication.PreferencesManager.put(valueCurrencyTo, "ZZZ")
+                    val resultTo = ((binding.etFirstConversion.text.toString()
+                        .toDouble()) * valueCurrencyTo!!).toString()
+                    binding.etSecondConversion.setText(resultTo)
                 }
-
             }
-
         }
 
         binding.etSecondConversion.addTextChangedListener {
             val itemTo = ConverterApplication.PreferencesManager.get<String>("QWERTY1")
-            if (itemTo != null) {
+            if (itemTo == convertedToCurrency) {
                 CurrencyRatesRepository.getLatestApiResult(itemTo) { rates ->
-                    val filteredRates =
-                        rates?.filter { it.referenceCurrency.name == baseCurrency }
-                    Log.d("Hole3", "$filteredRates")
-
+                    val findItemTo =
+                        rates?.find { it.referenceCurrency.name == baseCurrency }
+                    val baseEditTo = findItemTo?.referenceCurrency?.value
+                    val resultTo = ((binding.etSecondConversion.text.toString()
+                        .toDouble()) * baseEditTo!!).toString()
+                    binding.etFirstConversion.setText(resultTo)
+                    Log.d("baseEdit", "$baseEditTo")
+                }
+            }
+            if (itemTo != null && itemTo != convertedToCurrency) {
+                CurrencyRatesRepository.getLatestApiResult(itemTo) { rates ->
+                    val findItemTo =
+                        rates?.find { it.referenceCurrency.name == baseCurrency }
+                    val valueCurrencyTo = findItemTo?.referenceCurrency?.value
+                    ConverterApplication.PreferencesManager.put(valueCurrencyTo, "ZZZ")
+                    val resultTo = ((binding.etSecondConversion.text.toString()
+                        .toDouble()) * valueCurrencyTo!!).toString()
+                    binding.etFirstConversion.setText(resultTo)
                 }
             }
         }
@@ -108,7 +120,7 @@ class CalculatorFragment : Fragment() {
                 setDefaultValueFrom(item.id)
                 CurrencyRatesRepository.getLatestApiResult(item.id) { rates ->
                     val findItemFrom = rates?.find { it.referenceCurrency.name == item.id }
-                    val itemFrom = findItemFrom?.baseCurrencyName
+                    val itemFrom = findItemFrom?.referenceCurrency?.name
                     ConverterApplication.PreferencesManager.put(
                         itemFrom,
                         "QWERTY"
@@ -125,6 +137,7 @@ class CalculatorFragment : Fragment() {
                 }
             }
         }
+
     }
 
 
@@ -151,28 +164,12 @@ class CalculatorFragment : Fragment() {
     private fun setDefaultValueTo(value: String) {
         binding.currencyTo.setText(value)
     }
-
-    private fun getApiResult() = with(binding) {
-
-        if (etFirstConversion.text.isNotEmpty() && etFirstConversion.text.isNotBlank()) {
-            val getValue = ConverterApplication.PreferencesManager.get<Double?>("XXX")
-            val result = ((binding.etFirstConversion.text.toString()
-                .toDouble()) * getValue!!).toString()
-            binding.etSecondConversion.setText(result)
-            Log.d("ace", "$getValue")
-            if (baseCurrency == convertedToCurrency) {
-                Toast.makeText(
-                    context,
-                    "Please pick a currency to convert",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        ConverterApplication.PreferencesManager.sp.edit().remove("QWERTY").apply()
+    override fun onDestroy() {
+        super.onDestroy()
+        ConverterApplication.PreferencesManager.put(baseCurrency, "QWERTY")
+        ConverterApplication.PreferencesManager.put(convertedToCurrency, "QWERTY1")
+        binding.etFirstConversion.setText(baseEdit)
+        binding.etSecondConversion.setText(baseEdit)
     }
 
     companion object {
