@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.base.RetrofitProvider
-import com.currency.converter.features.favorite.CountryService
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MetaCurrenciesResponse
 import com.currency.converter.features.rate.countryname.CountryModel
@@ -22,7 +21,8 @@ class ConverterApplication : Application() {
         Log.d("APP", "I'ts fine")
         getAllInformationListApplication()
         PreferencesManager.with(this)
-        saveItem(CountryService.countryList().first())
+        //saveItem(CountryService.countryList().first())
+
     }
 
     private fun saveItem(item: CountryModel) {
@@ -67,7 +67,8 @@ class ConverterApplication : Application() {
         const val ALL_CURRENCY_KEY = "all_currencies_key"
         const val FAVORITE_CURRENCIES_KEY = "only_selected_currencies"
         const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "base_currency"
-
+        const val SELECT_CURRENCY_FROM_CONVERT = "from_currency_convert"
+        const val SELECT_CURRENCY_TO_CONVERT = "to_currency_convert"
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
         }
@@ -83,4 +84,5 @@ class ConverterApplication : Application() {
         }
 
     }
+
 }

@@ -1,6 +1,7 @@
 package com.currency.converter.features.rate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,19 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_KEY
+import com.currency.converter.base.CurrencyRatesRepository
 import com.currency.converter.base.EventBus.subject
 import com.currency.converter.base.Observer
-import com.currency.converter.base.RetrofitProvider
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 import com.example.converter.fragment.BottomSheetCountry
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class LatestRatesFragment : Fragment() {
 
@@ -67,47 +65,28 @@ class LatestRatesFragment : Fragment() {
         val selectedCountries = ConverterApplication.PreferencesManager.get<CountryModel>(
             BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
         )
+        Log.d("Black","$selectedCountries")
 
         if (selectedCountries != null) {
-            getLatestValueForSelectCurrency(selectedCountries.baseCurrency,selectedCountries.icon)
+            getLatestValueForSelectCurrency(selectedCountries.baseCurrency, selectedCountries.icon)
         }
     }
 
     private fun getLatestValueForSelectCurrency(base: String, icon: Int) {
         binding.bottomSheetButton.setImageResource(icon)
-        RetrofitProvider.api.getLatestValueCurrency(base = base)
-            .enqueue(object : Callback<RatesMetaResponse> {
-
-                override fun onFailure(call: Call<RatesMetaResponse>, t: Throwable) {
-                }
-
-                override fun onResponse(
-                    call: Call<RatesMetaResponse>,
-                    response: Response<RatesMetaResponse>
-                ) {
-                    val response = response.body()?.ratesResponse
-                    val rateItems = response?.let {
-                        it.rates.map { entry -> // ??
-                            RateItem(
-                                date = response.date,
-                                referenceCurrency = Currency(
-                                    name = entry.key,
-                                    value = entry.value
-                                ),
-                                baseCurrencyName = response.base
-                            )
-                        }
-                    }
-                    val favorites =
-                        ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(SELECT_KEY)
-                            ?.filter { it.isFavorite }.orEmpty()
-                    val favoriteCurrencies = rateItems?.filter { item ->
-                        favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null
-                    }.orEmpty()
-                    val items = favoriteCurrencies.ifEmpty { rateItems }
-                    latestRatesAdapter.submitList(items)
-                }
-            })
+        CurrencyRatesRepository.getLatestApiResult(base = base) { latestRates ->
+            val favorites =
+                ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(ConverterApplication.PreferencesManager.SELECT_KEY)
+                    ?.filter { it.isFavorite }.orEmpty()
+            Log.d("Black1", "$favorites")
+            val favoriteCurrencies = latestRates?.filter { item ->
+                favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null
+            }.orEmpty()
+            Log.d("Black2", "$favoriteCurrencies")
+            val items = favoriteCurrencies.ifEmpty { latestRates }
+            Log.d("Black3", "$items")
+            latestRatesAdapter.submitList(items)
+        }
     }
 
     companion object {
