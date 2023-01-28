@@ -4,7 +4,9 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
+import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.base.RetrofitProvider
+import com.currency.converter.features.favorite.CountryService
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MetaCurrenciesResponse
 import com.currency.converter.features.rate.countryname.CountryModel
@@ -21,16 +23,14 @@ class ConverterApplication : Application() {
         Log.d("APP", "I'ts fine")
         getAllInformationListApplication()
         PreferencesManager.with(this)
-        //saveItem(CountryService.countryList().first())
-
-    }
-
-    private fun saveItem(item: CountryModel) {
-        PreferencesManager.put(
-            item,
-            PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-        )
-
+        val firstLaunchPref =
+            PreferencesManager.get<CountryModel>(BASE_CURRENCIES_FOR_VARIOUS_COUNTRY)
+        if (firstLaunchPref == null) { // с помощью этой проверки префов могу установить значение при первом запуске
+            PreferencesManager.put(
+                CountryService.countryList().first(),
+                BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+            )
+        }
     }
 
     private fun getAllInformationListApplication() {
