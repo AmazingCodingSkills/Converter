@@ -1,12 +1,14 @@
 package com.currency.converter.features.calculator
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.core.widget.addTextChangedListener
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.base.CurrencyRatesRepository
@@ -36,11 +38,11 @@ class CalculatorFragment : Fragment() {
     private lateinit var binding: FragmentConverterBinding
     private var from = "USD"
     private var to = "EUR"
-    private var isUsed: Boolean = true
+    private lateinit var textWatcherOne: TextWatcher
+    private lateinit var textWatcherTwo: TextWatcher
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentConverterBinding.inflate(inflater, container, false)
         return binding.root
@@ -54,47 +56,54 @@ class CalculatorFragment : Fragment() {
         val firstEditText = binding.etFirstConversion
         val secondEditText = binding.etSecondConversion
 
+        textWatcherOne = object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val input = firstEditText.text.toString()
+                    //text.removeAfter2Decimal(firstEditText)
 
-        // val setValueEdit = Double.parseDouble(binding.etFirstConversion.text.toString()) не дает засетать значение по умолчанию
-        // пробвал разные варианты
-        //binding.etFirstConversion.text.toString().toDouble() = baseEditFrom
-        // var x =  binding.etFirstConversion.text.toString().toDouble()
-        // x = baseEditFrom
+                    if (input.isNotEmpty()) {
+                        loadCurrentRate(from, input, to, secondEditText, textWatcherTwo)
+                    } else {
+                        secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
+                            text = ""
+                        }
+                    }
+                }
 
+                override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
 
-        firstEditText.addTextChangedListener {
-            val text = firstEditText.text.toString()
-            text.removeAfter2Decimal(firstEditText)
-            if (secondEditText.isFocused()) {
-                return@addTextChangedListener
+                }
+
+                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+
+                }
             }
-            if (text.isNotEmpty()) {
-                val value = text.toDouble()
-                loadCurrentRate(from, value, to, secondEditText)
-            }
-            if (text.isEmpty()) {
-                secondEditText.text =
-                    null // решаю проблему того, что если у меня пусто в первом editText, то должно быть пусто и во втором
-            }
-        }
 
+        textWatcherTwo = object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val input = secondEditText.text.toString()
+                    //text.removeAfter2Decimal(secondEditText)
 
-        secondEditText.addTextChangedListener {
+                    if (input.isNotEmpty()) {
+                        loadCurrentRate(to, input, from, firstEditText, textWatcherOne)
+                    } else {
+                        firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
+                            text = ""
+                        }
+                    }
+                }
 
-            val text = secondEditText.text.toString()
-            text.removeAfter2Decimal(secondEditText)
-            if (firstEditText.isFocused()) {
-                return@addTextChangedListener
-            }
-            if (text.isNotEmpty()) {
-                val value = text.toDouble()
-                loadCurrentRate(to, value, from, firstEditText)
-            }
-            if (text.isEmpty()) {
-                firstEditText.text = null
-            }
-        }
+                override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
 
+                }
+
+                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+
+                }
+            }
+
+        firstEditText.addTextChangedListener(textWatcherOne)
+        secondEditText.addTextChangedListener(textWatcherTwo)
 
         setFragmentResultListener("CURRENCY_KEY") { requestKey, bundle ->
             Log.d("TAG", "Result = $requestKey, $bundle")
@@ -108,51 +117,62 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-
     //сделал метод универсальным, путем вынесения аргументов, которые изменяются, теперь используя этот метод
     // в других местах могу просто передать нужные мне аргументы
     // еще один аргумент string в начале для понятности
     private fun loadCurrentRate(
         baseCurrencyCode: String,
-        value: Double,
-        currencyCode: String,
-        setResult: EditText
+        input: String,
+        referenceCurrencyCode: String,
+        editText: EditText,
+        watcher: TextWatcher
     ) {
-
+        val value = input.toDouble()
         CurrencyRatesRepository.getLatestApiResult(baseCurrencyCode) { rates ->
-            val findItem = rates?.find { it.referenceCurrency.name == currencyCode }
+            val findItem = rates?.find { it.referenceCurrency.name == referenceCurrencyCode }
             val findValue = findItem?.referenceCurrency?.value ?: 0.0
             val result = (value * findValue).toString()
-            setResult.setText(result)
+            editText.applyWithDisabledTextWatcher(watcher) {
+                text = result
+            }
         }
     }
 
     fun clickSearchButtons() = with(binding) {
-
         currencyFrom.setOnClickListener {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "FROM")
-
         }
 
         currencyTo.setOnClickListener {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "TO")
-
-
         }
     }
 
-    private fun setDefaultValueFrom(value: String) {
-        from = value
-        binding.currencyFrom.text = value
+    private fun setDefaultValueFrom(selectedCurrency: String) {
+        if (!isEmptyInput()) {
+            loadCurrentRate(selectedCurrency, binding.etFirstConversion.text.toString(), to, binding.etSecondConversion, textWatcherTwo)
+        }
+        from = selectedCurrency
+        binding.currencyFrom.text = selectedCurrency
     }
 
     private fun setDefaultValueTo(value: String) {
+        if (!isEmptyInput()) {
+            loadCurrentRate(value, binding.etSecondConversion.text.toString(), to, binding.etFirstConversion, textWatcherOne)
+        }
         to = value
         binding.currencyTo.text = value
     }
 
+    private fun isEmptyInput(): Boolean {
+        val inputFrom = binding.etFirstConversion.text
+        val inputTo = binding.etSecondConversion.text
+        return inputFrom.isEmpty() || inputTo.isEmpty()
+    }
+
+    //Сложно. Надо вместо этого использовать форматтер
     fun String.removeAfter2Decimal(et: EditText) {
         return if (this.isEmpty() || this.isBlank() || this.toLowerCase() == "null") {
         } else {
@@ -174,6 +194,14 @@ class CalculatorFragment : Fragment() {
 
             }
         }
+    }
+
+    fun TextView.applyWithDisabledTextWatcher(
+        textWatcher: TextWatcher, codeBlock: TextView.() -> Unit
+    ) {
+        this.removeTextChangedListener(textWatcher)
+        codeBlock()
+        this.addTextChangedListener(textWatcher)
     }
 
     companion object {
