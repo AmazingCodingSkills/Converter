@@ -39,6 +39,7 @@ class BottomSheetCountry : BottomSheetDialogFragment() {
             recyclerFavorite.layoutManager = LinearLayoutManager(activity)
             countryAdapter = CountryAdapter { item ->
                 saveItem(item.countryModel)
+                Log.d("Black5", "${item.countryModel}")
                 subject.update(item.countryModel)
                 dismiss()
             }
@@ -64,7 +65,7 @@ class BottomSheetCountry : BottomSheetDialogFragment() {
             item,
             BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
         )
-        Log.d("qwerty", "${saveSelectCountry}")
+        Log.d("Black4", "${saveSelectCountry}")
     }
 }
 

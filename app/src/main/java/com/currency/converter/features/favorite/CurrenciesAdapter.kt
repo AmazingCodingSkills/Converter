@@ -28,7 +28,7 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         fun bind(item: CurrencyItem) = with(binding) {
             currency = item
             if (item.isFavorite) {
-                binding.favoriteImageButton.setImageResource(R.drawable.ic_baseline_star_border_gold24)
+                binding.favoriteImageButton.setImageResource(R.drawable.ic_baseline_star_border_blue24)
             } else {
                 binding.favoriteImageButton.setImageResource(R.drawable.ic_baseline_star_border_24)
             }

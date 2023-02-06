@@ -38,7 +38,12 @@
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/main_button.xml" value="0.1215" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.22826086956521738" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_all_currency_bottom_sheet.xml" value="0.23052536231884058" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_blank3.xml" value="0.25416666666666665" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.264" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_bottom_sheet_ all_currency.xml" value="0.23052536231884058" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_bottom_sheet_all_currency.xml" value="0.23052536231884058" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_converter.xml" value="0.264" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_currency.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_favourites.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_historical.xml" value="0.22826086956521738" />
@@ -48,7 +53,9 @@
         <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_tab_layout_favorites.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/fragment_tab_layout_favorites_all.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/layout_selector.xml" value="0.22146739130434784" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/list_empty.xml" value="0.253125" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/list_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/Work/Converter/app/src/main/res/layout/list_item_converter.xml" value="0.264" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/list_item_country_bottom.xml" value="0.23052536231884058" />
         <entry key="..\:/Work/Converter/app/src/main/res/layout/list_item_favorite.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/menu/nav_menu.xml" value="0.264" />

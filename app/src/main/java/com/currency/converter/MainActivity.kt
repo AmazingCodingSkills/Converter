@@ -13,11 +13,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var currentTab: Int = R.id.ic_home
-    private val someClass = LatestRatesFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         getActionBar()?.setTitle("Main")
 
         binding = ActivityMainBinding.inflate(layoutInflater)

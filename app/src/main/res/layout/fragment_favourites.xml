@@ -11,7 +11,7 @@
         android:id="@+id/toolbarFavourites"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,9 +24,10 @@
             <ImageView
                 android:id="@+id/arrowBackMain"
                 android:layout_width="45dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_arrow_back_24" />
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="35dp"
                 android:text="@string/name_favourite_screen"
-                android:textColor="@color/black"
+                style="@style/TextAppearance.MyApp.Headline1"
                 android:textSize="19sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -44,6 +45,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="@id/toolbarFavourites"
         app:layout_constraintStart_toStartOf="@id/toolbarFavourites"
         app:layout_constraintTop_toBottomOf="@+id/toolbarFavourites"
