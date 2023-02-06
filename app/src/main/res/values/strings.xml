@@ -15,10 +15,12 @@
     <string name="all_favorite">Все</string>
     <string name="main_screen_name">Главная</string>
     <string name="converter_screen_name">Конвертер</string>
-    <string name="settings_screen_name">Настройки</string>
+    <string name="share_screen_name">Поделиться</string>
+    <string name="share_screen_item_name">Поделиться приложением</string>
     <string name="converter_head">Конвертер</string>
     <string name="entry_values_currency_from">Введите значение</string>
     <string name="convert_button">Convert</string>
     <string name="hint_converter_entry_value">0</string>
     <string name="list_all_currency">Список всех валют</string>
+    <string name="sharing">Поделиться приложением</string>
 </resources>

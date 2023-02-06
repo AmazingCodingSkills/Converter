@@ -25,6 +25,7 @@ class LatestRatesFragment : Fragment() {
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,6 +73,7 @@ class LatestRatesFragment : Fragment() {
         }
     }
 
+
     private fun getLatestValueForSelectCurrency(base: String, icon: Int) {
         binding.bottomSheetButton.setImageResource(icon)
         CurrencyRatesRepository.getLatestApiResult(base = base) { latestRates ->
@@ -88,7 +90,6 @@ class LatestRatesFragment : Fragment() {
             latestRatesAdapter.submitList(items)
         }
     }
-
     companion object {
         fun newInstance() = LatestRatesFragment()
     }

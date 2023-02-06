@@ -25,7 +25,7 @@ class CountryAdapter(val onClick: (CountryItem) -> Unit) : RecyclerView.Adapter<
         fun bind(item: CountryItem) = with(binding) {
             country = item
             if (item.selected) {
-                binding.selectCountryBottom.setImageResource(R.drawable.ic_baseline_star_border_gold24)
+                binding.selectCountryBottom.setImageResource(R.drawable.ic_baseline_star_border_blue24)
             }
             else {
                 binding.selectCountryBottom.setImageResource(R.drawable.ic_baseline_star_border_24)

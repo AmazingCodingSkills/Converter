@@ -10,7 +10,7 @@
         android:title="@string/converter_screen_name" />
     <item
         android:id="@+id/ic_settings"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="@string/settings_screen_name" />
+        android:icon="@drawable/ic_baseline_share_24"
+        android:title="@string/share_screen_name" />
 
 </menu>

@@ -13,14 +13,16 @@ import java.util.*
 
 class LatestRatesAdapter : ListAdapter<RateItem, LatestRatesAdapter.Holder>(Comparator()) {
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = ListItemBinding.bind(view)
+    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding = ListItemBinding.bind(itemView)
+
         fun bind(item: RateItem) = with(binding) {
             date.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(item.date)
             currencyName.text = item.baseCurrencyName
             nowValueText.text = item.referenceCurrency.name
             rightValue.text = item.referenceCurrency.value.toString()
         }
+
     }
 
     class Comparator : DiffUtil.ItemCallback<RateItem>() {

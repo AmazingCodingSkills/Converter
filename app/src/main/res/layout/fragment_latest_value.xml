@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="?attr/colorOnPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -46,9 +46,9 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="95dp"
                 android:text="@string/textViewToolbar"
-                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/TextAppearance.MyApp.Headline1"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/changeCurrencyButton"
@@ -73,7 +73,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         android:text="@string/money"
-        android:textColor="@color/black"
+        style="@style/TextAppearance.MyApp.Headline1"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
