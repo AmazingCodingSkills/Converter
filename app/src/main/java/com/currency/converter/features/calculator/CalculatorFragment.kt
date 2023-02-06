@@ -14,25 +14,11 @@ import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.base.CurrencyRatesRepository
 import com.currency.converter.features.favorite.CurrencyItem
 import com.example.converter.databinding.FragmentConverterBinding
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 
-// разметка, беру спинер, оттуда выпадает список со странами притом, я хотел туда положить ответ от сервера
-// 3 элемента From, To, btn Convert realtime
-// список со второго экрана
-// хотел идти по пути абстрактного
-// останавливаюсь на спинере
-
-// Насколько хорошее решение ,рать спиннер? -> <оттом шит
-// Ну;ны данные -> Возьмем у;е сущесту.щие из префов^ т7к загру;а.тся на старте
-// UI переиспользовать нет осо,ого смысла Т7к он скорее всего изметися
-// переиспользовать са,;ект и о,новлять на предыдущем 'кране
-// При вводе суммы конвертации дол;ны отправлять запрос на текущий курс и его умно;ать и ото,ра;ать
-// заугрузка текущего курса для вал.ты - ретрофит
-// у;е загру;аем 'ти данные на мейн 'кране^ надо переиспользовать
-// вот тут код работает, проблема в том, что мне нужно получить доступ к элементам, которые выше, а именно value
-//25.01 что получается : работает часть функциональности, все работает через раз, остановился что поместил фунцкцию
-// арифм в get api  затем были проблемы где вызывать, так как приходил нулл
-// на текущий момент работает
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentConverterBinding
@@ -40,6 +26,10 @@ class CalculatorFragment : Fragment() {
     private var to = "EUR"
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher
+    private val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+        decimalSeparator = '.'
+    }
+    private var entryFormat = DecimalFormat("#####.###", symbols)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -51,56 +41,70 @@ class CalculatorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         clickSearchButtons()
+    }
+
+    override fun onStart() {
+        super.onStart()
         binding.currencyFrom.text = from
         binding.currencyTo.text = to
         val firstEditText = binding.etFirstConversion
         val secondEditText = binding.etSecondConversion
 
         textWatcherOne = object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    val input = firstEditText.text.toString()
-                    //text.removeAfter2Decimal(firstEditText)
+            override fun afterTextChanged(s: Editable?) {
+                val input = firstEditText.text.toString()
+                //text.removeAfter2Decimal(firstEditText)
 
-                    if (input.isNotEmpty()) {
-                        loadCurrentRate(from, input, to, secondEditText, textWatcherTwo)
-                    } else {
-                        secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
-                            text = ""
-                        }
+                if (input.isNotEmpty()) {
+                    loadCurrentRate(from, input, to, secondEditText, textWatcherTwo)
+                } else {
+                    secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
+                        text = ""
                     }
                 }
-
-                override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
-
-                }
-
-                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-
-                }
             }
+
+            override fun beforeTextChanged(
+                text: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+        }
 
         textWatcherTwo = object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    val input = secondEditText.text.toString()
-                    //text.removeAfter2Decimal(secondEditText)
+            override fun afterTextChanged(s: Editable?) {
+                val input = secondEditText.text.toString()
+                //text.removeAfter2Decimal(secondEditText)
 
-                    if (input.isNotEmpty()) {
-                        loadCurrentRate(to, input, from, firstEditText, textWatcherOne)
-                    } else {
-                        firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
-                            text = ""
-                        }
+                if (input.isNotEmpty()) {
+                    loadCurrentRate(to, input, from, firstEditText, textWatcherOne)
+                } else {
+                    firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
+                        text = ""
                     }
                 }
-
-                override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
-
-                }
-
-                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-
-                }
             }
+
+            override fun beforeTextChanged(
+                text: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+        }
 
         firstEditText.addTextChangedListener(textWatcherOne)
         secondEditText.addTextChangedListener(textWatcherTwo)
@@ -117,9 +121,6 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-    //сделал метод универсальным, путем вынесения аргументов, которые изменяются, теперь используя этот метод
-    // в других местах могу просто передать нужные мне аргументы
-    // еще один аргумент string в начале для понятности
     private fun loadCurrentRate(
         baseCurrencyCode: String,
         input: String,
@@ -131,7 +132,7 @@ class CalculatorFragment : Fragment() {
         CurrencyRatesRepository.getLatestApiResult(baseCurrencyCode) { rates ->
             val findItem = rates?.find { it.referenceCurrency.name == referenceCurrencyCode }
             val findValue = findItem?.referenceCurrency?.value ?: 0.0
-            val result = (value * findValue).toString()
+            val result = entryFormat.format(value * findValue)
             editText.applyWithDisabledTextWatcher(watcher) {
                 text = result
             }
@@ -152,7 +153,13 @@ class CalculatorFragment : Fragment() {
 
     private fun setDefaultValueFrom(selectedCurrency: String) {
         if (!isEmptyInput()) {
-            loadCurrentRate(selectedCurrency, binding.etFirstConversion.text.toString(), to, binding.etSecondConversion, textWatcherTwo)
+            loadCurrentRate(
+                selectedCurrency,
+                binding.etFirstConversion.text.toString(),
+                to,
+                binding.etSecondConversion,
+                textWatcherTwo
+            )
         }
         from = selectedCurrency
         binding.currencyFrom.text = selectedCurrency
@@ -160,7 +167,13 @@ class CalculatorFragment : Fragment() {
 
     private fun setDefaultValueTo(value: String) {
         if (!isEmptyInput()) {
-            loadCurrentRate(value, binding.etSecondConversion.text.toString(), to, binding.etFirstConversion, textWatcherOne)
+            loadCurrentRate(
+                value,
+                binding.etSecondConversion.text.toString(),
+                to,
+                binding.etFirstConversion,
+                textWatcherOne
+            )
         }
         to = value
         binding.currencyTo.text = value
@@ -170,30 +183,6 @@ class CalculatorFragment : Fragment() {
         val inputFrom = binding.etFirstConversion.text
         val inputTo = binding.etSecondConversion.text
         return inputFrom.isEmpty() || inputTo.isEmpty()
-    }
-
-    //Сложно. Надо вместо этого использовать форматтер
-    fun String.removeAfter2Decimal(et: EditText) {
-        return if (this.isEmpty() || this.isBlank() || this.toLowerCase() == "null") {
-        } else {
-            if (this.contains(".")) {
-                var lastPartOfText = this.split(".")[this.split(".").size - 1]
-
-                if (lastPartOfText.count() > 3) {
-                    try {
-                        lastPartOfText = this.substring(0, this.indexOf(".") + 4)
-                        et.setText(lastPartOfText)
-                        et.setSelection(lastPartOfText.length)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else {
-
-                }
-            } else {
-
-            }
-        }
     }
 
     fun TextView.applyWithDisabledTextWatcher(
