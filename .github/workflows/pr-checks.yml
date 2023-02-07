@@ -31,8 +31,13 @@ jobs:
       - name: Assemble Debug
         run: ./gradlew assembleDebug
 
+      - name: Run unit tests
+        run: ./gradlew test --stacktrace
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: debug apk
-          path: app/build/outputs/apk/debug/*.apk
+          name: Artifacts
+          path: |
+            app/build/reports
+            app/build/outputs/apk/debug/*.apk
