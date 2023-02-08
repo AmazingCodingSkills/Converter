@@ -1,0 +1,20 @@
+name: "Prepare android environment for build"
+description: "Clone project, Download jdk, android sdk, etc"
+runs:
+  using: "composite"
+  steps:
+
+    - name: Setup JDK
+      uses: actions/setup-java@v3
+      with:
+          distribution: 'zulu'
+          java-version: 11
+          cache: 'gradle'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+
+    - name: Set wrapper permission
+      shell: bash
+      run: chmod +x ./gradlew
+
