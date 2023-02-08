@@ -1,5 +1,5 @@
 name: "Prepare android environment for build"
-description: "Clone project, Download jdk, android sdk, etc"
+description: "Clone, Download jdk, android sdk, etc"
 runs:
   using: "composite"
   steps:
