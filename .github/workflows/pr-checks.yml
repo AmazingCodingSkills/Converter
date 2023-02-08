@@ -13,18 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 11
-          cache: 'gradle'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
-      - name: Set wrapper permission
-        run: chmod +x ./gradlew
+      - name: Prepare Environment
+        uses: ./.github/actions/prepare-environment
 
       - name: Assemble Debug
         run: ./gradlew assembleDebug
@@ -41,18 +31,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 11
-          cache: 'gradle'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
-      - name: Set wrapper permission
-        run: chmod +x ./gradlew
+      - name: Prepare Environment
+        uses: ./.github/actions/prepare-environment
 
       - name: Run unit tests
         run: ./gradlew test --stacktrace
