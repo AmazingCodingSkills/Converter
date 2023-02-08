@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Prepare Build:
+  Prepare-Build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,23 +23,23 @@ jobs:
 
   Build:
     runs-on: ubuntu-latest
-    needs: [Prepare Build]
+    needs: [Prepare-Build]
     steps:
       - name: Assemble Debug
         run: ./gradlew assembleDebug
 
-  Unit Tests:
+  Unit-Tests:
     runs-on: ubuntu-latest
-    needs: [Prepare Build]
+    needs: [Prepare-Build]
     steps:
       - name: Run unit tests
         run: ./gradlew test --stacktrace
 
-  Upload Artifacts:
+  Upload-Artifacts:
     runs-on: ubuntu-latest
-    needs: [Build, Unit Tests]
+    needs: [Build, Unit-Tests]
     steps:
-      - name: Upload Artifacts
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts
