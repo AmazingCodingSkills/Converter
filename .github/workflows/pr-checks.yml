@@ -17,7 +17,7 @@ jobs:
         uses: ./.github/actions/prepare-environment
 
       - name: Assemble Debug
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --no-configuration-cache
 
       - name: Upload Apk
         uses: actions/upload-artifact@v3
@@ -35,7 +35,7 @@ jobs:
         uses: ./.github/actions/prepare-environment
 
       - name: Run unit tests
-        run: ./gradlew test --stacktrace
+        run: ./gradlew test --stacktrace --no-configuration-cache
 
       - name: Upload Reports
         uses: actions/upload-artifact@v3
