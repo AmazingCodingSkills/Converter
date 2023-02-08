@@ -1,19 +1,14 @@
 name: PR Checks
 
 on:
-  # Triggers the workflow on every pull request to master branch
   pull_request:
     branches:
       - main
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,19 +20,45 @@ jobs:
           java-version: 11
           cache: 'gradle'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
       - name: Set wrapper permission
         run: chmod +x ./gradlew
 
       - name: Assemble Debug
         run: ./gradlew assembleDebug
 
+      - name: Upload Apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: Apk
+          path: app/build/outputs/apk/debug/*.apk
+
+  Unit-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+          cache: 'gradle'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Set wrapper permission
+        run: chmod +x ./gradlew
+
       - name: Run unit tests
         run: ./gradlew test --stacktrace
 
-      - name: Upload Artifacts
+      - name: Upload Reports
         uses: actions/upload-artifact@v3
         with:
-          name: Artifacts
-          path: |
-            app/build/reports
-            app/build/outputs/apk/debug/*.apk
+          name: Reports
+          path: app/build/reports
