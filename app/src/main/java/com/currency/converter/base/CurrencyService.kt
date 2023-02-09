@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 
 interface CurrencyService {
-    @GET("latest?api_key=10c6aafaa5395ef3ffa5d47d973cfd2")
+    @GET("latest?api_key=10c6aafaa5395ef3ffa5d47d973cfd26")
     fun getLatestValueCurrency(
         @Query("symbols") symbols: List<String>? = null,
         @Query("base") base: String = "USD"
