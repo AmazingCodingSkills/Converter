@@ -43,4 +43,5 @@ class LatestRatesAdapter : ListAdapter<RateItem, LatestRatesAdapter.Holder>(Comp
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
     }
+
 }

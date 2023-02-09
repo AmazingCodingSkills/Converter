@@ -129,7 +129,7 @@ class CalculatorFragment : Fragment() {
         watcher: TextWatcher
     ) {
         val value = input.toDouble()
-        CurrencyRatesRepository.getLatestApiResult(baseCurrencyCode) { rates ->
+        CurrencyRatesRepository.getLatestApiResult(baseCurrencyCode,{}) { rates ->
             val findItem = rates?.find { it.referenceCurrency.name == referenceCurrencyCode }
             val findValue = findItem?.referenceCurrency?.value ?: 0.0
             val result = entryFormat.format(value * findValue)

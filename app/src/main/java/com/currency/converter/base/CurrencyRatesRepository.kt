@@ -1,24 +1,32 @@
 package com.currency.converter.base
 
+import com.currency.converter.ConverterApplication
+import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.rate.Currency
 import com.currency.converter.features.rate.RateItem
 import com.currency.converter.features.rate.RatesMetaResponse
+import com.currency.converter.features.rate.countryname.CountryModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 object CurrencyRatesRepository {
 
-    fun getLatestApiResult(base : String, onSuccess: (List<RateItem>?) -> Unit) {
+    fun getLatestApiResult(base: String, onFailure: (t: Throwable?) -> Unit, onSuccess: (List<RateItem>?) -> Unit) {
         RetrofitProvider.api.getLatestValueCurrency(base = base)
             .enqueue(object : Callback<RatesMetaResponse> {
+
                 override fun onFailure(call: Call<RatesMetaResponse>, t: Throwable) {
+                    onFailure(t)
                 }
 
                 override fun onResponse(
                     call: Call<RatesMetaResponse>,
                     response: Response<RatesMetaResponse>
                 ) {
+                    val isFailure = response.code() in 400..401
+                    if (isFailure) onFailure(null)
+
                     val response = response.body()?.ratesResponse
                     val rateItems = response?.let {
                         it.rates.map { entry -> // ??
@@ -38,4 +46,27 @@ object CurrencyRatesRepository {
                 }
             })
     }
+
+    fun getRates(base: String, onFailure: (t: Throwable?) -> Unit, onSuccess: (List<RateItem>?) -> Unit) {
+        getLatestApiResult(base = base, onFailure = onFailure) { latestRates ->
+            val favorites =
+                ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
+                    ConverterApplication.PreferencesManager.SELECT_KEY
+                )
+                    ?.filter { it.isFavorite }.orEmpty()
+
+            val favoriteCurrencies = latestRates?.filter { item ->
+                favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null
+            }.orEmpty()
+
+            val items = favoriteCurrencies.ifEmpty { latestRates }
+            onSuccess(items)
+
+        }
+    }
+
+
+    val selectedCountries = ConverterApplication.PreferencesManager.get<CountryModel>(
+        ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+    )
 }
