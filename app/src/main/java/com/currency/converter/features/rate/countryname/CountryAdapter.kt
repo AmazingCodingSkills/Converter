@@ -18,10 +18,7 @@ class CountryAdapter(val onClick: (CountryItem) -> Unit) : RecyclerView.Adapter<
 
         private var binding = ListItemCountryBottomBinding.bind(itemView)
         lateinit var country: CountryItem
-// воообще дикая фигня, попробовать написать с помощью цикла либо еще каким_то способом, но в самую тупую так
-// но я так думаю, что в любом случае херня, так как можно сделать два наблюдателя
-//, но все это можно сделать через дата класс я уверен, тогда ц нас остается
-// один наблюдателя и более логично все работает
+
         fun bind(item: CountryItem) = with(binding) {
             country = item
             if (item.selected) {

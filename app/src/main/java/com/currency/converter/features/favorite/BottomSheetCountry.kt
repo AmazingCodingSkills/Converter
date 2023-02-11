@@ -61,11 +61,10 @@ class BottomSheetCountry : BottomSheetDialogFragment() {
     }
 
     private fun saveItem(item: CountryModel) {
-        val saveSelectCountry = ConverterApplication.PreferencesManager.put(
+        ConverterApplication.PreferencesManager.put(
             item,
             BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
         )
-        Log.d("Black4", "${saveSelectCountry}")
     }
 }
 

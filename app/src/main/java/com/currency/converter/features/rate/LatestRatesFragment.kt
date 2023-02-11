@@ -1,30 +1,28 @@
 package com.currency.converter.features.rate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.currency.converter.ConverterApplication
-import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.base.CurrencyRatesRepository
 import com.currency.converter.base.EventBus.subject
 import com.currency.converter.base.Observer
-import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
+import com.currency.converter.features.rate.presenter.RatesPresenter
+import com.currency.converter.features.rate.view.RateView
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 import com.example.converter.fragment.BottomSheetCountry
 
 
-class LatestRatesFragment : Fragment() {
+class LatestRatesFragment : Fragment(), RateView {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-
+    private val presenter = RatesPresenter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +34,7 @@ class LatestRatesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.attachView(this)
         initRcView()
         binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -58,39 +57,45 @@ class LatestRatesFragment : Fragment() {
 
             override fun update(value: CountryModel?) {
                 if (value != null) {
-                    getLatestValueForSelectCurrency(value.baseCurrency, value.icon)
+                    presenter.onSelectedCurrencyShowed(value.baseCurrency, value.icon)
+
                 }
             }
         })
-
-        val selectedCountries = ConverterApplication.PreferencesManager.get<CountryModel>(
-            BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-        )
-        Log.d("Black","$selectedCountries")
-
-        if (selectedCountries != null) {
-            getLatestValueForSelectCurrency(selectedCountries.baseCurrency, selectedCountries.icon)
-        }
+        presenter.onSavedCurrencyGated()
     }
 
-
-    private fun getLatestValueForSelectCurrency(base: String, icon: Int) {
-        binding.bottomSheetButton.setImageResource(icon)
-        CurrencyRatesRepository.getLatestApiResult(base = base) { latestRates ->
-            val favorites =
-                ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(ConverterApplication.PreferencesManager.SELECT_KEY)
-                    ?.filter { it.isFavorite }.orEmpty()
-            Log.d("Black1", "$favorites")
-            val favoriteCurrencies = latestRates?.filter { item ->
-                favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null
-            }.orEmpty()
-            Log.d("Black2", "$favoriteCurrencies")
-            val items = favoriteCurrencies.ifEmpty { latestRates }
-            Log.d("Black3", "$items")
-            latestRatesAdapter.submitList(items)
-        }
-    }
     companion object {
         fun newInstance() = LatestRatesFragment()
+    }
+
+    override fun showRates(list: List<RateItem>?) {
+        latestRatesAdapter.submitList(list)
+    }
+
+    override fun changeRates(base: String, icon: Int) {
+        presenter.onSelectedCurrencyShowed(base, icon)
+    }
+
+    override fun showIcon(icon: Int) {
+        binding.bottomSheetButton.setImageResource(icon)
+    }
+
+    override fun showProgress() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
     }
 }
