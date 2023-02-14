@@ -27,7 +27,7 @@ class CountryAdapter(val onClick: (CountryItem) -> Unit) : RecyclerView.Adapter<
             else {
                 binding.selectCountryBottom.setImageResource(R.drawable.ic_baseline_star_border_24)
             }
-            nameCountryForFavorite.text = item.countryModel.nameCountry
+            nameCountryBottomSheet.text = item.countryModel.nameCountry
             binding.countryFlag.setImageResource(item.countryModel.icon)
         }
 

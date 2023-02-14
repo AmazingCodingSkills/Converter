@@ -29,12 +29,12 @@ class CurrenciesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerFavoriteItem.apply {
+        binding.recyclerListCurrency.apply {
             layoutManager = LinearLayoutManager(activity)
             adapterCurrencies = CurrenciesAdapter(onItemClickListener = { item ->
                 updateFavorite(item)
             })
-            binding.recyclerFavoriteItem.adapter = adapterCurrencies
+            binding.recyclerListCurrency.adapter = adapterCurrencies
             this.itemAnimator =
                 null // это позволяет в Recycler View убрать анимацию клика одного контейнера
         }

@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import com.currency.converter.ConverterApplication
+import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.presenter.CalculatorPresenter
 import com.currency.converter.features.calculator.view.CalculatorView
 import com.currency.converter.features.favorite.CurrencyItem
@@ -22,14 +24,18 @@ import java.util.*
 class CalculatorFragment : Fragment(), CalculatorView {
 
     private lateinit var binding: FragmentConverterBinding
-    private val presenter = CalculatorPresenter()
+    private val presenter = CalculatorPresenter(
+        networkRepository = NetworkRepository(
+            ConverterApplication.application
+        )
+    )
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher
 
-    val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+    private val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         decimalSeparator = '.'
     }
-    val entryFormat = DecimalFormat("#####.###", symbols)
+    private val entryFormat = DecimalFormat("#####.###", symbols)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -41,6 +47,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
+        // checkConnectivity()
         clickSearchButtons()
     }
 
@@ -48,8 +55,8 @@ class CalculatorFragment : Fragment(), CalculatorView {
         super.onStart()
         presenter.onStarted()
 
-        val firstEditText = binding.etFirstConversion
-        val secondEditText = binding.etSecondConversion
+        val firstEditText = binding.firstEditText
+        val secondEditText = binding.secondEditText
 
         textWatcherOne = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -81,7 +88,6 @@ class CalculatorFragment : Fragment(), CalculatorView {
                 count: Int,
                 after: Int
             ) {
-
             }
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
@@ -98,46 +104,31 @@ class CalculatorFragment : Fragment(), CalculatorView {
             val item = bundle.getParcelable<CurrencyItem>("SELECTED_CURRENCY")
                 ?: throw IllegalStateException("Selected currency is empty")
             when (tag) {
-                "FROM" -> setDefaultValueFrom(item.id)
-                "TO" -> setDefaultValueTo(item.id)
+                "FROM" -> presenter.setFrom(item.id, binding.firstEditText.text.toString())
+                "TO" -> presenter.setTo(item.id, binding.secondEditText.text.toString())
             }
         }
     }
 
 
     fun clickSearchButtons() = with(binding) {
-        currencyFrom.setOnClickListener {
+        firstCurrency.setOnClickListener {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "FROM")
         }
 
-        currencyTo.setOnClickListener {
+        secondCurrency.setOnClickListener {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "TO")
         }
     }
 
     override fun setDefaultValueFrom(selectedCurrency: String) {
-        if (!isEmptyInput()) {
-            presenter.setFrom(
-                input = binding.etFirstConversion.text.toString(),
-                selectedCurrency = selectedCurrency
-            )
-            binding.currencyFrom.text = selectedCurrency
-        }
+        binding.firstCurrency.text = selectedCurrency
     }
 
     override fun setDefaultValueTo(value: String) {
-        if (!isEmptyInput()) {
-            presenter.setTo(input = binding.etFirstConversion.text.toString(), value = value)
-            binding.currencyTo.text = value
-        }
-    }
-
-    private fun isEmptyInput(): Boolean {
-        val inputFrom = binding.etFirstConversion.text
-        val inputTo = binding.etSecondConversion.text
-        return inputFrom.isEmpty() || inputTo.isEmpty() // возможно вот эту часть так же нужно перенести в презентер
+        binding.secondCurrency.text = value
     }
 
     private fun TextView.applyWithDisabledTextWatcher(
@@ -152,36 +143,59 @@ class CalculatorFragment : Fragment(), CalculatorView {
         fun newInstance() = CalculatorFragment()
     }
 
-    override fun getResultOne(resultOne: Double) {
-        binding.etSecondConversion.applyWithDisabledTextWatcher(textWatcherTwo) {
+    override fun setResultOneConversion(resultOne: Double) {
+        binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
             text = entryFormat.format(resultOne)
         }
     }
 
-    override fun getResultTwo(resultTwo: Double) {
-        binding.etFirstConversion.applyWithDisabledTextWatcher(textWatcherOne) {
+    override fun setResultTwoConversion(resultTwo: Double) {
+        binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
             text = entryFormat.format(resultTwo)
         }
     }
 
 
     override fun setCurrencies(to: String, from: String) {
-        binding.currencyFrom.text = from
-        binding.currencyTo.text = to
+        binding.firstCurrency.text = from
+        binding.secondCurrency.text = to
     }
 
     override fun clearFrom() {
-        binding.etSecondConversion.applyWithDisabledTextWatcher(textWatcherTwo) {
+        binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
             text = ""
         }
     }
 
     override fun clearTo() {
-        binding.etFirstConversion.applyWithDisabledTextWatcher(textWatcherOne) {
+        binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
             text = ""
         }
     }
 
+
+    /*private fun checkConnectivity() {
+        requireActivity().applicationContext.getSystemService()
+
+
+        if (null == activeNetwork) {
+            val dialogBuilder = AlertDialog.Builder(requireActivity())
+            dialogBuilder.setMessage("Включите WI-FI или мобильный интернет и попробуйте снова")
+                .setCancelable(false)
+                .setPositiveButton("Повторить попытку", DialogInterface.OnClickListener { dialog, id ->
+                    recreate(requireActivity())
+                })
+                .setNegativeButton("Отмена", DialogInterface.OnClickListener { dialog, id ->
+                 requireActivity().finish()
+
+                })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("Нет интернет соеденения")
+            alert.setIcon(R.drawable.no_internet)
+            alert.show()
+        }
+    }*/
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()

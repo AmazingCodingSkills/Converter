@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeCurrentFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.bottom_navigation_replacement, fragment)
+        transaction.replace(R.id.bottom_navigation_container, fragment)
         transaction.commit()
     }
 }

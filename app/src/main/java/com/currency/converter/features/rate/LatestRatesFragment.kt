@@ -35,24 +35,29 @@ class LatestRatesFragment : Fragment(), RateView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
+        binding.swipeToRefreshMainScreen.setOnRefreshListener {
+            presenter.onSavedCurrencyGated()
+            binding.progressBarMainScreen.visibility = View.GONE
+            binding.swipeToRefreshMainScreen.isRefreshing = false
+        }
         initRcView()
         binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.bottom_navigation_replacement, MainFavoriteFragment())
+                replace(R.id.bottom_navigation_container, MainFavoriteFragment())
                 addToBackStack(null)
                 commit()
             }
         }
-        binding.bottomSheetButton.setOnClickListener {
+        binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
             val bottomSheet = BottomSheetCountry()
             bottomSheet.show(childFragmentManager, "TAG")
         }
     }
 
     private fun initRcView() = with(binding) {
-        recyclerLatest.layoutManager = LinearLayoutManager(activity)
+        recyclerMainScreen.layoutManager = LinearLayoutManager(activity)
         latestRatesAdapter = LatestRatesAdapter()
-        recyclerLatest.adapter = latestRatesAdapter
+        recyclerMainScreen.adapter = latestRatesAdapter
         subject.addObserver(object : Observer<CountryModel?> {
 
             override fun update(value: CountryModel?) {
@@ -78,15 +83,15 @@ class LatestRatesFragment : Fragment(), RateView {
     }
 
     override fun showIcon(icon: Int) {
-        binding.bottomSheetButton.setImageResource(icon)
+        binding.buttonOpenBottomSheetMainScreen.setImageResource(icon)
     }
 
     override fun showProgress() {
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBarMainScreen.visibility = View.VISIBLE
     }
 
     override fun hideProgress() {
-        binding.progressBar.visibility = View.GONE
+        binding.progressBarMainScreen.visibility = View.GONE
     }
 
     override fun showToast(message: String) {

@@ -36,14 +36,14 @@ class BottomSheetCountry : BottomSheetDialogFragment() {
 
     private fun initCountry() {
         binding.apply {
-            recyclerFavorite.layoutManager = LinearLayoutManager(activity)
+            recyclerBottomSheetFromFirstScreen.layoutManager = LinearLayoutManager(activity)
             countryAdapter = CountryAdapter { item ->
                 saveItem(item.countryModel)
                 Log.d("Black5", "${item.countryModel}")
                 subject.update(item.countryModel)
                 dismiss()
             }
-            recyclerFavorite.adapter = countryAdapter
+            recyclerBottomSheetFromFirstScreen.adapter = countryAdapter
             val selectCountryBottomSheet =
                 ConverterApplication.PreferencesManager.get<CountryModel>(
                     BASE_CURRENCIES_FOR_VARIOUS_COUNTRY

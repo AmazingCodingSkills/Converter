@@ -1,102 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/latestScreen"
+    android:id="@+id/swipeToRefreshMainScreen"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.currency.converter.features.rate.LatestRatesFragment">
+    android:layout_height="match_parent">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/screenShare"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorOnPrimary"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context="com.currency.converter.features.rate.LatestRatesFragment">
 
-        <LinearLayout
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarMainScreen"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorOnPrimary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewForButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:elevation="12dp"
+                    app:cardCornerRadius="40dp">
+
+                    <ImageView
+                        android:id="@+id/buttonOpenBottomSheetMainScreen"
+                        android:layout_width="50dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/headingMainScreen"
+                    style="@style/TextAppearance.MyApp.Headline1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="95dp"
+                    android:text="@string/heading_main_screen"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/changeCurrencyButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="60dp"
+                    android:text="@string/button_change_currency"
+                    android:textColor="@color/color_button_and_heading"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/exchangeRatesMainScreen"
+            style="@style/TextAppearance.MyApp.Headline1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/exchange_rates_main_screen"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarMainScreen"
+            tools:ignore="MissingPrefix" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMainScreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exchangeRatesMainScreen"
+            tools:itemCount="3"
+            tools:listitem="@layout/list_item" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:elevation="12dp"
-                android:id="@+id/view2"
-                android:layout_gravity="center"
-                app:cardCornerRadius="40dp">
+        <ProgressBar
+            android:id="@+id/progressBarMainScreen"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:theme="@style/ProgressBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarMainScreen" />
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="45dp"
-                    android:id="@+id/bottom_sheet_button"
-                    android:layout_gravity="center"
-                    android:scaleType="fitXY"/>
-            </androidx.cardview.widget.CardView>
-            <!--Если бы у TextView не было бы id то данные бы подтягивались из ресурсов, а если есть то bundle бы взял по id -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textTitleFirstScreen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="95dp"
-                android:text="@string/textViewToolbar"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                style="@style/TextAppearance.MyApp.Headline1"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/changeCurrencyButton"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="60dp"
-                android:text="@string/buttonToolbar"
-                android:textColor="@color/first_screen_button"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <TextView
-        android:id="@+id/currencyTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/money"
-        style="@style/TextAppearance.MyApp.Headline1"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerLatest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/currencyTextView"
-        tools:itemCount="3"
-        tools:listitem="@layout/list_item" />
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/progressBar"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

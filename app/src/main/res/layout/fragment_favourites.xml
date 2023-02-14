@@ -8,7 +8,7 @@
     tools:context="com.currency.converter.features.favorite.MainFavoriteFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarFavourites"
+        android:id="@+id/buttonGoMainPage"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorOnPrimary"
@@ -22,7 +22,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/arrowBackMain"
+                android:id="@+id/buttonBackMain"
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -34,43 +34,43 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="35dp"
-                android:text="@string/name_favourite_screen"
+                android:text="@string/heading_favourite_screen"
                 style="@style/TextAppearance.MyApp.Headline1"
-                android:textSize="19sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
+        android:id="@+id/tabForFavourites"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:background="?attr/colorOnPrimary"
-        app:layout_constraintEnd_toEndOf="@id/toolbarFavourites"
-        app:layout_constraintStart_toStartOf="@id/toolbarFavourites"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarFavourites"
+        app:layout_constraintEnd_toEndOf="@id/buttonGoMainPage"
+        app:layout_constraintStart_toStartOf="@id/buttonGoMainPage"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGoMainPage"
         app:tabTextAppearance="@style/MyCustomTextAppearance">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name_favourite_screen" />
+            android:text="@string/heading_for_first_tab_favourites" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tabItem_two" />
+            android:text="@string/heading_for_second_tab_favourites" />
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+        android:id="@+id/viewPagerFavouritesScreen"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tablayout"
-        app:layout_constraintStart_toStartOf="@id/tablayout"
-        app:layout_constraintTop_toBottomOf="@id/tablayout" />
+        app:layout_constraintEnd_toEndOf="@id/tabForFavourites"
+        app:layout_constraintStart_toStartOf="@id/tabForFavourites"
+        app:layout_constraintTop_toBottomOf="@id/tabForFavourites" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

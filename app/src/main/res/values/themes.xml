@@ -29,4 +29,7 @@
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
     </style>
+    <style name="ProgressBar" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@android:color/black</item>
+    </style>
 </resources>
