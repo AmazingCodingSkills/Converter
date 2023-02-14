@@ -14,7 +14,7 @@ class CalculatorPresenter {
     }
 
 
-    private fun onCurrencyConverted(
+    fun onCurrencyConverted(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String
@@ -25,25 +25,13 @@ class CalculatorPresenter {
             referenceCurrencyCode = referenceCurrencyCode
         ) {
             val result = value * it
-            view?.getResultOne(result)
+            if (from == baseCurrencyCode) {
+                view?.getResultOne(result)
+            } else {
+                view?.getResultTwo(result)
+            }
         }
     }
-
-    private fun onCurrencyConvertedTwo(
-        baseCurrencyCode: String,
-        input: String,
-        referenceCurrencyCode: String
-    ) {
-        val value = input.toDouble()
-        CurrencyRatesRepository.getCurrentRates(
-            baseCurrencyCode = baseCurrencyCode,
-            referenceCurrencyCode = referenceCurrencyCode
-        ) {
-            val result = value * it
-            view?.getResultTwo(result)
-        }
-    }
-
 
     fun setFrom(selectedCurrency: String, input: String) {
         onCurrencyConverted(
@@ -55,7 +43,7 @@ class CalculatorPresenter {
     }
 
     fun setTo(value: String, input: String) {
-        onCurrencyConvertedTwo(
+        onCurrencyConverted(
             value,
             input,
             to
@@ -73,11 +61,12 @@ class CalculatorPresenter {
 
     fun onTextInputChangedTwo(input: String) {
         if (input.isNotEmpty()) {
-            onCurrencyConvertedTwo(to, input, from)
+            onCurrencyConverted(to, input, from)
         } else {
             view?.clearTo()
         }
     }
+
 
     fun onStarted() {
         view?.setCurrencies(to, from)

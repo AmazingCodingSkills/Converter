@@ -140,7 +140,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
         return inputFrom.isEmpty() || inputTo.isEmpty() // возможно вот эту часть так же нужно перенести в презентер
     }
 
-    fun TextView.applyWithDisabledTextWatcher(
+    private fun TextView.applyWithDisabledTextWatcher(
         textWatcher: TextWatcher, codeBlock: TextView.() -> Unit
     ) {
         this.removeTextChangedListener(textWatcher)
