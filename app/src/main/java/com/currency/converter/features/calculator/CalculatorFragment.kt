@@ -7,11 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import com.currency.converter.base.CurrencyRatesRepository
+import com.currency.converter.features.calculator.presenter.CalculatorPresenter
+import com.currency.converter.features.calculator.view.CalculatorView
 import com.currency.converter.features.favorite.CurrencyItem
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
@@ -19,17 +19,17 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 
-class CalculatorFragment : Fragment() {
+class CalculatorFragment : Fragment(), CalculatorView {
 
     private lateinit var binding: FragmentConverterBinding
-    private var from = "USD"
-    private var to = "EUR"
+    private val presenter = CalculatorPresenter()
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher
-    private val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+
+    val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         decimalSeparator = '.'
     }
-    private var entryFormat = DecimalFormat("#####.###", symbols)
+    val entryFormat = DecimalFormat("#####.###", symbols)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -40,28 +40,21 @@ class CalculatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.attachView(this)
         clickSearchButtons()
     }
 
     override fun onStart() {
         super.onStart()
-        binding.currencyFrom.text = from
-        binding.currencyTo.text = to
+        presenter.onStarted()
+
         val firstEditText = binding.etFirstConversion
         val secondEditText = binding.etSecondConversion
 
         textWatcherOne = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val input = firstEditText.text.toString()
-                //text.removeAfter2Decimal(firstEditText)
-
-                if (input.isNotEmpty()) {
-                    loadCurrentRate(from, input, to, secondEditText, textWatcherTwo)
-                } else {
-                    secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
-                        text = ""
-                    }
-                }
+                presenter.onTextInputChangedOne(input)
             }
 
             override fun beforeTextChanged(
@@ -70,26 +63,16 @@ class CalculatorFragment : Fragment() {
                 count: Int,
                 after: Int
             ) {
-
             }
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
         }
 
         textWatcherTwo = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val input = secondEditText.text.toString()
-                //text.removeAfter2Decimal(secondEditText)
-
-                if (input.isNotEmpty()) {
-                    loadCurrentRate(to, input, from, firstEditText, textWatcherOne)
-                } else {
-                    firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
-                        text = ""
-                    }
-                }
+                presenter.onTextInputChangedTwo(input)
             }
 
             override fun beforeTextChanged(
@@ -121,23 +104,6 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-    private fun loadCurrentRate(
-        baseCurrencyCode: String,
-        input: String,
-        referenceCurrencyCode: String,
-        editText: EditText,
-        watcher: TextWatcher
-    ) {
-        val value = input.toDouble()
-        CurrencyRatesRepository.getLatestApiResult(baseCurrencyCode,{}) { rates ->
-            val findItem = rates?.find { it.referenceCurrency.name == referenceCurrencyCode }
-            val findValue = findItem?.referenceCurrency?.value ?: 0.0
-            val result = entryFormat.format(value * findValue)
-            editText.applyWithDisabledTextWatcher(watcher) {
-                text = result
-            }
-        }
-    }
 
     fun clickSearchButtons() = with(binding) {
         currencyFrom.setOnClickListener {
@@ -151,38 +117,27 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-    private fun setDefaultValueFrom(selectedCurrency: String) {
+    override fun setDefaultValueFrom(selectedCurrency: String) {
         if (!isEmptyInput()) {
-            loadCurrentRate(
-                selectedCurrency,
-                binding.etFirstConversion.text.toString(),
-                to,
-                binding.etSecondConversion,
-                textWatcherTwo
+            presenter.setFrom(
+                input = binding.etFirstConversion.text.toString(),
+                selectedCurrency = selectedCurrency
             )
+            binding.currencyFrom.text = selectedCurrency
         }
-        from = selectedCurrency
-        binding.currencyFrom.text = selectedCurrency
     }
 
-    private fun setDefaultValueTo(value: String) {
+    override fun setDefaultValueTo(value: String) {
         if (!isEmptyInput()) {
-            loadCurrentRate(
-                value,
-                binding.etSecondConversion.text.toString(),
-                to,
-                binding.etFirstConversion,
-                textWatcherOne
-            )
+            presenter.setTo(input = binding.etFirstConversion.text.toString(), value = value)
+            binding.currencyTo.text = value
         }
-        to = value
-        binding.currencyTo.text = value
     }
 
     private fun isEmptyInput(): Boolean {
         val inputFrom = binding.etFirstConversion.text
         val inputTo = binding.etSecondConversion.text
-        return inputFrom.isEmpty() || inputTo.isEmpty()
+        return inputFrom.isEmpty() || inputTo.isEmpty() // возможно вот эту часть так же нужно перенести в презентер
     }
 
     fun TextView.applyWithDisabledTextWatcher(
@@ -195,6 +150,41 @@ class CalculatorFragment : Fragment() {
 
     companion object {
         fun newInstance() = CalculatorFragment()
+    }
+
+    override fun getResultOne(resultOne: Double) {
+        binding.etSecondConversion.applyWithDisabledTextWatcher(textWatcherTwo) {
+            text = entryFormat.format(resultOne)
+        }
+    }
+
+    override fun getResultTwo(resultTwo: Double) {
+        binding.etFirstConversion.applyWithDisabledTextWatcher(textWatcherOne) {
+            text = entryFormat.format(resultTwo)
+        }
+    }
+
+
+    override fun setCurrencies(to: String, from: String) {
+        binding.currencyFrom.text = from
+        binding.currencyTo.text = to
+    }
+
+    override fun clearFrom() {
+        binding.etSecondConversion.applyWithDisabledTextWatcher(textWatcherTwo) {
+            text = ""
+        }
+    }
+
+    override fun clearTo() {
+        binding.etFirstConversion.applyWithDisabledTextWatcher(textWatcherOne) {
+            text = ""
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
     }
 }
 

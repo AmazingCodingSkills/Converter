@@ -12,7 +12,11 @@ import retrofit2.Response
 
 object CurrencyRatesRepository {
 
-    fun getLatestApiResult(base: String, onFailure: (t: Throwable?) -> Unit, onSuccess: (List<RateItem>?) -> Unit) {
+    fun getLatestApiResult(
+        base: String,
+        onFailure: (t: Throwable?) -> Unit,
+        onSuccess: (List<RateItem>?) -> Unit
+    ) {
         RetrofitProvider.api.getLatestValueCurrency(base = base)
             .enqueue(object : Callback<RatesMetaResponse> {
 
@@ -47,7 +51,11 @@ object CurrencyRatesRepository {
             })
     }
 
-    fun getRates(base: String, onFailure: (t: Throwable?) -> Unit, onSuccess: (List<RateItem>?) -> Unit) {
+    fun getRates(
+        base: String,
+        onFailure: (t: Throwable?) -> Unit,
+        onSuccess: (List<RateItem>?) -> Unit
+    ) {
         getLatestApiResult(base = base, onFailure = onFailure) { latestRates ->
             val favorites =
                 ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
@@ -65,6 +73,18 @@ object CurrencyRatesRepository {
         }
     }
 
+
+    fun getCurrentRates(
+        baseCurrencyCode: String,
+        referenceCurrencyCode: String,
+        onResult: (Double) -> Unit
+    ) {
+        getLatestApiResult(base = baseCurrencyCode,{}) { rates ->
+            val findItem = rates?.find { it.referenceCurrency.name == referenceCurrencyCode }
+            val findValue = findItem?.referenceCurrency?.value ?: 0.0
+            onResult(findValue)
+        }
+    }
 
     val selectedCountries = ConverterApplication.PreferencesManager.get<CountryModel>(
         ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
