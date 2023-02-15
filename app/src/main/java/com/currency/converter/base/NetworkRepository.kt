@@ -9,7 +9,6 @@ class NetworkRepository (private val application: Application) {
     fun isCheckStatusInternet() : Boolean {
         val manager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = manager.activeNetworkInfo
-        return activeNetwork != null
+        return activeNetwork == null
     }
-
 }

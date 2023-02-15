@@ -1,41 +1,44 @@
 package com.currency.converter.base
 
-/*
+import android.content.Intent
+import android.os.Bundle
+import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import com.example.converter.R
+import com.example.converter.databinding.DialogCustomBinding
+
+
 class CustomDialog: DialogFragment() {
-    var listener: Listener? = null
-    var messageText = ""
+
     private lateinit var binding: DialogCustomBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        getDialog()!!.getWindow()?.setBackgroundDrawableResource(R.drawable.dialog_corner)
         binding = DialogCustomBinding.inflate(inflater, container, false)
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return binding.root
     }
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = context?.let { AlertDialog.Builder(it) }
-        val rootView = activity?.layoutInflater?.inflate(R.layout.dialog_custom, null)
-        isCancelable = false
-        val messageTextView: TextView? = rootView?.findViewById(R.id.messageTextView)
-        val okButton: Button? = rootView?.findViewById(R.id.okButton)
 
-        if (messageText.isNotBlank()) {
-            messageTextView?.text = messageText
-        }
+    override fun onStart() {
+        super.onStart()
+        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.40).toInt()
+        dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        okButton?.setOnClickListener {
-            listener?.customOkClicked()
+        binding.repeatCheckInternetBtn.setOnClickListener {
             dismiss()
         }
-
-        builder.setView(rootView)
-        return builder.create()
-    }
-
-
-
-    interface Listener {
-        fun customOkClicked()
+        binding.goSettingsInternetBtn.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_SETTINGS))
+            dismiss()
+        }
+        binding.btnNo.setOnClickListener {
+            dismiss()
+        }
     }
 }
-}*/
+
+
+

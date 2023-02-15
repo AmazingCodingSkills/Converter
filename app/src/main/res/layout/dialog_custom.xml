@@ -7,12 +7,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
         android:layout_height="140dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/white">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="15dp"
+            android:id="@+id/imageNoInternetConnection"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/no_internet" />
 
         <TextView
@@ -21,17 +29,18 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+           android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
             android:text="@string/heading_dialog_custom"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/imageNoInternetConnection"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textDialogCustom"
+            android:id="@+id/messageDialog"
             style="@style/TextAppearance.MyApp.Headline1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,30 +57,43 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnYes"
+            android:id="@+id/repeatCheckInternetBtn"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/dialog_button_yes"
+            android:text="@string/dialog_button_repeat_check_internet"
             android:textColor="@color/color_button_and_heading"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/goSettingsInternetBtn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/go_settings_on_internet"
+            android:textColor="@color/color_button_and_heading"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNo"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/dialog_button_no"
             android:textColor="@color/color_button_and_heading"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnYes" />
+            app:layout_constraintEnd_toStartOf="@id/repeatCheckInternetBtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

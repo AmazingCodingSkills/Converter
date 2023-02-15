@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.currency.converter.ConverterApplication
+import com.currency.converter.base.CustomDialog
 import com.currency.converter.base.EventBus.subject
+import com.currency.converter.base.NetworkRepository
 import com.currency.converter.base.Observer
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
@@ -22,7 +25,7 @@ class LatestRatesFragment : Fragment(), RateView {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-    private val presenter = RatesPresenter()
+    private val presenter = RatesPresenter(networkRepository = NetworkRepository(ConverterApplication.application))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +39,7 @@ class LatestRatesFragment : Fragment(), RateView {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
-            presenter.onSavedCurrencyGated()
-            binding.progressBarMainScreen.visibility = View.GONE
-            binding.swipeToRefreshMainScreen.isRefreshing = false
+            presenter.onRefreshed()
         }
         initRcView()
         binding.changeCurrencyButton.setOnClickListener {
@@ -51,6 +52,7 @@ class LatestRatesFragment : Fragment(), RateView {
         binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
             val bottomSheet = BottomSheetCountry()
             bottomSheet.show(childFragmentManager, "TAG")
+
         }
     }
 
@@ -84,6 +86,16 @@ class LatestRatesFragment : Fragment(), RateView {
 
     override fun showIcon(icon: Int) {
         binding.buttonOpenBottomSheetMainScreen.setImageResource(icon)
+    }
+
+    override fun showRefreshing(refreshing: Boolean) {
+       binding.swipeToRefreshMainScreen.isRefreshing = refreshing
+
+    }
+
+    override fun showDialogWarning() {
+        val customDialog =CustomDialog()
+        customDialog.show(childFragmentManager,"Dialog")
     }
 
     override fun showProgress() {

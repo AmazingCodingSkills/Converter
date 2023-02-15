@@ -90,3 +90,5 @@ object CurrencyRatesRepository {
         ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
     )
 }
+
+const val MESSAGE_EXCEPTION_FOR_CALCULATOR = "Введите число, которое не начиначется с  '.'"

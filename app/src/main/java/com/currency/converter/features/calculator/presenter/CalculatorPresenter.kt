@@ -1,10 +1,11 @@
 package com.currency.converter.features.calculator.presenter
 
 import com.currency.converter.base.CurrencyRatesRepository
+import com.currency.converter.base.MESSAGE_EXCEPTION_FOR_CALCULATOR
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.view.CalculatorView
 
-class CalculatorPresenter (private val networkRepository: NetworkRepository) {
+class CalculatorPresenter(private val networkRepository: NetworkRepository) {
 
     private var view: CalculatorView? = null
     private var from = "USD"
@@ -15,18 +16,73 @@ class CalculatorPresenter (private val networkRepository: NetworkRepository) {
     }
 
 
+    fun setFrom(selectedCurrencyFromOne: String, input: String) {
+        if (input.isNotEmpty()) {
+            onCurrencyConverted(
+                selectedCurrencyFromOne,
+                input,
+                to
+            )
+            from = selectedCurrencyFromOne
+            view?.setDefaultValueFrom(from)
+        }
+    }
+
+    fun setTo(selectedCurrencyFromTwo: String, input: String) {
+        if (input.isNotEmpty()) {
+            onCurrencyConverted(
+                selectedCurrencyFromTwo,
+                input,
+                from
+            )
+            to = selectedCurrencyFromTwo
+            view?.setDefaultValueTo(to)
+        }
+    }
+
+    fun onTextInputChangedOne(input: String) {
+        try {
+            if (input.isNotEmpty()) {
+                onCurrencyConverted(from, input, to)
+            }
+            if (input == "0." || input == "0") {
+                view?.clearTo()
+            } else {
+                view?.clearFrom()
+            }
+        } catch (message: Throwable) {
+            view?.showToast(MESSAGE_EXCEPTION_FOR_CALCULATOR)
+        }
+    }
+
+    fun onTextInputChangedTwo(input: String) {
+        try {
+            if (input.isNotEmpty()) {
+                onCurrencyConverted(to, input, from)
+            }
+            if (input == "0.") {
+                view?.clearFrom()
+            } else {
+                view?.clearTo()
+            }
+        } catch (message: Throwable) {
+            view?.showToast(MESSAGE_EXCEPTION_FOR_CALCULATOR)
+        }
+    }
+
     fun onCurrencyConverted(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String
     ) {
         val value = input.toDouble()
+        onDialogWarning()
         CurrencyRatesRepository.getCurrentRates(
             baseCurrencyCode = baseCurrencyCode,
             referenceCurrencyCode = referenceCurrencyCode
         ) {
             val result = value * it
-            if (from == baseCurrencyCode) {
+            if (from == baseCurrencyCode && to == referenceCurrencyCode) {
                 view?.setResultOneConversion(result)
             } else {
                 view?.setResultTwoConversion(result)
@@ -34,49 +90,14 @@ class CalculatorPresenter (private val networkRepository: NetworkRepository) {
         }
     }
 
-    fun setFrom(selectedCurrency: String, input: String) {
-        if(input.isNotEmpty()){
-            onCurrencyConverted(
-                selectedCurrency,
-                input,
-                to
-            )
-            from = selectedCurrency
-            view?.setDefaultValueFrom(selectedCurrency)
-        }
-    }
-
-    fun setTo(value: String, input: String) {
-        if(input.isNotEmpty()){
-            onCurrencyConverted(
-                value,
-                input,
-                to
-            )
-            to = value
-            view?.setDefaultValueTo(value)
-        }
-    }
-
-    fun onTextInputChangedOne(input: String) {
-        if (input.isNotEmpty()) {
-            onCurrencyConverted(from, input, to)
-        } else {
-            view?.clearFrom()
-        }
-    }
-
-    fun onTextInputChangedTwo(input: String) {
-        if (input.isNotEmpty()) {
-            onCurrencyConverted(to, input, from)
-        } else {
-            view?.clearTo()
-        }
-    }
-
-
     fun onStarted() {
         view?.setCurrencies(to, from)
+    }
+
+    fun onDialogWarning() {
+        if (networkRepository.isCheckStatusInternet()) {
+            view?.showDialog()
+        }
     }
 
     fun detachView() {

@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.ConverterApplication
+import com.currency.converter.base.CustomDialog
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.presenter.CalculatorPresenter
 import com.currency.converter.features.calculator.view.CalculatorView
@@ -37,6 +39,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
     }
     private val entryFormat = DecimalFormat("#####.###", symbols)
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -47,7 +50,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
-        // checkConnectivity()
+        presenter.onDialogWarning()
         clickSearchButtons()
     }
 
@@ -155,6 +158,15 @@ class CalculatorFragment : Fragment(), CalculatorView {
         }
     }
 
+    override fun showDialog() {
+        val customDialog = CustomDialog()
+        customDialog.show(childFragmentManager, "Dialog")
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+    }
+
 
     override fun setCurrencies(to: String, from: String) {
         binding.firstCurrency.text = from
@@ -173,29 +185,6 @@ class CalculatorFragment : Fragment(), CalculatorView {
         }
     }
 
-
-    /*private fun checkConnectivity() {
-        requireActivity().applicationContext.getSystemService()
-
-
-        if (null == activeNetwork) {
-            val dialogBuilder = AlertDialog.Builder(requireActivity())
-            dialogBuilder.setMessage("Включите WI-FI или мобильный интернет и попробуйте снова")
-                .setCancelable(false)
-                .setPositiveButton("Повторить попытку", DialogInterface.OnClickListener { dialog, id ->
-                    recreate(requireActivity())
-                })
-                .setNegativeButton("Отмена", DialogInterface.OnClickListener { dialog, id ->
-                 requireActivity().finish()
-
-                })
-
-            val alert = dialogBuilder.create()
-            alert.setTitle("Нет интернет соеденения")
-            alert.setIcon(R.drawable.no_internet)
-            alert.show()
-        }
-    }*/
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
