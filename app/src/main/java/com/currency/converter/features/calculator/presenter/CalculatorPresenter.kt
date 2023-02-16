@@ -78,7 +78,7 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
         referenceCurrencyCode: String
     ) {
         val value = input.toDouble()
-        onDialogWarning()
+        if (!networkRepository.isInternetUnavailable()) {
         CurrencyRatesRepository.getCurrentRates(
             baseCurrencyCode = baseCurrencyCode,
             referenceCurrencyCode = referenceCurrencyCode
@@ -89,6 +89,10 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
             } else {
                 view?.setResultTwoConversion(result)
             }
+            }
+
+        }else{
+            view?.showDialog()
         }
     }
 
