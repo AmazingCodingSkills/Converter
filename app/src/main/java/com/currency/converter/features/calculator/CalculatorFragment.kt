@@ -164,7 +164,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
-    override fun showToast(message: String) {
+    override fun showToast(message: Int) {
         Toast.makeText(
             activity,
             context?.getString(R.string.message_for_exception_calculator),

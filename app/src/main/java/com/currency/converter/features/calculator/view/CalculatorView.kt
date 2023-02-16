@@ -6,7 +6,7 @@ interface CalculatorView {
     fun setResultOneConversion(resultOne: Double)
     fun setResultTwoConversion(resultTwo: Double)
     fun showDialog()
-    fun showToast(message: String)
+    fun showToast(message: Int)
     fun setCurrencies(to: String,from: String)
     fun clearFrom()
     fun clearTo()

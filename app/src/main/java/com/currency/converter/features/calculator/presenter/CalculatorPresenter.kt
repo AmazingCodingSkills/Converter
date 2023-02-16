@@ -3,7 +3,6 @@ package com.currency.converter.features.calculator.presenter
 import com.currency.converter.base.CurrencyRatesRepository
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.view.CalculatorView
-import com.example.converter.R
 
 class CalculatorPresenter(private val networkRepository: NetworkRepository) {
 
@@ -40,37 +39,27 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
     }
 
     fun onTextInputChangedOne(input: String) {
-        try {
-            isInputValid(input)
-            if (input.isNotEmpty() && input != "0." && input != "0") {
-                onCurrencyConverted(from, input, to)
-            }
-        } catch (message: Throwable) {
-            view?.showToast(R.string.message_for_exception_calculator.toString())
+
+        if (isInputValid(input)) {
+            onCurrencyConverted(from, input, to)
+        } else {
+            view?.clearFrom()
+            view?.clearTo()
         }
     }
 
     fun onTextInputChangedTwo(input: String) {
-        try {
-            isInputValid(input)
-            if (input.isNotEmpty() && input != "0." && input != "0") {
-                onCurrencyConverted(to, input, from)
-            }
-        } catch (message: Throwable) {
-            view?.showToast(R.string.message_for_exception_calculator.toString())
+        if (isInputValid(input)) {
+            onCurrencyConverted(to, input, from)
+        } else {
+            view?.clearFrom()
+            view?.clearTo()
         }
     }
 
-    private fun isInputValid(input: String) {
-        if (input == "0." || input == "0" || input == ".") {
-            view?.clearFrom()
-            view?.clearTo()
-        }
-        if (input.isEmpty()) {
-            view?.clearFrom()
-            view?.clearTo()
-        }
-    }
+    private fun isInputValid(input: String): Boolean =
+        input.isNotEmpty() && input != "."
+
 
     private fun onCurrencyConverted(
         baseCurrencyCode: String,
@@ -79,19 +68,19 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
     ) {
         val value = input.toDouble()
         if (!networkRepository.isInternetUnavailable()) {
-        CurrencyRatesRepository.getCurrentRates(
-            baseCurrencyCode = baseCurrencyCode,
-            referenceCurrencyCode = referenceCurrencyCode
-        ) {
-            val result = value * it
-            if (from == baseCurrencyCode && to == referenceCurrencyCode) {
-                view?.setResultOneConversion(result)
-            } else {
-                view?.setResultTwoConversion(result)
-            }
+            CurrencyRatesRepository.getCurrentRates(
+                baseCurrencyCode = baseCurrencyCode,
+                referenceCurrencyCode = referenceCurrencyCode
+            ) {
+                val result = value * it
+                if (from == baseCurrencyCode && to == referenceCurrencyCode) {
+                    view?.setResultOneConversion(result)
+                } else {
+                    view?.setResultTwoConversion(result)
+                }
             }
 
-        }else{
+        } else {
             view?.showDialog()
         }
     }

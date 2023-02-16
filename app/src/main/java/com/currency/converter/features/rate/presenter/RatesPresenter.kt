@@ -14,17 +14,7 @@ class RatesPresenter(private val networkRepository: NetworkRepository) {
     }
 
     fun onRefreshed() {
-        var checkPerformanceFunction = true
-        view?.showRefreshing(checkPerformanceFunction)
-        if (checkPerformanceFunction) {
-            onSavedCurrencyGated()
-        }
-        checkPerformanceFunction = false
-        if (checkPerformanceFunction == false) {
-            view?.showRefreshing(checkPerformanceFunction)
-        }
-
-        view?.hideProgress()
+        onSavedCurrencyGated()
     }
 
     fun onSelectedCurrencyShowed(base: String, icon: Int) {
@@ -35,6 +25,8 @@ class RatesPresenter(private val networkRepository: NetworkRepository) {
             }) {
                 view?.showRates(it)
                 view?.hideProgress()
+                view?.showIcon(icon)
+                view?.showRefreshing(false)
             }
         } else {
             view?.showDialogWarning()

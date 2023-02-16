@@ -41,7 +41,6 @@ class LatestRatesFragment : Fragment(), RateView {
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
             presenter.onRefreshed()
         }
-
         initRcView()
         binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
