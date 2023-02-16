@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/latestScreen"
+    android:id="@+id/screenShare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.currency.converter.features.rate.LatestRatesFragment">
@@ -17,20 +18,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/titleShare"
+            android:id="@+id/headingShareScreen"
             style="@style/TextAppearance.MyApp.Headline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/sharing"
+            android:text="@string/share_app"
             android:textSize="18sp"
             android:textStyle="bold" />
-
 
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cardViewForShareItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -42,26 +42,26 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarShare">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constrintLayoutListItem"
+            android:id="@+id/constraintLayoutShareItem"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:background="?attr/colorOnPrimary">
 
             <TextView
-                android:id="@+id/nameSharing"
+                android:id="@+id/nameShareApp"
                 style="@style/TextAppearance.MyApp.Headline1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
-                android:text="@string/share_screen_item_name"
+                android:text="@string/share_app"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/sharingImageButton"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:id="@+id/shareButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginEnd="16dp"
                 android:foregroundGravity="center"
                 android:src="@drawable/ic_baseline_share_24"
@@ -69,7 +69,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="?attr/colorPrimary" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

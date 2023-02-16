@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.currency.converter.ConverterApplication
 import com.currency.converter.base.EventBus.subject
+import com.currency.converter.base.NetworkAvailabilityDialogFragment
+import com.currency.converter.base.NetworkRepository
 import com.currency.converter.base.Observer
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
@@ -22,7 +25,7 @@ class LatestRatesFragment : Fragment(), RateView {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-    private val presenter = RatesPresenter()
+    private val presenter = RatesPresenter(networkRepository = NetworkRepository(ConverterApplication.application))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,24 +38,28 @@ class LatestRatesFragment : Fragment(), RateView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
+        binding.swipeToRefreshMainScreen.setOnRefreshListener {
+            presenter.onRefreshed()
+        }
         initRcView()
         binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.bottom_navigation_replacement, MainFavoriteFragment())
+                replace(R.id.bottom_navigation_container, MainFavoriteFragment())
                 addToBackStack(null)
                 commit()
             }
         }
-        binding.bottomSheetButton.setOnClickListener {
+        binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
             val bottomSheet = BottomSheetCountry()
             bottomSheet.show(childFragmentManager, "TAG")
+
         }
     }
 
     private fun initRcView() = with(binding) {
-        recyclerLatest.layoutManager = LinearLayoutManager(activity)
+        recyclerMainScreen.layoutManager = LinearLayoutManager(activity)
         latestRatesAdapter = LatestRatesAdapter()
-        recyclerLatest.adapter = latestRatesAdapter
+        recyclerMainScreen.adapter = latestRatesAdapter
         subject.addObserver(object : Observer<CountryModel?> {
 
             override fun update(value: CountryModel?) {
@@ -78,15 +85,25 @@ class LatestRatesFragment : Fragment(), RateView {
     }
 
     override fun showIcon(icon: Int) {
-        binding.bottomSheetButton.setImageResource(icon)
+        binding.buttonOpenBottomSheetMainScreen.setImageResource(icon)
+    }
+
+    override fun showRefreshing(refreshing: Boolean) {
+       binding.swipeToRefreshMainScreen.isRefreshing = refreshing
+
+    }
+
+    override fun showDialogWarning() {
+        val networkAvailabilityDialogFragment =NetworkAvailabilityDialogFragment()
+        networkAvailabilityDialogFragment.show(childFragmentManager,"Dialog")
     }
 
     override fun showProgress() {
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBarMainScreen.visibility = View.VISIBLE
     }
 
     override fun hideProgress() {
-        binding.progressBar.visibility = View.GONE
+        binding.progressBarMainScreen.visibility = View.GONE
     }
 
     override fun showToast(message: String) {

@@ -51,10 +51,10 @@ class OnlyFavoritesFragment : Fragment() {
 private fun displayEmpty(value: List<CurrencyItem>){
     if (value.isNotEmpty()) {
         binding.selectCurrencyRV.visibility = View.VISIBLE
-        binding.hintEmpty.visibility = View.GONE
+        binding.hintEmptyScreen.visibility = View.GONE
     } else {
         binding.selectCurrencyRV.visibility = View.GONE
-        binding.hintEmpty.visibility = View.VISIBLE
+        binding.hintEmptyScreen.visibility = View.VISIBLE
     }
 }
 

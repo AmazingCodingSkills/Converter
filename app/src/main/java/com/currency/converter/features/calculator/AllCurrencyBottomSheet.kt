@@ -35,7 +35,7 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
 
     fun launchRV() {
         binding.apply {
-            recyclerAllCurrency.layoutManager = LinearLayoutManager(activity)
+            recyclerAllCurrencies.layoutManager = LinearLayoutManager(activity)
             calculatorAdapter = CalculatorAdapter() { item ->
                 saveFromConvert(item)
                 requireActivity().supportFragmentManager.setFragmentResult("CURRENCY_KEY", bundleOf(
@@ -45,7 +45,7 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
                 dismiss()
             }
 
-            recyclerAllCurrency.adapter = calculatorAdapter
+            recyclerAllCurrencies.adapter = calculatorAdapter
 
             val allCountryList =
                 ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
@@ -62,12 +62,4 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
         )
         Log.d("checkShered", "${fromConvertSharedPreference}")
     }
-    /*
-   private fun saveToConvert(item: CurrencyItem) {
-        val fromConvertSharedPreference1 = ConverterApplication.PreferencesManager.put(
-            item,
-            SELECT_CURRENCY_TO_CONVERT
-        )
-        Log.d("checkShered", "${fromConvertSharedPreference1}")
-    }*/
 }

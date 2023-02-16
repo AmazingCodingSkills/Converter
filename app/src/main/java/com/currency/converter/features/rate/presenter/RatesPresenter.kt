@@ -1,11 +1,11 @@
 package com.currency.converter.features.rate.presenter
 
 import com.currency.converter.base.CurrencyRatesRepository
+import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.rate.view.RateView
 
 
-class RatesPresenter(
-) {
+class RatesPresenter(private val networkRepository: NetworkRepository) {
 
     private var view: RateView? = null
 
@@ -13,16 +13,24 @@ class RatesPresenter(
         this.view = view
     }
 
+    fun onRefreshed() {
+        onSavedCurrencyGated()
+    }
+
     fun onSelectedCurrencyShowed(base: String, icon: Int) {
         view?.showProgress()
-        CurrencyRatesRepository.getRates(base, onFailure = {
-            view?.showToast(it.toString())
-        }) {
-            view?.showRates(it)
-            view?.hideProgress()
+        if (!networkRepository.isInternetUnavailable()) {
+            CurrencyRatesRepository.getRates(base, onFailure = {
+                view?.showToast(it.toString())
+            }) {
+                view?.showRates(it)
+                view?.hideProgress()
+                view?.showIcon(icon)
+                view?.showRefreshing(false)
+            }
+        } else {
+            view?.showDialogWarning()
         }
-
-
     }
 
     fun onSavedCurrencyGated() {
@@ -39,7 +47,5 @@ class RatesPresenter(
     fun detachView() {
         this.view = null
     }
-
-
 }
 

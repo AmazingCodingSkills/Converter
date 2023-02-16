@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardView"
+    android:id="@+id/cardViewForShareItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
@@ -14,7 +14,6 @@
     app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constrintLayoutListItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorOnPrimary">
@@ -28,10 +27,10 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="22 /12/2022" />
+            tools:text="22/12/2022" />
 
         <TextView
-            android:id="@+id/currencyName"
+            android:id="@+id/baseCurrencyName"
             style="@style/TextAppearance.MyApp.Headline1"
             android:layout_width="53dp"
             android:layout_height="23dp"
@@ -40,10 +39,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/date"
             app:layout_constraintTop_toBottomOf="@+id/date"
-            tools:text="Money" />
+            tools:text="RUB" />
 
         <TextView
-            android:id="@+id/nowValueText"
+            android:id="@+id/selectedCurrency"
             style="@style/TextAppearance.MyApp.Headline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,10 +52,10 @@
             app:layout_constraintStart_toEndOf="@+id/date"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            tools:text="345" />
+            tools:text="EUR" />
 
         <TextView
-            android:id="@+id/rightValue"
+            android:id="@+id/currentRate"
             style="@style/TextAppearance.MyApp.Headline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,8 +63,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/date"
-            app:layout_constraintTop_toBottomOf="@id/nowValueText"
-            tools:text="test" />
+            app:layout_constraintTop_toBottomOf="@id/selectedCurrency"
+            tools:text="0.0211" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

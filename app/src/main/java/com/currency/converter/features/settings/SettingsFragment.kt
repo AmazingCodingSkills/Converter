@@ -23,7 +23,7 @@ class SettingsFragment : Fragment(){
 
     }
     fun shareApp() = with(binding){
-       sharingImageButton.setOnClickListener {
+        shareButton.setOnClickListener {
            val myIntent = Intent(Intent.ACTION_SEND)
            myIntent.type = "type/plain"
            val shareBody = "market://..."

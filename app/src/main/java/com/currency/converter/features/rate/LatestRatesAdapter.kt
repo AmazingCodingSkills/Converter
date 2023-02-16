@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.converter.R
 import com.example.converter.databinding.ListItemBinding
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,9 +20,13 @@ class LatestRatesAdapter : ListAdapter<RateItem, LatestRatesAdapter.Holder>(Comp
 
         fun bind(item: RateItem) = with(binding) {
             date.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(item.date)
-            currencyName.text = item.baseCurrencyName
-            nowValueText.text = item.referenceCurrency.name
-            rightValue.text = item.referenceCurrency.value.toString()
+            baseCurrencyName.text = item.baseCurrencyName
+            selectedCurrency.text = item.referenceCurrency.name
+            val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+                decimalSeparator = '.'
+            }
+            val entryFormat = DecimalFormat("#####.####", symbols)
+            currentRate.text = entryFormat.format(item.referenceCurrency.value)
         }
 
     }

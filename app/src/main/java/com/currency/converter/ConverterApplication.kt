@@ -20,6 +20,7 @@ class ConverterApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        application = this
         Log.d("APP", "I'ts fine")
         getAllInformationListApplication()
         PreferencesManager.with(this)
@@ -82,7 +83,10 @@ class ConverterApplication : Application() {
             val value = sp.getString(key, null)
             return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)
         }
-
     }
 
+    companion object {
+        lateinit var application: Application
+            private set
+    }
 }
