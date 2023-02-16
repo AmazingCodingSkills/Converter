@@ -31,4 +31,11 @@
     <style name="ProgressBar" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@android:color/white</item>
     </style>
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
 </resources>

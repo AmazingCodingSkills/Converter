@@ -165,7 +165,11 @@ class CalculatorFragment : Fragment(), CalculatorView {
     }
 
     override fun showToast(message: String) {
-        Toast.makeText(activity,context?.getString(R.string.message_for_exception_calculator), Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            activity,
+            context?.getString(R.string.message_for_exception_calculator),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
 
