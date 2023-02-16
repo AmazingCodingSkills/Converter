@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.EventBus.subject
+import com.currency.converter.base.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.base.Observer
 import com.currency.converter.features.favorite.MainFavoriteFragment
@@ -41,6 +41,7 @@ class LatestRatesFragment : Fragment(), RateView {
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
             presenter.onRefreshed()
         }
+
         initRcView()
         binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {

@@ -13,20 +13,31 @@ class RatesPresenter(private val networkRepository: NetworkRepository) {
         this.view = view
     }
 
-    fun onRefreshed(){
-        onSavedCurrencyGated()
-        view?.showRefreshing(refreshing = false)
+    fun onRefreshed() {
+        var checkPerformanceFunction = true
+        view?.showRefreshing(checkPerformanceFunction)
+        if (checkPerformanceFunction) {
+            onSavedCurrencyGated()
+        }
+        checkPerformanceFunction = false
+        if (checkPerformanceFunction == false) {
+            view?.showRefreshing(checkPerformanceFunction)
+        }
+
         view?.hideProgress()
     }
 
     fun onSelectedCurrencyShowed(base: String, icon: Int) {
         view?.showProgress()
-        onDialogWarning()
-        CurrencyRatesRepository.getRates(base, onFailure = {
-            view?.showToast(it.toString())
-        }) {
-            view?.showRates(it)
-            view?.hideProgress()
+        if (!networkRepository.isInternetUnavailable()) {
+            CurrencyRatesRepository.getRates(base, onFailure = {
+                view?.showToast(it.toString())
+            }) {
+                view?.showRates(it)
+                view?.hideProgress()
+            }
+        } else {
+            view?.showDialogWarning()
         }
     }
 
@@ -41,15 +52,8 @@ class RatesPresenter(private val networkRepository: NetworkRepository) {
         }
     }
 
-    fun onDialogWarning(){
-        if (networkRepository.isInternetUnavailable()) {
-            view?.showDialogWarning()
-        }
-    }
     fun detachView() {
         this.view = null
     }
-
-
 }
 
