@@ -29,4 +29,5 @@
     <string name="dialog_button_repeat_check_internet">ПОВТОРИТЬ ПОПЫТКУ</string>
     <string name="heading_dialog_custom">Нет интернет соедениения</string>
     <string name="go_settings_on_internet">ПЕРЕЙТИ В НАСТРОЙКИ</string>
+    <string name="message_for_exception_calculator">Введите число, которое не начиначется с "." </string>
 </resources>

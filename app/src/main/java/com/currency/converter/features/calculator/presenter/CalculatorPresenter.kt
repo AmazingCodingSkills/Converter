@@ -1,9 +1,9 @@
 package com.currency.converter.features.calculator.presenter
 
 import com.currency.converter.base.CurrencyRatesRepository
-import com.currency.converter.base.MESSAGE_EXCEPTION_FOR_CALCULATOR
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.view.CalculatorView
+import com.example.converter.R
 
 class CalculatorPresenter(private val networkRepository: NetworkRepository) {
 
@@ -51,7 +51,7 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
                 view?.clearFrom()
             }
         } catch (message: Throwable) {
-            view?.showToast(MESSAGE_EXCEPTION_FOR_CALCULATOR)
+            view?.showToast(R.string.message_for_exception_calculator.toString())
         }
     }
 
@@ -66,7 +66,7 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
                 view?.clearTo()
             }
         } catch (message: Throwable) {
-            view?.showToast(MESSAGE_EXCEPTION_FOR_CALCULATOR)
+            view?.showToast(R.string.message_for_exception_calculator.toString())
         }
     }
 

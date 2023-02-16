@@ -17,6 +17,7 @@ import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.presenter.CalculatorPresenter
 import com.currency.converter.features.calculator.view.CalculatorView
 import com.currency.converter.features.favorite.CurrencyItem
+import com.example.converter.R
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -164,7 +165,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
     }
 
     override fun showToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(activity,context?.getString(R.string.message_for_exception_calculator), Toast.LENGTH_LONG).show()
     }
 
 
