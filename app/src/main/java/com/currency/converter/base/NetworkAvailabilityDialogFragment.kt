@@ -11,7 +11,7 @@ import com.example.converter.R
 import com.example.converter.databinding.DialogCustomBinding
 
 
-class CustomDialog: DialogFragment() {
+class NetworkAvailabilityDialogFragment: DialogFragment() {
 
     private lateinit var binding: DialogCustomBinding
 

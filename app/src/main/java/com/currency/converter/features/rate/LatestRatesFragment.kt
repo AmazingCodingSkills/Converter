@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.CustomDialog
+import com.currency.converter.base.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.EventBus.subject
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.base.Observer
@@ -94,8 +94,8 @@ class LatestRatesFragment : Fragment(), RateView {
     }
 
     override fun showDialogWarning() {
-        val customDialog =CustomDialog()
-        customDialog.show(childFragmentManager,"Dialog")
+        val networkAvailabilityDialogFragment =NetworkAvailabilityDialogFragment()
+        networkAvailabilityDialogFragment.show(childFragmentManager,"Dialog")
     }
 
     override fun showProgress() {

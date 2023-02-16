@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.CustomDialog
+import com.currency.converter.base.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.NetworkRepository
 import com.currency.converter.features.calculator.presenter.CalculatorPresenter
 import com.currency.converter.features.calculator.view.CalculatorView
@@ -160,8 +160,8 @@ class CalculatorFragment : Fragment(), CalculatorView {
     }
 
     override fun showDialog() {
-        val customDialog = CustomDialog()
-        customDialog.show(childFragmentManager, "Dialog")
+        val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
+        networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
     override fun showToast(message: String) {
