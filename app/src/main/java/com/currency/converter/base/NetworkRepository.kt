@@ -6,7 +6,7 @@ import android.net.ConnectivityManager
 
 class NetworkRepository (private val application: Application) {
 
-    fun isCheckStatusInternet() : Boolean {
+    fun isInternetUnavailable() : Boolean {
         val manager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = manager.activeNetworkInfo
         return activeNetwork == null

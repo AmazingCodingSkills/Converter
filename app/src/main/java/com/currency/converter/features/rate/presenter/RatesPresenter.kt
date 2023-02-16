@@ -42,7 +42,7 @@ class RatesPresenter(private val networkRepository: NetworkRepository) {
     }
 
     fun onDialogWarning(){
-        if (networkRepository.isCheckStatusInternet()) {
+        if (networkRepository.isInternetUnavailable()) {
             view?.showDialogWarning()
         }
     }
