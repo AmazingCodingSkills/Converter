@@ -10,6 +10,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+// presentation -> domain <- data
+
+// presentation
+// presenter view fragment
+
+// domain
+// interfactor
+// repo interface
+// entity
+
+// data
+// impl repositu
+// - database, netrowk, DTO
+
 object CurrencyRatesRepository {
 
     fun getLatestApiResult(
