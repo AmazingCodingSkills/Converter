@@ -15,7 +15,6 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
         this.view = view
     }
 
-
     fun setFrom(selectedCurrencyFromOne: String, input: String) {
         if (input.isNotEmpty()) {
             onCurrencyConverted(
@@ -42,13 +41,9 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
 
     fun onTextInputChangedOne(input: String) {
         try {
-            if (input.isNotEmpty()) {
+            isInputValid(input)
+            if (input.isNotEmpty() && input != "0." && input != "0") {
                 onCurrencyConverted(from, input, to)
-            }
-            if (input == "0." || input == "0") {
-                view?.clearTo()
-            } else {
-                view?.clearFrom()
             }
         } catch (message: Throwable) {
             view?.showToast(R.string.message_for_exception_calculator.toString())
@@ -57,20 +52,27 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
 
     fun onTextInputChangedTwo(input: String) {
         try {
-            if (input.isNotEmpty()) {
+            isInputValid(input)
+            if (input.isNotEmpty() && input != "0." && input != "0") {
                 onCurrencyConverted(to, input, from)
-            }
-            if (input == "0.") {
-                view?.clearFrom()
-            } else {
-                view?.clearTo()
             }
         } catch (message: Throwable) {
             view?.showToast(R.string.message_for_exception_calculator.toString())
         }
     }
 
-    fun onCurrencyConverted(
+    private fun isInputValid(input: String) {
+        if (input == "0." || input == "0" || input == ".") {
+            view?.clearFrom()
+            view?.clearTo()
+        }
+        if (input.isEmpty()) {
+            view?.clearFrom()
+            view?.clearTo()
+        }
+    }
+
+    private fun onCurrencyConverted(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String
