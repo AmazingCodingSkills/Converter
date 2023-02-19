@@ -1,4 +1,4 @@
-package com.currency.converter.features.rate
+package com.currency.converter.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,14 +8,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
+import com.currency.converter.base.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.EventBus.subject
 import com.currency.converter.base.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.NetworkRepository
 import com.currency.converter.base.Observer
+import com.currency.converter.base.SelectedCurrencyRepositoryImpl
+import com.currency.converter.data.NetworkRepository
 import com.currency.converter.features.favorite.MainFavoriteFragment
+import com.currency.converter.features.rate.LatestRatesAdapter
+import com.currency.converter.features.rate.RateItem
 import com.currency.converter.features.rate.countryname.CountryModel
-import com.currency.converter.features.rate.presenter.RatesPresenter
-import com.currency.converter.features.rate.view.RateView
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 import com.example.converter.fragment.BottomSheetCountry
@@ -25,7 +27,7 @@ class LatestRatesFragment : Fragment(), RateView {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-    private val presenter = RatesPresenter(networkRepository = NetworkRepository(ConverterApplication.application))
+    private val presenter = RatesPresenter(networkRepository = NetworkRepository(ConverterApplication.application), selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(), currencyRatesRepository = CurrencyRatesRepositoryImpl())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,4 +1,4 @@
-package com.currency.converter.features.calculator.view
+package com.currency.converter.presentation
 
 interface CalculatorView {
     fun setDefaultValueFrom (selectedCurrency: String)

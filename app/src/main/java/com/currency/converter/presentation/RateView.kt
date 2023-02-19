@@ -1,4 +1,4 @@
-package com.currency.converter.features.rate.view
+package com.currency.converter.presentation
 
 import com.currency.converter.features.rate.RateItem
 

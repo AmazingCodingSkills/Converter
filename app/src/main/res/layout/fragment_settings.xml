@@ -6,7 +6,7 @@
     android:id="@+id/screenShare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.currency.converter.features.rate.LatestRatesFragment">
+    tools:context="com.currency.converter.presentation.LatestRatesFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarShare"

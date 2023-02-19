@@ -1,6 +1,7 @@
 package com.currency.converter.base
 
 import com.currency.converter.ConverterApplication
+import com.currency.converter.domain.CurrencyRatesInterface
 import com.currency.converter.features.favorite.CurrencyItem
 import com.currency.converter.features.rate.Currency
 import com.currency.converter.features.rate.RateItem
@@ -11,21 +12,52 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-// presentation -> domain <- data
+class CurrencyRatesRepositoryImpl() : CurrencyRatesInterface {
 
-// presentation
-// presenter view fragment
+    override suspend fun getLatestApiResultCoroutine(base: String): List<RateItem> {
+        val response = RetrofitProvider.api.getRates(base = base).ratesResponse
+        return response.let {
+            it.rates.map { entry ->
+                RateItem(
+                    date = response.date,
+                    referenceCurrency = Currency(
+                        name = entry.key,
+                        value = entry.value
+                    ),
+                    baseCurrencyName = response.base
+                )
 
-// domain
-// interfactor
-// repo interface
-// entity
+            }
+        }
+    }
 
-// data
-// impl repositu
-// - database, netrowk, DTO
+    override suspend fun getRatesCoroutine(base: String): List<RateItem> {
+        // почему я тут могу сделать что-либо с функцией suspend без Global Scope например 
+        val response = getLatestApiResultCoroutine(base = base)
+        val favorites =
+            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
+                ConverterApplication.PreferencesManager.SELECT_KEY
+            )
+                ?.filter { it.isFavorite }.orEmpty()
+        val favoriteCurrencies = response?.filter { item ->
+            favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null
+        }.orEmpty()
 
-object CurrencyRatesRepository {
+        val items = favoriteCurrencies.ifEmpty { response }
+        return items
+    }
+
+
+    override suspend fun getCurrentRatesCoroutine(
+        base: String,
+        referenceCurrencyCode: String
+    ): Double {
+        val response = getLatestApiResultCoroutine(base = base)
+        val findItem = response?.find { it.referenceCurrency.name == referenceCurrencyCode }
+        val findValue = findItem?.referenceCurrency?.value ?: 0.0
+        return findValue
+    }
+
 
     fun getLatestApiResult(
         base: String,
@@ -88,20 +120,19 @@ object CurrencyRatesRepository {
         }
     }
 
-
     fun getCurrentRates(
         baseCurrencyCode: String,
         referenceCurrencyCode: String,
         onResult: (Double) -> Unit
     ) {
-        getLatestApiResult(base = baseCurrencyCode,{}) { rates ->
+        getLatestApiResult(base = baseCurrencyCode, {}) { rates ->
             val findItem = rates?.find { it.referenceCurrency.name == referenceCurrencyCode }
             val findValue = findItem?.referenceCurrency?.value ?: 0.0
             onResult(findValue)
         }
     }
 
-    val selectedCountries = ConverterApplication.PreferencesManager.get<CountryModel>(
+    val selectedCurrency = ConverterApplication.PreferencesManager.get<CountryModel>(
         ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
     )
 }

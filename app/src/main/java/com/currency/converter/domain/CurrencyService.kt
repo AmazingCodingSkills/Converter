@@ -1,4 +1,4 @@
-package com.currency.converter.base
+package com.currency.converter.domain
 
 import com.currency.converter.features.favorite.MetaCurrenciesResponse
 import com.currency.converter.features.rate.RatesMetaResponse
@@ -13,6 +13,12 @@ interface CurrencyService {
         @Query("symbols") symbols: List<String>? = null,
         @Query("base") base: String = "USD"
     ): Call<RatesMetaResponse>
+
+    @GET("latest?api_key=10c6aafaa5395ef3ffa5d47d973cfd26")
+    suspend fun getRates(
+        @Query("symbols") symbols: List<String>? = null,
+        @Query("base") base: String = "USD"
+    ): RatesMetaResponse
 
     @GET("currencies?api_key=10c6aafaa5395ef3ffa5d47d973cfd26")
     fun getNameCountryCurrency(): Call<MetaCurrenciesResponse>

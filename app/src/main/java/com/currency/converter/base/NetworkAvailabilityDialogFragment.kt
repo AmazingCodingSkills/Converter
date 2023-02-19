@@ -29,6 +29,7 @@ class NetworkAvailabilityDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         dialogWork()
     }
+
     private fun dialogWork() {
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.WRAP_CONTENT,
