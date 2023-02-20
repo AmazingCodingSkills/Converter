@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorOnPrimary"
-    tools:context="com.currency.converter.features.calculator.AllCurrencyBottomSheet">
+    tools:context="com.currency.converter.features.calculator.presentation.AllCurrencyBottomSheet">
 
     <TextView
         android:id="@+id/listAllCurrencies"

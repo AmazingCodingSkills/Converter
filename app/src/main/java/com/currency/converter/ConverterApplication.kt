@@ -6,9 +6,9 @@ import android.util.Log
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.base.RetrofitProvider
-import com.currency.converter.features.favorite.CountryService
-import com.currency.converter.features.favorite.CurrencyItem
-import com.currency.converter.features.favorite.MetaCurrenciesResponse
+import com.currency.converter.features.rate.data.CountryService
+import com.currency.converter.base.CurrencyItem
+import com.currency.converter.base.MetaCurrenciesResponse
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
