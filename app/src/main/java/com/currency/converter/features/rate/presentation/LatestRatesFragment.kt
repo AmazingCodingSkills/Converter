@@ -28,7 +28,7 @@ class LatestRatesFragment : Fragment(), RateView {
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
     private val presenter = RatesPresenter(
-        networkRepositoryImpl = NetworkRepositoryImpl(ConverterApplication.application),
+        networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
         selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
         useCaseGetRates = UseCaseGetRates(FavouriteCurrencyRepositoryImpl(),CurrencyRatesRepositoryImpl())
     )
