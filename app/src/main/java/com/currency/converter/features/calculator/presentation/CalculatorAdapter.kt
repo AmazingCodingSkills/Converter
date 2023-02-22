@@ -1,10 +1,11 @@
 package com.currency.converter.features.calculator.presentation
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.currency.converter.base.CurrencyItem
+import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.example.converter.R
 import com.example.converter.databinding.ListItemConverterBinding
 
@@ -32,6 +33,11 @@ class CalculatorAdapter(val onClick: (CurrencyItem) -> Unit) :
                 onClick(country)
             }
         }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    fun setFilteredList(currencyList: List<CurrencyItem>) {
+        this.currencyList = currencyList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewMyViewHolder {

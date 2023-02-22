@@ -1,9 +1,9 @@
-package com.currency.converter.base
+package com.currency.converter.base.observer
 
+import com.currency.converter.base.Observable
+import com.currency.converter.base.Observer
 import com.currency.converter.features.rate.countryname.CountryModel
 import java.util.*
-
-
 
 
 object EventBus {

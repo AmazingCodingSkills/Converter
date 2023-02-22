@@ -1,13 +1,13 @@
-package com.currency.converter.base
+package com.currency.converter.base.mappers
 
+import com.currency.converter.base.ratemodel.RatesResponse
 import com.currency.converter.features.rate.domain.Currency
 import com.currency.converter.features.rate.domain.RateItem
 
-class RateItemMapper() {
-    suspend fun map(base: String) : List<RateItem> {
-        val response = RetrofitProvider.api.getRates(base = base).ratesResponse
-        return response.let {
-            it.rates.map {
+object RateItemMapper {
+     fun map(ratesResponse: RatesResponse) : List<RateItem> {
+        return ratesResponse.let {response ->
+            response.rates.map {
                 RateItem(
                     date = response.date,
                     referenceCurrency = Currency(

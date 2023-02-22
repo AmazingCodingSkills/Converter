@@ -9,7 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.base.*
-import com.currency.converter.base.EventBus.subject
+import com.currency.converter.base.observer.EventBus.subject
+import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
+import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
+import com.currency.converter.base.network.NetworkRepositoryImpl
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.domain.RateItem
@@ -24,9 +27,7 @@ class LatestRatesFragment : Fragment(), RateView {
     private val presenter = RatesPresenter(
         networkRepositoryImpl = NetworkRepositoryImpl(ConverterApplication.application),
         selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
-        currencyRatesRepository = CurrencyRatesRepositoryImpl(
-            RateItemMapper()
-        )
+        currencyRatesRepository = CurrencyRatesRepositoryImpl()
     )
 
     override fun onCreateView(

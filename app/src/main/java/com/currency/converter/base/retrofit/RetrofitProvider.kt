@@ -1,5 +1,6 @@
-package com.currency.converter.base
+package com.currency.converter.base.retrofit
 
+import com.currency.converter.base.currency.CurrencyService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

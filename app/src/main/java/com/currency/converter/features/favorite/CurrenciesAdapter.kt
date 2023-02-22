@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.currency.converter.base.CurrencyItem
+import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.example.converter.R
 import com.example.converter.databinding.ListItemFavoriteBinding
 

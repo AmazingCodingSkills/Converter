@@ -1,48 +1,48 @@
 package com.currency.converter.features.calculator.presentation
 
-import com.currency.converter.base.CurrencyRatesRepositoryImpl
-import com.currency.converter.base.NetworkRepositoryImpl
+import com.currency.converter.base.currency.CurrencyRatesRepository
+import com.currency.converter.base.network.NetworkRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class CalculatorPresenter(
-    private val networkRepositoryImpl: NetworkRepositoryImpl,
-    private val currencyRatesRepository: CurrencyRatesRepositoryImpl
-) {
+    private val networkRepositoryImpl: NetworkRepository,
+    private val currencyRatesRepository: CurrencyRatesRepository
+)  {
 
     private var view: CalculatorView? = null
     private var from = "USD"
     private var to = "EUR"
-
 
     fun attachView(view: CalculatorView) {
         this.view = view
     }
 
     fun setFrom(selectedCurrencyFromOne: String, input: String) {
+        from = selectedCurrencyFromOne
+        view?.setDefaultValueFrom(from)
         if (input.isNotEmpty()) {
             onCurrencyConverted(
                 selectedCurrencyFromOne,
                 input,
                 to
             )
-            from = selectedCurrencyFromOne
-            view?.setDefaultValueFrom(from)
+
         }
     }
 
-    fun setTo(selectedCurrencyFromTwo: String, input: String) {
-        if (input.isNotEmpty()) {
-            onCurrencyConverted(
-                selectedCurrencyFromTwo,
-                input,
-                from
-            )
-            to = selectedCurrencyFromTwo
-            view?.setDefaultValueTo(to)
-        }
-    }
+     fun setTo(selectedCurrencyFromTwo: String, input: String) {
+         to = selectedCurrencyFromTwo
+         view?.setDefaultValueTo(to)
+         if (input.isNotEmpty()) {
+             onCurrencyConverted(
+                 selectedCurrencyFromTwo,
+                 input,
+                 from
+             )
+         }
+     }
 
     fun onTextInputChangedOne(input: String) {
         if (isInputValid(input)) {
