@@ -30,7 +30,7 @@ class RatesPresenter(
         GlobalScope.launch(Dispatchers.IO) {
             if (!networkRepository.isInternetUnavailable()) {
                 try {
-                    val rates = useCaseGetRates.getRates(base)
+                    val rates = useCaseGetRates(base)
                     withContext(Dispatchers.Main) {
                         view?.showRates(rates)
                         view?.hideProgress()

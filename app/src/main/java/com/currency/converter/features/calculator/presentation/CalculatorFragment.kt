@@ -14,8 +14,10 @@ import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.ConverterApplication
 import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.hideKeyboard
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.network.NetworkRepositoryImpl
+import com.currency.converter.base.showKeyboard
 import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
 import com.example.converter.R
 import com.example.converter.databinding.FragmentConverterBinding
@@ -30,7 +32,8 @@ class CalculatorFragment : Fragment(), CalculatorView {
     private val presenter = CalculatorPresenter(
         networkRepository = NetworkRepositoryImpl(
             ConverterApplication.application
-        ), useCaseGetCurrentRates = UseCaseGetCurrentRates(CurrencyRatesRepositoryImpl())
+        ),
+        useCaseGetCurrentRates = UseCaseGetCurrentRates(CurrencyRatesRepositoryImpl())
     )
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher
@@ -45,6 +48,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentConverterBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -52,6 +56,8 @@ class CalculatorFragment : Fragment(), CalculatorView {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
         presenter.onDialogWarning()
+        binding.firstEditText.requestFocus()
+        binding.firstEditText.showKeyboard()
         clickSearchButtons()
     }
 
@@ -114,7 +120,10 @@ class CalculatorFragment : Fragment(), CalculatorView {
         }
     }
 
-
+    override fun onPause() {
+        super.onPause()
+        binding.firstEditText.hideKeyboard()
+    }
     fun clickSearchButtons() = with(binding) {
         firstCurrency.setOnClickListener {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
@@ -158,6 +167,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
             text = entryFormat.format(resultTwo)
         }
     }
+
 
     override fun showDialog() {
         val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
