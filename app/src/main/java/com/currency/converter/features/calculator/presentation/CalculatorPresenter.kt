@@ -1,15 +1,15 @@
 package com.currency.converter.features.calculator.presentation
 
-import com.currency.converter.base.currency.CurrencyRatesRepository
 import com.currency.converter.base.network.NetworkRepository
+import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class CalculatorPresenter(
-    private val networkRepositoryImpl: NetworkRepository,
-    private val currencyRatesRepository: CurrencyRatesRepository
-)  {
+    private val networkRepository: NetworkRepository,
+    private val useCaseGetCurrentRates: UseCaseGetCurrentRates
+) {
 
     private var view: CalculatorView? = null
     private var from = "USD"
@@ -32,17 +32,17 @@ class CalculatorPresenter(
         }
     }
 
-     fun setTo(selectedCurrencyFromTwo: String, input: String) {
-         to = selectedCurrencyFromTwo
-         view?.setDefaultValueTo(to)
-         if (input.isNotEmpty()) {
-             onCurrencyConverted(
-                 selectedCurrencyFromTwo,
-                 input,
-                 from
-             )
-         }
-     }
+    fun setTo(selectedCurrencyFromTwo: String, input: String) {
+        to = selectedCurrencyFromTwo
+        view?.setDefaultValueTo(to)
+        if (input.isNotEmpty()) {
+            onCurrencyConverted(
+                selectedCurrencyFromTwo,
+                input,
+                from
+            )
+        }
+    }
 
     fun onTextInputChangedOne(input: String) {
         if (isInputValid(input)) {
@@ -72,9 +72,9 @@ class CalculatorPresenter(
     ) {
         val value = input.toDouble()
         GlobalScope.launch(Dispatchers.Main) {
-            if (!networkRepositoryImpl.isInternetUnavailable()) {
+            if (!networkRepository.isInternetUnavailable()) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    val currentRates = currencyRatesRepository.getCurrentRatesCoroutine(
+                    val currentRates = useCaseGetCurrentRates.getCurrentRate(
                         baseCurrencyCode,
                         referenceCurrencyCode
                     )
@@ -97,7 +97,7 @@ class CalculatorPresenter(
 
     fun onDialogWarning() {
         GlobalScope.launch(Dispatchers.Main) {
-            if (networkRepositoryImpl.isInternetUnavailable()) {
+            if (networkRepository.isInternetUnavailable()) {
                 view?.showDialog()
             }
         }
