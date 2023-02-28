@@ -25,6 +25,7 @@
     <string name="share_app">Поделиться приложением</string>
     <string name="hint_empty_screen">Извините, пока нет элементов для отображения. Чтобы выбрать избранные валюты, перейдите во вкладку \'Все\'</string>
     <string name="text_custom_dialog">Включите WI-FI или мобильный интернет</string>
+    <string name="hint_empty_screen_converter">Извините, ничего не нашлось. Попробуйте изменить критерии поиска.</string>
     <string name="dialog_button_no">ОТМЕНА</string>
     <string name="dialog_button_repeat_check_internet">ПОВТОРИТЬ ПОПЫТКУ</string>
     <string name="heading_dialog_custom">Нет интернет соедениения</string>

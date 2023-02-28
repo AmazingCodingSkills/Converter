@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorOnPrimary"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
     tools:context="com.currency.converter.features.calculator.presentation.AllCurrencyBottomSheet">
 
     <TextView
@@ -23,8 +27,8 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:iconifiedByDefault="false"
         android:theme="@style/SearchView"
+        app:iconifiedByDefault="false"
         app:layout_constraintTop_toBottomOf="@+id/listAllCurrencies"
         app:queryHint="Введите название страны или валюты..." />
 
@@ -38,5 +42,20 @@
         tools:listitem="@layout/list_item_converter">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/hintEmptyScreenConverter"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="120dp"
+        android:text="@string/hint_empty_screen_converter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

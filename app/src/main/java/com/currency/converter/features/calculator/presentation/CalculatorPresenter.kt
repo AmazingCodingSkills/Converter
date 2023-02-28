@@ -104,6 +104,7 @@ class CalculatorPresenter(
 
     }
 
+
     fun detachView() {
         this.view = null
     }

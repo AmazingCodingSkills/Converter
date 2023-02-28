@@ -1,15 +1,7 @@
 package com.currency.converter.features.rate.presentation
 
-import com.currency.converter.base.network.NetworkRepository
-import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
-import com.currency.converter.features.rate.domain.UseCaseGetRates
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-
-class RatesPresenter(
+/*class RatesPresenter(
     private val networkRepository: NetworkRepository,
     private val selectedCurrencyRepository: SelectedCurrencyRepository,
     private val useCaseGetRates: UseCaseGetRates
@@ -21,32 +13,32 @@ class RatesPresenter(
         this.view = view
     }
 
-    fun onRefreshed() {
+   *//* fun onRefreshed() {
         onSavedCurrencyGated()
-    }
+    }*//*
 
     fun onSelectedCurrencyShowed(base: String, icon: Int) {
         view?.showProgress() // корутины
         GlobalScope.launch(Dispatchers.IO) {
             if (!networkRepository.isInternetUnavailable()) {
                 try {
-                    val rates = useCaseGetRates.getRates(base)
+                    val rates = useCaseGetRates(base)
                     withContext(Dispatchers.Main) {
                         view?.showRates(rates)
                         view?.hideProgress()
                         view?.showIcon(icon)
-                        view?.showRefreshing(false)
+                      //  view?.showRefreshing(false)
                     }
                 } catch (throwable: Throwable) {
                     withContext(Dispatchers.Main) {
                         view?.showToast(throwable.toString())
                         view?.hideProgress()
                         view?.showIcon(icon)
-                        view?.showRefreshing(false)
+                        //view?.showRefreshing(false)
                     }
                 }
             } else {
-                view?.showDialogWarning()
+               // view?.showDialogWarning()
             }
         }
     }
@@ -67,5 +59,5 @@ class RatesPresenter(
     fun detachView() {
         this.view = null
     }
-}
+}*/
 
