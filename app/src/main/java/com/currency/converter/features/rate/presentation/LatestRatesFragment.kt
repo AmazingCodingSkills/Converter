@@ -1,6 +1,7 @@
 package com.currency.converter.features.rate.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,22 +26,13 @@ import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
 import com.currency.converter.features.rate.domain.UseCaseGetRates
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 
 class LatestRatesFragment : Fragment(), RateView {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-    /*private val presenter = RatesPresenter(
-        networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
-        selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
-        useCaseGetRates = UseCaseGetRates(
-            FavouriteCurrencyRepositoryImpl(),
-            CurrencyRatesRepositoryImpl()
-        )
-    )*/
+
 
     private val viewModel: RatesViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -62,13 +54,11 @@ class LatestRatesFragment : Fragment(), RateView {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLatestValueBinding.inflate(inflater, container, false)
-        viewModel.handleAction(RatesViewAction.SelectCurrency)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //presenter.attachView(this)
         initRcView()
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
          viewModel.handleAction(RatesViewAction.SelectCurrency)
@@ -85,7 +75,7 @@ class LatestRatesFragment : Fragment(), RateView {
             bottomSheet.show(childFragmentManager, "TAG")
         }
 
-        viewModel.state.onEach { state ->
+       /* viewModel.state.onEach { state ->
             when (state) {
                 is RatesViewState.Content -> {
                     latestRatesAdapter.submitList(state.items)
@@ -101,7 +91,37 @@ class LatestRatesFragment : Fragment(), RateView {
                 else -> {
                 }
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(lifecycleScope)*/
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                when (state) {
+                    is RatesViewState.Content -> {
+                        latestRatesAdapter.submitList(state.items)
+                        binding.progressBarMainScreen.visibility = View.GONE
+                        binding.buttonOpenBottomSheetMainScreen.setImageResource(state.icon)
+                        binding.swipeToRefreshMainScreen.isRefreshing = false
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.events.collect { state ->
+                when (state) {
+                    is RatesViewEvent.ShowErrorDialog -> {
+                        showDialogWarning()
+                        binding.swipeToRefreshMainScreen.isRefreshing = false
+                        showToast(RatesViewEvent.ShowErrorDialog.toString())
+                    }
+                }
+            }
+        }
+
+        // лайфскйлскоп = жц фрагнмента
+        // вьюсайфсайлкскоуп = жц вью
+        // onStart -> OnDestroyView
     }
 
     private fun initRcView() = with(binding) {
@@ -112,52 +132,32 @@ class LatestRatesFragment : Fragment(), RateView {
 
             override fun update(value: CountryModel?) {
                 if (value != null) {
-                    viewModel.handleAction(RatesViewAction.UpdateCurrency(value.baseCurrency,value.icon))
+                    viewModel.handleAction(RatesViewAction.UpdateCurrency)
                 }
             }
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.handleAction(RatesViewAction.SelectCurrency)
-    }
-
-
-
     companion object {
         fun newInstance() = LatestRatesFragment()
     }
-
-   /* override fun showRates(list: List<RateItem>?) {
-        latestRatesAdapter.submitList(list)
-    }*/
-
-    /*override fun showIcon(icon: Int) {
-        binding.buttonOpenBottomSheetMainScreen.setImageResource(icon)
-    }*/
-
 
     private fun showDialogWarning() {
         val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
-    /*override fun showProgress() {
-        binding.progressBarMainScreen.visibility = View.VISIBLE
-    }*/
-
-    /*override fun hideProgress() {
-        binding.progressBarMainScreen.visibility = View.GONE
-    }*/
-
      private fun showToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 
-
-    /*override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
-        presenter.detachView()
-    }*/
+        Log.d("Spasibo","onDestroy()")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("Spasibo","onDestroyView()")
+    }
 }

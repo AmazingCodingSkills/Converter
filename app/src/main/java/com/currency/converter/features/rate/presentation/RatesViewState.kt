@@ -7,10 +7,6 @@ sealed interface RatesViewState {
 
     object Loading : RatesViewState
 
-
-    object Error : RatesViewState
-
-
     data class Content(val items: List<RateItem>, val icon: Int) : RatesViewState
 
 }
