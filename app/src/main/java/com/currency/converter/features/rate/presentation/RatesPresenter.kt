@@ -1,8 +1,8 @@
 package com.currency.converter.features.rate.presentation
 
-import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
-import com.currency.converter.base.network.NetworkRepositoryImpl
-import com.currency.converter.base.SelectedCurrencyRepositoryImpl
+import com.currency.converter.base.network.NetworkRepository
+import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
+import com.currency.converter.features.rate.domain.UseCaseGetRates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -10,9 +10,9 @@ import kotlinx.coroutines.withContext
 
 
 class RatesPresenter(
-    private val networkRepositoryImpl: NetworkRepositoryImpl,
-    private val selectedCurrencyRepository: SelectedCurrencyRepositoryImpl,
-    private val currencyRatesRepository: CurrencyRatesRepositoryImpl
+    private val networkRepository: NetworkRepository,
+    private val selectedCurrencyRepository: SelectedCurrencyRepository,
+    private val useCaseGetRates: UseCaseGetRates
 ) {
 
     private var view: RateView? = null
@@ -28,9 +28,9 @@ class RatesPresenter(
     fun onSelectedCurrencyShowed(base: String, icon: Int) {
         view?.showProgress() // корутины
         GlobalScope.launch(Dispatchers.IO) {
-            if (!networkRepositoryImpl.isInternetUnavailable()) {
+            if (!networkRepository.isInternetUnavailable()) {
                 try {
-                    val rates = currencyRatesRepository.getRatesCoroutine(base)
+                    val rates = useCaseGetRates.getRates(base)
                     withContext(Dispatchers.Main) {
                         view?.showRates(rates)
                         view?.hideProgress()

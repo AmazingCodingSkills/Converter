@@ -8,14 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.*
-import com.currency.converter.base.observer.EventBus.subject
+import com.currency.converter.base.Observer
+import com.currency.converter.base.SelectedCurrencyRepositoryImpl
 import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.network.NetworkRepositoryImpl
+import com.currency.converter.base.observer.EventBus.subject
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
+import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
 import com.currency.converter.features.rate.domain.RateItem
+import com.currency.converter.features.rate.domain.UseCaseGetRates
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 
@@ -25,9 +28,9 @@ class LatestRatesFragment : Fragment(), RateView {
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
     private val presenter = RatesPresenter(
-        networkRepositoryImpl = NetworkRepositoryImpl(ConverterApplication.application),
+        networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
         selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
-        currencyRatesRepository = CurrencyRatesRepositoryImpl()
+        useCaseGetRates = UseCaseGetRates(FavouriteCurrencyRepositoryImpl(),CurrencyRatesRepositoryImpl())
     )
 
     override fun onCreateView(
