@@ -8,9 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.currency.converter.ConverterApplication
 import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.favoritemodel.CurrencyItem
@@ -19,7 +23,6 @@ import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.network.NetworkRepositoryImpl
 import com.currency.converter.base.showKeyboard
 import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
-import com.example.converter.R
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -35,6 +38,17 @@ class CalculatorFragment : Fragment(), CalculatorView {
         ),
         useCaseGetCurrentRates = UseCaseGetCurrentRates(CurrencyRatesRepositoryImpl())
     )
+    private val viewModel: CalculatorViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+                return CalculatorViewModel(
+                    networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
+                    useCaseGetCurrentRates = UseCaseGetCurrentRates(CurrencyRatesRepositoryImpl())
+                ) as T
+            }
+        }
+    }
+
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher
 
@@ -55,15 +69,17 @@ class CalculatorFragment : Fragment(), CalculatorView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
-        presenter.onDialogWarning()
+        viewModel.handleAction(CalculatorViewAction.InternetError)
+        //presenter.onDialogWarning()
         binding.firstEditText.requestFocus()
         binding.firstEditText.showKeyboard()
         clickSearchButtons()
+
     }
 
     override fun onStart() {
         super.onStart()
-        presenter.onStarted()
+
 
         val firstEditText = binding.firstEditText
         val secondEditText = binding.secondEditText
@@ -71,7 +87,8 @@ class CalculatorFragment : Fragment(), CalculatorView {
         textWatcherOne = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val input = firstEditText.text.toString()
-                presenter.onTextInputChangedOne(input)
+                viewModel.handleAction(CalculatorViewAction.CurrencyConvertedOne(input))
+               // presenter.onTextInputChangedOne(input)
             }
 
             override fun beforeTextChanged(
@@ -89,7 +106,8 @@ class CalculatorFragment : Fragment(), CalculatorView {
         textWatcherTwo = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val input = secondEditText.text.toString()
-                presenter.onTextInputChangedTwo(input)
+                viewModel.handleAction(CalculatorViewAction.CurrencyConvertedTwo(input))
+                //presenter.onTextInputChangedTwo(input)
             }
 
             override fun beforeTextChanged(
@@ -114,17 +132,44 @@ class CalculatorFragment : Fragment(), CalculatorView {
             val item = bundle.getParcelable<CurrencyItem>("SELECTED_CURRENCY")
                 ?: throw IllegalStateException("Selected currency is empty")
             when (tag) {
-                "FROM" -> presenter.setFrom(item.id, binding.firstEditText.text.toString())
-                "TO" -> presenter.setTo(item.id, binding.secondEditText.text.toString())
+                "FROM" -> viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(item.id, binding.firstEditText.text.toString()))
+                "TO" -> viewModel.handleAction(CalculatorViewAction.CurrencySetTo(item.id,binding.secondEditText.text.toString()))//presenter.setTo(item.id, binding.secondEditText.text.toString())
             }
         }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                when (state) {
+                    is CalculatorViewState.Content -> {
+                        state.resultFrom?.let { setResultOneConversion(it) }
+                        state.resultTo?.let { setResultTwoConversion(it) }
+                        setCurrencies(state.to,state.from)
+                    }
+                    is CalculatorViewState.Empty -> {
+                        clearFrom()
+                        clearTo()
+                    }
+
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.events.collect { events ->
+                when (events) {
+                    is CalculatorViewEvent.ShowErrorDialog -> {
+                       showDialog()
+                    }
+                }
+            }
+        }
+
     }
 
     override fun onPause() {
         super.onPause()
         binding.firstEditText.hideKeyboard()
     }
-    fun clickSearchButtons() = with(binding) {
+
+    private fun clickSearchButtons() = with(binding) {
         firstCurrency.setOnClickListener {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "FROM")
@@ -134,14 +179,6 @@ class CalculatorFragment : Fragment(), CalculatorView {
             val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "TO")
         }
-    }
-
-    override fun setDefaultValueFrom(selectedCurrency: String) {
-        binding.firstCurrency.text = selectedCurrency
-    }
-
-    override fun setDefaultValueTo(value: String) {
-        binding.secondCurrency.text = value
     }
 
     private fun TextView.applyWithDisabledTextWatcher(
@@ -156,45 +193,36 @@ class CalculatorFragment : Fragment(), CalculatorView {
         fun newInstance() = CalculatorFragment()
     }
 
-    override fun setResultOneConversion(resultOne: Double) {
-        binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
-            text = entryFormat.format(resultOne)
-        }
+     private fun setResultOneConversion(resultOne: Double) {
+             binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
+                 text = entryFormat.format(resultOne)
+         }
     }
 
-    override fun setResultTwoConversion(resultTwo: Double) {
-        binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
-            text = entryFormat.format(resultTwo)
-        }
+     private fun setResultTwoConversion(resultTwo: Double) {
+             binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
+                 text = entryFormat.format(resultTwo)
+         }
     }
 
 
-    override fun showDialog() {
+     private fun showDialog() {
         val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
-    override fun showToast(message: Int) {
-        Toast.makeText(
-            activity,
-            context?.getString(R.string.message_for_exception_calculator),
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
-
-    override fun setCurrencies(to: String, from: String) {
+     private fun setCurrencies(to: String, from: String) {
         binding.firstCurrency.text = from
         binding.secondCurrency.text = to
     }
 
-    override fun clearFrom() {
+     private fun clearFrom() {
         binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
             text = ""
         }
     }
 
-    override fun clearTo() {
+     private fun clearTo() {
         binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
             text = ""
         }

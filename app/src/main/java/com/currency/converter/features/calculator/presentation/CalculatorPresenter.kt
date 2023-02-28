@@ -21,7 +21,7 @@ class CalculatorPresenter(
 
     fun setFrom(selectedCurrencyFromOne: String, input: String) {
         from = selectedCurrencyFromOne
-        view?.setDefaultValueFrom(from)
+       // view?.setDefaultValueFrom(from)
         if (input.isNotEmpty()) {
             onCurrencyConverted(
                 selectedCurrencyFromOne,
@@ -34,7 +34,7 @@ class CalculatorPresenter(
 
     fun setTo(selectedCurrencyFromTwo: String, input: String) {
         to = selectedCurrencyFromTwo
-        view?.setDefaultValueTo(to)
+       // view?.setDefaultValueTo(to)
         if (input.isNotEmpty()) {
             onCurrencyConverted(
                 selectedCurrencyFromTwo,
@@ -48,8 +48,8 @@ class CalculatorPresenter(
         if (isInputValid(input)) {
             onCurrencyConverted(from, input, to)
         } else {
-            view?.clearFrom()
-            view?.clearTo()
+ //           view?.clearFrom()
+  //          view?.clearTo()
         }
     }
 
@@ -57,8 +57,8 @@ class CalculatorPresenter(
         if (isInputValid(input)) {
             onCurrencyConverted(to, input, from)
         } else {
-            view?.clearFrom()
-            view?.clearTo()
+    //        view?.clearFrom()
+    //        view?.clearTo()
         }
     }
 
@@ -80,25 +80,25 @@ class CalculatorPresenter(
                     )
                     val result = value * currentRates
                     if (from == baseCurrencyCode && to == referenceCurrencyCode) {
-                        view?.setResultOneConversion(result)
+                        //view?.setResultOneConversion(result)
                     } else {
-                        view?.setResultTwoConversion(result)
+                       // view?.setResultTwoConversion(result)
                     }
                 }
             } else {
-                view?.showDialog()
+         //       view?.showDialog()
             }
         }
     }
 
     fun onStarted() {
-        view?.setCurrencies(to, from)
+      //  view?.setCurrencies(to, from)
     }
 
     fun onDialogWarning() {
         GlobalScope.launch(Dispatchers.Main) {
             if (networkRepository.isInternetUnavailable()) {
-                view?.showDialog()
+             //   view?.showDialog()
             }
         }
 
