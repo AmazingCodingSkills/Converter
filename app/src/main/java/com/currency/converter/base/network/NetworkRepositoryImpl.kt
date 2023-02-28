@@ -1,4 +1,4 @@
-package com.currency.converter.base
+package com.currency.converter.base.network
 
 import android.app.Application
 import android.content.Context

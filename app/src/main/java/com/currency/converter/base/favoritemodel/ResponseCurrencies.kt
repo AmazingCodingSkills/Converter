@@ -1,4 +1,4 @@
-package com.currency.converter.base
+package com.currency.converter.base.favoritemodel
 
 
 data class ResponseCurrencies (

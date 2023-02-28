@@ -5,11 +5,11 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.base.RetrofitProvider
-import com.currency.converter.features.rate.data.CountryService
-import com.currency.converter.base.CurrencyItem
-import com.currency.converter.base.MetaCurrenciesResponse
+import com.currency.converter.base.favoritemodel.MetaCurrenciesResponse
+import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.retrofit.RetrofitProvider
 import com.currency.converter.features.rate.countryname.CountryModel
+import com.currency.converter.features.rate.data.CountryService
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call

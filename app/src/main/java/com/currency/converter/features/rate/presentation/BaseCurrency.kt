@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.base.EventBus.subject
+import com.currency.converter.base.observer.EventBus.subject
 import com.currency.converter.features.rate.data.CountryService.countryList
 import com.currency.converter.features.rate.countryname.CountryItem
 import com.currency.converter.features.rate.countryname.CountryModel

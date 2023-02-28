@@ -1,4 +1,4 @@
-package com.currency.converter.base
+package com.currency.converter.base.network
 
 import android.content.Intent
 import android.os.Bundle

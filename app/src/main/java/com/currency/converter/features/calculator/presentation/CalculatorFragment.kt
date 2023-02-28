@@ -12,7 +12,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.*
+import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
+import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
+import com.currency.converter.base.network.NetworkRepositoryImpl
 import com.example.converter.R
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
@@ -26,7 +29,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
     private val presenter = CalculatorPresenter(
         networkRepositoryImpl = NetworkRepositoryImpl(
             ConverterApplication.application
-        ), currencyRatesRepository = CurrencyRatesRepositoryImpl(RateItemMapper())
+        ), currencyRatesRepository = CurrencyRatesRepositoryImpl()
     )
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher

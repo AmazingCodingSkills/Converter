@@ -1,13 +1,17 @@
-package com.currency.converter.base
+package com.currency.converter.base.currency
 
 import com.currency.converter.ConverterApplication
+import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.mappers.RateItemMapper
+import com.currency.converter.base.retrofit.RetrofitProvider
 import com.currency.converter.features.rate.domain.RateItem
 
 
-class CurrencyRatesRepositoryImpl(private val rateItemMapper: RateItemMapper) : CurrencyRatesRepository {
+class CurrencyRatesRepositoryImpl() : CurrencyRatesRepository {
 
     override suspend fun getLatestApiResultCoroutine(base: String): List<RateItem> {
-        return rateItemMapper.map(base)
+        val response = RetrofitProvider.api.getRates(base = base).ratesResponse
+        return RateItemMapper.map(response)
     }
 
     override suspend fun getRatesCoroutine(base: String): List<RateItem> {

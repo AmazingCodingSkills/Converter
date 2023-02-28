@@ -1,4 +1,4 @@
-package com.currency.converter.base
+package com.currency.converter.base.currency
 
 import com.currency.converter.features.rate.domain.RateItem
 

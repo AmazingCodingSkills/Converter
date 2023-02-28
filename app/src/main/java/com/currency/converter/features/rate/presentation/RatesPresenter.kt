@@ -1,8 +1,7 @@
 package com.currency.converter.features.rate.presentation
 
-import android.util.Log
-import com.currency.converter.base.CurrencyRatesRepositoryImpl
-import com.currency.converter.base.NetworkRepositoryImpl
+import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
+import com.currency.converter.base.network.NetworkRepositoryImpl
 import com.currency.converter.base.SelectedCurrencyRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -30,17 +29,9 @@ class RatesPresenter(
         view?.showProgress() // корутины
         GlobalScope.launch(Dispatchers.IO) {
             if (!networkRepositoryImpl.isInternetUnavailable()) {
-                Log.d(
-                    "TAG",
-                    "1" + Thread.currentThread().name
-                ) // посмотреть треды, так как ретрофит тоже их меняет
                 try {
-                    Log.d("TAG", "2" + Thread.currentThread().name)
                     val rates = currencyRatesRepository.getRatesCoroutine(base)
-                    Log.d("TAG", "3" + Thread.currentThread().name)
-
                     withContext(Dispatchers.Main) {
-                        Log.d("TAG", "4" + Thread.currentThread().name)
                         view?.showRates(rates)
                         view?.hideProgress()
                         view?.showIcon(icon)
@@ -48,7 +39,6 @@ class RatesPresenter(
                     }
                 } catch (throwable: Throwable) {
                     withContext(Dispatchers.Main) {
-                        Log.d("TAG", "5" + Thread.currentThread().name)
                         view?.showToast(throwable.toString())
                         view?.hideProgress()
                         view?.showIcon(icon)
