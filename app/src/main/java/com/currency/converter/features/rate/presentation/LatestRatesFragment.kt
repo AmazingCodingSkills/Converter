@@ -1,4 +1,4 @@
-package com.currency.converter.features.rate
+package com.currency.converter.features.rate.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,24 +8,26 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
+import com.currency.converter.base.*
 import com.currency.converter.base.EventBus.subject
-import com.currency.converter.base.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.NetworkRepository
-import com.currency.converter.base.Observer
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
-import com.currency.converter.features.rate.presenter.RatesPresenter
-import com.currency.converter.features.rate.view.RateView
+import com.currency.converter.features.rate.domain.RateItem
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
-import com.example.converter.fragment.BottomSheetCountry
 
 
 class LatestRatesFragment : Fragment(), RateView {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-    private val presenter = RatesPresenter(networkRepository = NetworkRepository(ConverterApplication.application))
+    private val presenter = RatesPresenter(
+        networkRepositoryImpl = NetworkRepositoryImpl(ConverterApplication.application),
+        selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
+        currencyRatesRepository = CurrencyRatesRepositoryImpl(
+            RateItemMapper()
+        )
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,7 @@ class LatestRatesFragment : Fragment(), RateView {
             }
         }
         binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
-            val bottomSheet = BottomSheetCountry()
+            val bottomSheet = BaseCurrency()
             bottomSheet.show(childFragmentManager, "TAG")
 
         }
@@ -89,13 +91,13 @@ class LatestRatesFragment : Fragment(), RateView {
     }
 
     override fun showRefreshing(refreshing: Boolean) {
-       binding.swipeToRefreshMainScreen.isRefreshing = refreshing
+        binding.swipeToRefreshMainScreen.isRefreshing = refreshing
 
     }
 
     override fun showDialogWarning() {
-        val networkAvailabilityDialogFragment =NetworkAvailabilityDialogFragment()
-        networkAvailabilityDialogFragment.show(childFragmentManager,"Dialog")
+        val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
+        networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
     override fun showProgress() {

@@ -1,4 +1,4 @@
-package com.currency.converter.features.favorite
+package com.currency.converter.base
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

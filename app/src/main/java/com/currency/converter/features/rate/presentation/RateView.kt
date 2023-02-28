@@ -1,6 +1,6 @@
-package com.currency.converter.features.rate.view
+package com.currency.converter.features.rate.presentation
 
-import com.currency.converter.features.rate.RateItem
+import com.currency.converter.features.rate.domain.RateItem
 
 interface RateView {
 

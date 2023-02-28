@@ -1,14 +1,15 @@
-package com.currency.converter.features.rate.countryname
+package com.currency.converter.features.rate.presentation
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.currency.converter.features.rate.countryname.CountryAdapter.MyViewHolder
+import com.currency.converter.features.rate.countryname.CountryItem
+import com.currency.converter.features.rate.presentation.BaseCurrencyAdapter.MyViewHolder
 import com.example.converter.R
 import com.example.converter.databinding.ListItemCountryBottomBinding
 
-class CountryAdapter(val onClick: (CountryItem) -> Unit) : RecyclerView.Adapter<MyViewHolder>() {
+class BaseCurrencyAdapter(val onClick: (CountryItem) -> Unit) : RecyclerView.Adapter<MyViewHolder>() {
 
     var countryNames: List<CountryItem> = mutableListOf()
 

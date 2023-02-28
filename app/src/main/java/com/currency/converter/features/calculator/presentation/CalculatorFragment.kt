@@ -1,4 +1,4 @@
-package com.currency.converter.features.calculator
+package com.currency.converter.features.calculator.presentation
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,11 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.NetworkRepository
-import com.currency.converter.features.calculator.presenter.CalculatorPresenter
-import com.currency.converter.features.calculator.view.CalculatorView
-import com.currency.converter.features.favorite.CurrencyItem
+import com.currency.converter.base.*
 import com.example.converter.R
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
@@ -28,9 +24,9 @@ class CalculatorFragment : Fragment(), CalculatorView {
 
     private lateinit var binding: FragmentConverterBinding
     private val presenter = CalculatorPresenter(
-        networkRepository = NetworkRepository(
+        networkRepositoryImpl = NetworkRepositoryImpl(
             ConverterApplication.application
-        )
+        ), currencyRatesRepository = CurrencyRatesRepositoryImpl(RateItemMapper())
     )
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher

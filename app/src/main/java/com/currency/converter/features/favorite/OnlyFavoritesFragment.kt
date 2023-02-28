@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.FAVORITE_CURRENCIES_KEY
+import com.currency.converter.base.CurrencyItem
 import com.example.converter.databinding.FragmentTabLayoutFavoritesBinding
 
 

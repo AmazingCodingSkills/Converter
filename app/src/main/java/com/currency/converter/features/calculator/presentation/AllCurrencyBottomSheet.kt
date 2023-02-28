@@ -1,4 +1,4 @@
-package com.currency.converter.features.calculator
+package com.currency.converter.features.calculator.presentation
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_CURRENCY_FROM_CONVERT
-import com.currency.converter.features.favorite.CurrencyItem
+import com.currency.converter.base.CurrencyItem
 import com.example.converter.databinding.FragmentAllCurrencyBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

@@ -1,4 +1,4 @@
-package com.currency.converter.features.favorite
+package com.currency.converter.features.rate.data
 
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.example.converter.R

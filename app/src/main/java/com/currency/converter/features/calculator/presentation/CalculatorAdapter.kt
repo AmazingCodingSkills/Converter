@@ -1,10 +1,10 @@
-package com.currency.converter.features.calculator
+package com.currency.converter.features.calculator.presentation
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.currency.converter.features.favorite.CurrencyItem
+import com.currency.converter.base.CurrencyItem
 import com.example.converter.R
 import com.example.converter.databinding.ListItemConverterBinding
 

@@ -1,14 +1,20 @@
-package com.currency.converter.features.calculator.presenter
+package com.currency.converter.features.calculator.presentation
 
-import com.currency.converter.base.CurrencyRatesRepository
-import com.currency.converter.base.NetworkRepository
-import com.currency.converter.features.calculator.view.CalculatorView
+import com.currency.converter.base.CurrencyRatesRepositoryImpl
+import com.currency.converter.base.NetworkRepositoryImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class CalculatorPresenter(private val networkRepository: NetworkRepository) {
+class CalculatorPresenter(
+    private val networkRepositoryImpl: NetworkRepositoryImpl,
+    private val currencyRatesRepository: CurrencyRatesRepositoryImpl
+) {
 
     private var view: CalculatorView? = null
     private var from = "USD"
     private var to = "EUR"
+
 
     fun attachView(view: CalculatorView) {
         this.view = view
@@ -39,7 +45,6 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
     }
 
     fun onTextInputChangedOne(input: String) {
-
         if (isInputValid(input)) {
             onCurrencyConverted(from, input, to)
         } else {
@@ -60,28 +65,29 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
     private fun isInputValid(input: String): Boolean =
         input.isNotEmpty() && input != "."
 
-
     private fun onCurrencyConverted(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String
     ) {
         val value = input.toDouble()
-        if (!networkRepository.isInternetUnavailable()) {
-            CurrencyRatesRepository.getCurrentRates(
-                baseCurrencyCode = baseCurrencyCode,
-                referenceCurrencyCode = referenceCurrencyCode
-            ) {
-                val result = value * it
-                if (from == baseCurrencyCode && to == referenceCurrencyCode) {
-                    view?.setResultOneConversion(result)
-                } else {
-                    view?.setResultTwoConversion(result)
+        GlobalScope.launch(Dispatchers.Main) {
+            if (!networkRepositoryImpl.isInternetUnavailable()) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    val currentRates = currencyRatesRepository.getCurrentRatesCoroutine(
+                        baseCurrencyCode,
+                        referenceCurrencyCode
+                    )
+                    val result = value * currentRates
+                    if (from == baseCurrencyCode && to == referenceCurrencyCode) {
+                        view?.setResultOneConversion(result)
+                    } else {
+                        view?.setResultTwoConversion(result)
+                    }
                 }
+            } else {
+                view?.showDialog()
             }
-
-        } else {
-            view?.showDialog()
         }
     }
 
@@ -90,13 +96,15 @@ class CalculatorPresenter(private val networkRepository: NetworkRepository) {
     }
 
     fun onDialogWarning() {
-        if (networkRepository.isInternetUnavailable()) {
-            view?.showDialog()
+        GlobalScope.launch(Dispatchers.Main) {
+            if (networkRepositoryImpl.isInternetUnavailable()) {
+                view?.showDialog()
+            }
         }
+
     }
 
     fun detachView() {
         this.view = null
     }
-
 }

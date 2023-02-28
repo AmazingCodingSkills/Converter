@@ -1,4 +1,4 @@
-package com.currency.converter.features.rate
+package com.currency.converter.base
 
 import java.util.*
 
