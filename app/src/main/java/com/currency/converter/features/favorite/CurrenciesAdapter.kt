@@ -19,7 +19,6 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
         private val binding = ListItemFavoriteBinding.bind(view)
         private lateinit var currency: CurrencyItem
 
-        // Вызывается один раз при создании класса +++
         init {
             binding.favoriteImageButton.setOnClickListener {
                 onItemClickListener(currency)
@@ -39,7 +38,7 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
 
     class Comparator : DiffUtil.ItemCallback<CurrencyItem>() {
         override fun areItemsTheSame(oldItem: CurrencyItem, newItem: CurrencyItem): Boolean {
-            return oldItem == newItem  //equals and hashcode
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: CurrencyItem, newItem: CurrencyItem): Boolean {

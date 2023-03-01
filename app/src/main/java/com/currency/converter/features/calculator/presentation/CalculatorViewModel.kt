@@ -16,18 +16,32 @@ class CalculatorViewModel(
     private var from = "USD"
     private var to = "EUR"
 
-    private val viewState = MutableStateFlow<CalculatorViewState>(CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to))
+    private val viewState = MutableStateFlow<CalculatorViewState>(
+        CalculatorViewState.Content(
+            resultFrom = null,
+            resultTo = null,
+            from = from,
+            to = to
+        )
+    )
     val state: StateFlow<CalculatorViewState> = viewState.asStateFlow()
 
     private val viewEvents = Channel<CalculatorViewEvent>(Channel.UNLIMITED)
     val events: Flow<CalculatorViewEvent> = viewEvents.receiveAsFlow()
 
 
-
     fun handleAction(action: CalculatorViewAction) {
         when (action) {
-            is CalculatorViewAction.CurrencyConvertedOne -> onTextInputChanged(action.input, from, to)
-            is CalculatorViewAction.CurrencyConvertedTwo -> onTextInputChanged(action.input, to, from)
+            is CalculatorViewAction.CurrencyConvertedOne -> onTextInputChanged(
+                action.input,
+                from,
+                to
+            )
+            is CalculatorViewAction.CurrencyConvertedTwo -> onTextInputChanged(
+                action.input,
+                to,
+                from
+            )
             is CalculatorViewAction.CurrencySetFrom -> setFrom(action.currencyCode, action.input)
             is CalculatorViewAction.CurrencySetTo -> setTo(action.currencyCode, action.input)
             is CalculatorViewAction.InternetError -> internetErrorStart()
@@ -37,7 +51,8 @@ class CalculatorViewModel(
 
     private fun setFrom(selectedCurrencyFromOne: String, input: String) {
         from = selectedCurrencyFromOne
-        viewState.value = CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+        viewState.value =
+            CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
         if (input.isNotEmpty()) {
             convertCurrency(
                 selectedCurrencyFromOne,
@@ -47,10 +62,10 @@ class CalculatorViewModel(
         }
     }
 
-
     private fun setTo(selectedCurrencyFromTwo: String, input: String) {
         to = selectedCurrencyFromTwo
-        viewState.value = CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+        viewState.value =
+            CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
         if (input.isNotEmpty()) {
             convertCurrency(
                 selectedCurrencyFromTwo,
@@ -59,7 +74,6 @@ class CalculatorViewModel(
             )
         }
     }
-
 
     private fun onTextInputChanged(input: String, from: String, to: String) {
         if (isInputValid(input)) {

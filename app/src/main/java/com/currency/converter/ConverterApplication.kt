@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.base.favoritemodel.MetaCurrenciesResponse
 import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.favoritemodel.MetaCurrenciesResponse
 import com.currency.converter.base.retrofit.RetrofitProvider
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.data.CountryService
@@ -21,8 +21,7 @@ class ConverterApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         application = this
-        Log.d("APP", "I'ts fine")
-        getAllInformationListApplication()
+        getAllCountryCurrency()
         PreferencesManager.with(this)
         val firstLaunchPref =
             PreferencesManager.get<CountryModel>(BASE_CURRENCIES_FOR_VARIOUS_COUNTRY)
@@ -34,7 +33,7 @@ class ConverterApplication : Application() {
         }
     }
 
-    private fun getAllInformationListApplication() {
+    private fun getAllCountryCurrency() {
         RetrofitProvider.api.getNameCountryCurrency()
             .enqueue(object : Callback<MetaCurrenciesResponse> {
                 override fun onFailure(call: Call<MetaCurrenciesResponse>, t: Throwable) {
@@ -45,10 +44,9 @@ class ConverterApplication : Application() {
                     call: Call<MetaCurrenciesResponse>,
                     response: Response<MetaCurrenciesResponse>
                 ) {
-                    Log.d("responsetat", "OK 3")
                     val response = response.body()?.response
-                    val itemModels: List<CurrencyItem>? = response?.let {
-                        it.fiats.map {
+                    val itemModels: List<CurrencyItem>? = response?.let {responseCurrencies->
+                        responseCurrencies.fiats.map {
                             CurrencyItem(
                                 id = it.value.currency_code,
                                 currencyName = it.value.currency_name,
@@ -62,14 +60,14 @@ class ConverterApplication : Application() {
     }
 
     object PreferencesManager {
+
         lateinit var sp: SharedPreferences
         private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
-        const val SELECT_KEY = "favorite_currencies_key"
-        const val ALL_CURRENCY_KEY = "all_currencies_key"
-        const val FAVORITE_CURRENCIES_KEY = "only_selected_currencies"
-        const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "base_currency"
-        const val SELECT_CURRENCY_FROM_CONVERT = "from_currency_convert"
-        const val SELECT_CURRENCY_TO_CONVERT = "to_currency_convert"
+        const val SELECT_KEY = "FAVORITE_CURRENCIES_KEY"
+        const val ALL_CURRENCY_KEY = "ALL_CURRENCIES_KEY"
+        const val FAVORITE_CURRENCIES_KEY = "ONLY_SELECTED_CURRENCIES"
+        const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "BASE_CURRENCY"
+
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
         }

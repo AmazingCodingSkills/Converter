@@ -1,5 +1,6 @@
 package com.currency.converter.features.favorite
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +8,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.currency.converter.base.VpAdapter
+import com.example.converter.R
 import com.example.converter.databinding.FragmentFavouritesBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MainFavoriteFragment() : Fragment() {
 
-    private val flist = listOf(OnlyFavoritesFragment.newInstance(),CurrenciesFragment.newInstance())
-    private val tList = listOf("Избранное", "Все")
+    private lateinit var flist : List<Fragment>
+    private lateinit var tList : List<String>
     private lateinit var binding: FragmentFavouritesBinding
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        flist = listOf(OnlyFavoritesFragment.newInstance(), CurrenciesFragment.newInstance())
+        tList = listOf(context.getString(R.string.only_favorite), context.getString(R.string.all_favorite))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

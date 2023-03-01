@@ -6,9 +6,11 @@ import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
 
 
 class SelectedCurrencyRepositoryImpl() : SelectedCurrencyRepository {
+
     override suspend fun selectedCurrency(): CountryModel? {
         return ConverterApplication.PreferencesManager.get<CountryModel>(
             ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
         )
     }
+
 }

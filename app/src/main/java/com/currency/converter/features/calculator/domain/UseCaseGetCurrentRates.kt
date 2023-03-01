@@ -7,7 +7,7 @@ class UseCaseGetCurrentRates(private val currencyRatesRepository: CurrencyRatesR
         base: String,
         referenceCurrencyCode: String
     ): Double {
-        val response = currencyRatesRepository.getLatestApiResultCoroutine(base = base)
+        val response = currencyRatesRepository.getLatestApiResult(base = base)
         val findItem = response?.find { it.referenceCurrency.name == referenceCurrencyCode }
         return findItem?.referenceCurrency?.value ?: 0.0
     }

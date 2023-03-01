@@ -43,21 +43,23 @@ class OnlyFavoritesFragment : Fragment() {
             ).orEmpty()
 
         val onlySelectedFavoriteItem = favoriteItemFromSP.filter { it.isFavorite }
-        ConverterApplication.PreferencesManager.put(onlySelectedFavoriteItem,FAVORITE_CURRENCIES_KEY)
+        ConverterApplication.PreferencesManager.put(
+            onlySelectedFavoriteItem,
+            FAVORITE_CURRENCIES_KEY
+        )
         adapterSelectedFavorite.submitList(onlySelectedFavoriteItem)
-
-           displayEmpty(onlySelectedFavoriteItem)
+        displayEmpty(onlySelectedFavoriteItem)
     }
 
-private fun displayEmpty(value: List<CurrencyItem>){
-    if (value.isNotEmpty()) {
-        binding.selectCurrencyRV.visibility = View.VISIBLE
-        binding.hintEmptyScreen.visibility = View.GONE
-    } else {
-        binding.selectCurrencyRV.visibility = View.GONE
-        binding.hintEmptyScreen.visibility = View.VISIBLE
+    private fun displayEmpty(value: List<CurrencyItem>) {
+        if (value.isNotEmpty()) {
+            binding.selectCurrencyRV.visibility = View.VISIBLE
+            binding.hintEmptyScreen.visibility = View.GONE
+        } else {
+            binding.selectCurrencyRV.visibility = View.GONE
+            binding.hintEmptyScreen.visibility = View.VISIBLE
+        }
     }
-}
 
     private fun removeFavorite(removeItem: CurrencyItem) {
         val removeItemFromAllList =

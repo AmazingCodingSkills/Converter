@@ -29,15 +29,10 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 
-class CalculatorFragment : Fragment(), CalculatorView {
+class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentConverterBinding
-    private val presenter = CalculatorPresenter(
-        networkRepository = NetworkRepositoryImpl(
-            ConverterApplication.application
-        ),
-        useCaseGetCurrentRates = UseCaseGetCurrentRates(CurrencyRatesRepositoryImpl())
-    )
+
     private val viewModel: CalculatorViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -62,15 +57,12 @@ class CalculatorFragment : Fragment(), CalculatorView {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentConverterBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.attachView(this)
         viewModel.handleAction(CalculatorViewAction.InternetError)
-        //presenter.onDialogWarning()
         binding.firstEditText.requestFocus()
         binding.firstEditText.showKeyboard()
         clickSearchButtons()
@@ -80,7 +72,6 @@ class CalculatorFragment : Fragment(), CalculatorView {
     override fun onStart() {
         super.onStart()
 
-
         val firstEditText = binding.firstEditText
         val secondEditText = binding.secondEditText
 
@@ -88,7 +79,6 @@ class CalculatorFragment : Fragment(), CalculatorView {
             override fun afterTextChanged(s: Editable?) {
                 val input = firstEditText.text.toString()
                 viewModel.handleAction(CalculatorViewAction.CurrencyConvertedOne(input))
-               // presenter.onTextInputChangedOne(input)
             }
 
             override fun beforeTextChanged(
@@ -107,19 +97,12 @@ class CalculatorFragment : Fragment(), CalculatorView {
             override fun afterTextChanged(s: Editable?) {
                 val input = secondEditText.text.toString()
                 viewModel.handleAction(CalculatorViewAction.CurrencyConvertedTwo(input))
-                //presenter.onTextInputChangedTwo(input)
             }
 
-            override fun beforeTextChanged(
-                text: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
+            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
         }
 
@@ -132,8 +115,18 @@ class CalculatorFragment : Fragment(), CalculatorView {
             val item = bundle.getParcelable<CurrencyItem>("SELECTED_CURRENCY")
                 ?: throw IllegalStateException("Selected currency is empty")
             when (tag) {
-                "FROM" -> viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(item.id, binding.firstEditText.text.toString()))
-                "TO" -> viewModel.handleAction(CalculatorViewAction.CurrencySetTo(item.id,binding.secondEditText.text.toString()))//presenter.setTo(item.id, binding.secondEditText.text.toString())
+                "FROM" -> viewModel.handleAction(
+                    CalculatorViewAction.CurrencySetFrom(
+                        item.id,
+                        binding.firstEditText.text.toString()
+                    )
+                )
+                "TO" -> viewModel.handleAction(
+                    CalculatorViewAction.CurrencySetTo(
+                        item.id,
+                        binding.secondEditText.text.toString()
+                    )
+                )
             }
         }
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -142,13 +135,12 @@ class CalculatorFragment : Fragment(), CalculatorView {
                     is CalculatorViewState.Content -> {
                         state.resultFrom?.let { setResultOneConversion(it) }
                         state.resultTo?.let { setResultTwoConversion(it) }
-                        setCurrencies(state.to,state.from)
+                        setCurrenciesCode(state.to, state.from)
                     }
                     is CalculatorViewState.Empty -> {
                         clearFrom()
                         clearTo()
                     }
-
                 }
             }
         }
@@ -156,7 +148,7 @@ class CalculatorFragment : Fragment(), CalculatorView {
             viewModel.events.collect { events ->
                 when (events) {
                     is CalculatorViewEvent.ShowErrorDialog -> {
-                       showDialog()
+                        showDialog()
                     }
                 }
             }
@@ -193,44 +185,38 @@ class CalculatorFragment : Fragment(), CalculatorView {
         fun newInstance() = CalculatorFragment()
     }
 
-     private fun setResultOneConversion(resultOne: Double) {
-             binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
-                 text = entryFormat.format(resultOne)
-         }
+    private fun setResultOneConversion(resultOne: Double) {
+        binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
+            text = entryFormat.format(resultOne)
+        }
     }
 
-     private fun setResultTwoConversion(resultTwo: Double) {
-             binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
-                 text = entryFormat.format(resultTwo)
-         }
+    private fun setResultTwoConversion(resultTwo: Double) {
+        binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
+            text = entryFormat.format(resultTwo)
+        }
     }
 
-
-     private fun showDialog() {
+    private fun showDialog() {
         val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
-     private fun setCurrencies(to: String, from: String) {
+    private fun setCurrenciesCode(to: String, from: String) {
         binding.firstCurrency.text = from
         binding.secondCurrency.text = to
     }
 
-     private fun clearFrom() {
+    private fun clearFrom() {
         binding.secondEditText.applyWithDisabledTextWatcher(textWatcherTwo) {
             text = ""
         }
     }
 
-     private fun clearTo() {
+    private fun clearTo() {
         binding.firstEditText.applyWithDisabledTextWatcher(textWatcherOne) {
             text = ""
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.detachView()
     }
 }
 

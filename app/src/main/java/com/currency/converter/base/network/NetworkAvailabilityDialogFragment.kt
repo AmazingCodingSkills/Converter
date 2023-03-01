@@ -20,7 +20,7 @@ class NetworkAvailabilityDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        getDialog()!!.getWindow()?.setBackgroundDrawableResource(R.drawable.dialog_corner)
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_corner)
         binding = DialogCustomBinding.inflate(inflater, container, false)
         return binding.root
     }
