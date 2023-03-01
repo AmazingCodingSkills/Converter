@@ -16,13 +16,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getActionBar()?.setTitle("Main")
+        actionBar?.title = "Main"
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val latestValueFragment = LatestRatesFragment.newInstance()
-        val historicalFragment = CalculatorFragment.newInstance()
+        val calculatorFragment = CalculatorFragment.newInstance()
         val settingsFragment = SettingsFragment()
 
         makeCurrentFragment(latestValueFragment)
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     currentTab = R.id.ic_home
                 }
                 R.id.ic_convert -> {
-                    makeCurrentFragment(historicalFragment)
+                    makeCurrentFragment(calculatorFragment)
                     currentTab = R.id.ic_convert
                 }
                 R.id.ic_settings -> {
@@ -48,12 +48,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun makeCurrentFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.bottom_navigation_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
+        private fun makeCurrentFragment(fragment: Fragment) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.bottom_navigation_container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
 }
 
 

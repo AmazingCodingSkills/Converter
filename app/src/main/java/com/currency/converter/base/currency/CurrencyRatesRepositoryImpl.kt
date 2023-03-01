@@ -7,7 +7,7 @@ import com.currency.converter.features.rate.domain.RateItem
 
 class CurrencyRatesRepositoryImpl() : CurrencyRatesRepository {
 
-    override suspend fun getLatestApiResultCoroutine(base: String): List<RateItem> {
+    override suspend fun getLatestApiResult(base: String): List<RateItem> {
         val response = RetrofitProvider.api.getRates(base = base).ratesResponse
         return RateItemMapper.map(response)
     }

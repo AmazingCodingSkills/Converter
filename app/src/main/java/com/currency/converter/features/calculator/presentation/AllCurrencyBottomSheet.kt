@@ -1,7 +1,6 @@
 package com.currency.converter.features.calculator.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
-import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_CURRENCY_FROM_CONVERT
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.currency.converter.base.hideKeyboard
 import com.currency.converter.base.showKeyboard
@@ -58,7 +56,7 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
         binding.apply {
             recyclerAllCurrencies.layoutManager = LinearLayoutManager(activity)
             calculatorAdapter = CalculatorAdapter() { item ->
-                saveFromConvert(item)
+
                 requireActivity().supportFragmentManager.setFragmentResult(
                     "CURRENCY_KEY", bundleOf(
                         "SELECTED_CURRENCY" to item,
@@ -72,7 +70,6 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
 
             calculatorAdapter.addAll(allCountryList)
 
-
             binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
@@ -83,7 +80,6 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
                     return true
                 }
             })
-
         }
     }
 
@@ -103,15 +99,6 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
                 calculatorAdapter.setFilteredList(filteredList)
             }
         }
-    }
-
-
-    private fun saveFromConvert(item: CurrencyItem) {
-        val fromConvertSharedPreference = ConverterApplication.PreferencesManager.put(
-            item,
-            SELECT_CURRENCY_FROM_CONVERT
-        )
-        Log.d("checkShered", "${fromConvertSharedPreference}")
     }
 
     override fun onDestroy() {

@@ -23,6 +23,8 @@
     <string name="hint_converter_entry_value">0</string>
     <string name="list_all_currency">Список всех валют</string>
     <string name="share_app">Поделиться приложением</string>
+    <string name="share_link">market://…</string>
+    <string name="type_plain">"type/plain"</string>
     <string name="hint_empty_screen">Извините, пока нет элементов для отображения. Чтобы выбрать избранные валюты, перейдите во вкладку \'Все\'</string>
     <string name="text_custom_dialog">Включите WI-FI или мобильный интернет</string>
     <string name="hint_empty_screen_converter">Извините, ничего не нашлось. Попробуйте изменить критерии поиска.</string>
@@ -31,4 +33,6 @@
     <string name="heading_dialog_custom">Нет интернет соедениения</string>
     <string name="go_settings_on_internet">НАСТРОЙКИ</string>
     <string name="message_for_exception_calculator">Введите число, которое не начиначется с "." </string>
+    <string name="russia">Россия </string>
+
 </resources>

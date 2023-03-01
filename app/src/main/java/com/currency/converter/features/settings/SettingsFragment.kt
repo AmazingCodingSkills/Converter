@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.converter.R
 import com.example.converter.databinding.FragmentSettingsBinding
 
 
@@ -22,15 +23,13 @@ class SettingsFragment : Fragment(){
         return binding.root
 
     }
-    fun shareApp() = with(binding){
+    private fun shareApp() = with(binding){
         shareButton.setOnClickListener {
            val myIntent = Intent(Intent.ACTION_SEND)
-           myIntent.type = "type/plain"
-           val shareBody = "market://..."
-           val shareSub = "Поделиться приложением"
-           myIntent.putExtra(Intent.EXTRA_TEXT,shareBody)
-           myIntent.putExtra(Intent.EXTRA_SUBJECT,shareSub)
-           startActivity(Intent.createChooser(myIntent,"Share your app"))
+           myIntent.type = getString(R.string.type_plain)
+           myIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_link))
+           myIntent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.share_app))
+           startActivity(Intent.createChooser(myIntent,getString(R.string.share_app)))
        }
     }
 }

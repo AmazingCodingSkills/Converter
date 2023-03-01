@@ -1,7 +1,6 @@
 package com.currency.converter.features.rate.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,7 @@ import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 
 
-class LatestRatesFragment : Fragment(), RateView {
+class LatestRatesFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
@@ -61,7 +60,7 @@ class LatestRatesFragment : Fragment(), RateView {
         super.onViewCreated(view, savedInstanceState)
         initRcView()
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
-         viewModel.handleAction(RatesViewAction.SelectCurrency)
+            viewModel.handleAction(RatesViewAction.SelectCurrency)
         }
         binding.changeCurrencyButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -74,24 +73,6 @@ class LatestRatesFragment : Fragment(), RateView {
             val bottomSheet = BaseCurrency()
             bottomSheet.show(childFragmentManager, "TAG")
         }
-
-       /* viewModel.state.onEach { state ->
-            when (state) {
-                is RatesViewState.Content -> {
-                    latestRatesAdapter.submitList(state.items)
-                    binding.progressBarMainScreen.visibility = View.GONE
-                    binding.buttonOpenBottomSheetMainScreen.setImageResource(state.icon)
-                    binding.swipeToRefreshMainScreen.isRefreshing = false
-                }
-                is RatesViewState.Error -> {
-                    showDialogWarning()
-                    binding.swipeToRefreshMainScreen.isRefreshing = false
-                    showToast(RatesViewState.Error.toString())
-                }
-                else -> {
-                }
-            }
-        }.launchIn(lifecycleScope)*/
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.state.collect { state ->
@@ -118,10 +99,6 @@ class LatestRatesFragment : Fragment(), RateView {
                 }
             }
         }
-
-        // лайфскйлскоп = жц фрагнмента
-        // вьюсайфсайлкскоуп = жц вью
-        // onStart -> OnDestroyView
     }
 
     private fun initRcView() = with(binding) {
@@ -147,17 +124,7 @@ class LatestRatesFragment : Fragment(), RateView {
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
     }
 
-     private fun showToast(message: String) {
+    private fun showToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("Spasibo","onDestroy()")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("Spasibo","onDestroyView()")
     }
 }
