@@ -1,10 +1,11 @@
 package com.currency.converter.features.rate.domain
 
 import com.currency.converter.base.currency.CurrencyRatesRepository
+import javax.inject.Inject
 
-class UseCaseGetRates(
+class UseCaseGetRates @Inject constructor(
     private val favouriteCurrencyRepository: FavouriteCurrencyRepository,
-    private val currencyRatesRepository: CurrencyRatesRepository,
+    private val currencyRatesRepository: CurrencyRatesRepository
 ) {
     suspend operator fun invoke(base: String): List<RateItem> {
         val favorites =

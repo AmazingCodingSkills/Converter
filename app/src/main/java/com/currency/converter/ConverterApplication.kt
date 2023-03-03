@@ -15,8 +15,14 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class ConverterApplication : Application() {
+
+class ConverterApplication @Inject constructor() : Application() {
+
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory().create(application)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -45,7 +51,7 @@ class ConverterApplication : Application() {
                     response: Response<MetaCurrenciesResponse>
                 ) {
                     val response = response.body()?.response
-                    val itemModels: List<CurrencyItem>? = response?.let {responseCurrencies->
+                    val itemModels: List<CurrencyItem>? = response?.let { responseCurrencies ->
                         responseCurrencies.fiats.map {
                             CurrencyItem(
                                 id = it.value.currency_code,

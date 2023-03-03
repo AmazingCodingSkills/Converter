@@ -11,37 +11,39 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.CreationExtras
+import com.currency.converter.CalculatorComponent
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.currency.converter.base.hideKeyboard
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.network.NetworkRepositoryImpl
 import com.currency.converter.base.showKeyboard
-import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import javax.inject.Inject
 
 
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentConverterBinding
 
+    @Inject
+    lateinit var factory: FactoryCalculatorViewModel
+
+    lateinit var calculatorComponent: CalculatorComponent
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        calculatorComponent =
+            (activity?.applicationContext as? ConverterApplication)?.appComponent?.calculatorComponent()
+                ?.build()!!
+        calculatorComponent.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     private val viewModel: CalculatorViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                return CalculatorViewModel(
-                    networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
-                    useCaseGetCurrentRates = UseCaseGetCurrentRates(CurrencyRatesRepositoryImpl())
-                ) as T
-            }
-        }
+        factory
     }
 
     private lateinit var textWatcherOne: TextWatcher
@@ -99,7 +101,12 @@ class CalculatorFragment : Fragment() {
                 viewModel.handleAction(CalculatorViewAction.CurrencyConvertedTwo(input))
             }
 
-            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                text: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {

@@ -1,5 +1,6 @@
 package com.currency.converter.features.rate.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.currency.converter.base.network.NetworkRepository
@@ -9,8 +10,9 @@ import com.currency.converter.features.rate.presentation.RatesViewAction.UpdateC
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RatesViewModel(
+class RatesViewModel @Inject constructor(
     private val networkRepository: NetworkRepository,
     private val selectedCurrencyRepository: SelectedCurrencyRepository,
     private val useCaseGetRates: UseCaseGetRates
@@ -52,6 +54,7 @@ class RatesViewModel(
                 }
             } catch (throwable: Throwable) {
                 viewEvents.trySend(RatesViewEvent.ShowErrorDialog)
+                Log.d("kamshot", "$throwable")
             }
         }
     }

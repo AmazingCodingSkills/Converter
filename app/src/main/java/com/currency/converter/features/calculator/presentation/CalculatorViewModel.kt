@@ -49,28 +49,24 @@ class CalculatorViewModel(
         }
     }
 
-    private fun setFrom(selectedCurrencyFromOne: String, input: String) {
-        from = selectedCurrencyFromOne
-        viewState.value =
-            CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
-        if (input.isNotEmpty()) {
-            convertCurrency(
-                selectedCurrencyFromOne,
-                input,
-                to
-            )
-        }
+    private fun setFrom(base: String, input: String) {
+        from = base
+        viewState.value = CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+        convert(input, base, to)
     }
 
-    private fun setTo(selectedCurrencyFromTwo: String, input: String) {
-        to = selectedCurrencyFromTwo
-        viewState.value =
-            CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+    private fun setTo(referenceCurrency: String, input: String) {
+        to = referenceCurrency
+        viewState.value = CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+        convert(input, referenceCurrency, from)
+    }
+
+    private fun convert(input: String, selectedCurrency: String, referenceCode: String) {
         if (input.isNotEmpty()) {
             convertCurrency(
-                selectedCurrencyFromTwo,
+                selectedCurrency,
                 input,
-                from
+                referenceCode
             )
         }
     }

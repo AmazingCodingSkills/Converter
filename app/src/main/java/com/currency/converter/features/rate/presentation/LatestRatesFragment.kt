@@ -7,46 +7,59 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
+import com.currency.converter.LatestRatesComponent
 import com.currency.converter.base.Observer
-import com.currency.converter.base.SelectedCurrencyRepositoryImpl
-import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.network.NetworkRepositoryImpl
 import com.currency.converter.base.observer.EventBus.subject
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
-import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
-import com.currency.converter.features.rate.domain.UseCaseGetRates
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
+import javax.inject.Inject
+
+// 1 iteration
+
+// посмотрим где сейчас создаем руками сами
+// завести корневой аппкомпонент -> несколько/или один модулей (на примере нетворка)
+// создать рутовый компонент на уровне аппликейшна
+// Заинжектить нетворк в текущий фрагмент
+
+// 2 iteration
+
+// уносим всю фабрику в апп и чистим тут лишнее
+
+// 3 iteration
+
+// разнести апп компонет на разные компоненты и связать их
 
 
-class LatestRatesFragment : Fragment() {
+class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
 
-    private val viewModel: RatesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                return RatesViewModel(
-                    networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
-                    selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
-                    useCaseGetRates = UseCaseGetRates(
-                        FavouriteCurrencyRepositoryImpl(),
-                        CurrencyRatesRepositoryImpl()
-                    )
-                ) as T
-            }
-        }
+    lateinit var latestRatesComponent: LatestRatesComponent
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        latestRatesComponent =
+            (activity?.applicationContext as? ConverterApplication)?.appComponent?.latestRatesComponent()
+                ?.build()!!
+        latestRatesComponent.inject(this)
+        super.onCreate(savedInstanceState)
     }
+
+    @Inject
+    lateinit var factory: FactoryRatesViewModel
+
+
+    private val viewModel: RatesViewModel by viewModels {
+        factory
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,6 +131,7 @@ class LatestRatesFragment : Fragment() {
     companion object {
         fun newInstance() = LatestRatesFragment()
     }
+
 
     private fun showDialogWarning() {
         val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
