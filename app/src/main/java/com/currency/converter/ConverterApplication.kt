@@ -20,13 +20,15 @@ import javax.inject.Inject
 
 class ConverterApplication @Inject constructor() : Application() {
 
-    val appComponent: AppComponent by lazy {
+    lateinit var appComponent: AppComponent
+   /* val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(application)
-    }
+    }*/
 
     override fun onCreate() {
         super.onCreate()
         application = this
+        appComponent = DaggerAppComponent.factory().create(application)
         getAllCountryCurrency()
         PreferencesManager.with(this)
         val firstLaunchPref =

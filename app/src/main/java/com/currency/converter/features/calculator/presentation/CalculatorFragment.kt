@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.currency.converter.CalculatorComponent
 import com.currency.converter.ConverterApplication
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.currency.converter.base.hideKeyboard
@@ -32,13 +31,18 @@ class CalculatorFragment : Fragment() {
     @Inject
     lateinit var factory: FactoryCalculatorViewModel
 
-    lateinit var calculatorComponent: CalculatorComponent
+    lateinit var component: CalculatorComponent
+
+   /*private val component : CalculatorComponent by lazy {
+       DaggerCalculatorComponent.factory().create(
+           (activity?.applicationContext as? ConverterApplication).appComponent
+       )
+   }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        calculatorComponent =
-            (activity?.applicationContext as? ConverterApplication)?.appComponent?.calculatorComponent()
-                ?.build()!!
-        calculatorComponent.inject(this)
+       component = DaggerCalculatorComponent.factory().create(
+                (activity?.applicationContext as? ConverterApplication)?.appComponent)
+        component.inject(this)
         super.onCreate(savedInstanceState)
     }
 

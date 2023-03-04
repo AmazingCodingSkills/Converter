@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.LatestRatesComponent
 import com.currency.converter.base.Observer
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.observer.EventBus.subject
@@ -20,35 +19,24 @@ import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 import javax.inject.Inject
 
-// 1 iteration
-
-// посмотрим где сейчас создаем руками сами
-// завести корневой аппкомпонент -> несколько/или один модулей (на примере нетворка)
-// создать рутовый компонент на уровне аппликейшна
-// Заинжектить нетворк в текущий фрагмент
-
-// 2 iteration
-
-// уносим всю фабрику в апп и чистим тут лишнее
-
-// 3 iteration
-
-// разнести апп компонет на разные компоненты и связать их
-
 
 class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
-
-    lateinit var latestRatesComponent: LatestRatesComponent
+    lateinit var component: LatestRatesComponent
+    /*private val component : LatestRatesComponent by lazy {
+        DaggerLatestRatesComponent.factory().create(
+            (activity?.applicationContext as? ConverterApplication).appComponent
+        )
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        latestRatesComponent =
-            (activity?.applicationContext as? ConverterApplication)?.appComponent?.latestRatesComponent()
-                ?.build()!!
-        latestRatesComponent.inject(this)
+        component = DaggerLatestratesComponent.factory().create(
+            (activity?.applicationContext as? ConverterApplication)?.appComponent)
+        component.inject(this)
+
         super.onCreate(savedInstanceState)
     }
 
