@@ -17,6 +17,8 @@ import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.currency.converter.base.hideKeyboard
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.showKeyboard
+import com.currency.converter.features.calculator.di.CalculatorComponent
+import com.currency.converter.features.calculator.di.DaggerCalculatorComponent
 import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -33,21 +35,14 @@ class CalculatorFragment : Fragment() {
 
     lateinit var component: CalculatorComponent
 
-   /*private val component : CalculatorComponent by lazy {
-       DaggerCalculatorComponent.factory().create(
-           (activity?.applicationContext as? ConverterApplication).appComponent
-       )
-   }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
-       component = DaggerCalculatorComponent.factory().create(
-                (activity?.applicationContext as? ConverterApplication)?.appComponent)
-        component.inject(this)
+        val appComponent = (activity?.applicationContext as? ConverterApplication)?.appComponent!!
+        component = DaggerCalculatorComponent.factory().create(appComponent)
         super.onCreate(savedInstanceState)
     }
 
     private val viewModel: CalculatorViewModel by viewModels {
-        factory
+        component.factoryCalculatorViewModel()
     }
 
     private lateinit var textWatcherOne: TextWatcher

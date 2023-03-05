@@ -1,9 +1,10 @@
-package com.currency.converter.features.calculator.presentation
+package com.currency.converter.features.calculator.di
 
 import com.currency.converter.AppComponent
 import com.currency.converter.FragmentScope
 import com.currency.converter.base.network.NetworkRepository
 import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
+import com.currency.converter.features.calculator.presentation.FactoryCalculatorViewModel
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -29,5 +30,5 @@ interface CalculatorComponent {
         fun create(appComponent: AppComponent): CalculatorComponent
     }
 
-    fun inject(fragment: CalculatorFragment)
+    fun factoryCalculatorViewModel(): FactoryCalculatorViewModel
 }

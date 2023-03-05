@@ -14,9 +14,9 @@ import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
-class LatestRatesAdapter : ListAdapter<RateItem, LatestRatesAdapter.Holder>(Comparator()) {
+class LatestRatesAdapter( val onClick: (RateItem) -> Unit) : ListAdapter<RateItem, LatestRatesAdapter.Holder>(Comparator()) {
 
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ListItemBinding.bind(itemView)
 
         fun bind(item: RateItem) = with(binding) {
@@ -28,6 +28,12 @@ class LatestRatesAdapter : ListAdapter<RateItem, LatestRatesAdapter.Holder>(Comp
             }
             val entryFormat = DecimalFormat("#####.####", symbols)
             currentRate.text = entryFormat.format(item.referenceCurrency.value)
+        }
+
+        init {
+            itemView.setOnClickListener{
+                onClick(getItem(adapterPosition))
+            }
         }
 
     }

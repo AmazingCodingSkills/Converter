@@ -15,6 +15,8 @@ import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
 import com.currency.converter.base.observer.EventBus.subject
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.countryname.CountryModel
+import com.currency.converter.features.rate.di.DaggerLatestRatesComponent
+import com.currency.converter.features.rate.di.LatestRatesComponent
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
 import javax.inject.Inject
@@ -26,26 +28,16 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
     lateinit var component: LatestRatesComponent
-    /*private val component : LatestRatesComponent by lazy {
-        DaggerLatestRatesComponent.factory().create(
-            (activity?.applicationContext as? ConverterApplication).appComponent
-        )
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        component = DaggerLatestratesComponent.factory().create(
-            (activity?.applicationContext as? ConverterApplication)?.appComponent)
-        component.inject(this)
-
+        val appComponent = (activity?.applicationContext as? ConverterApplication)?.appComponent!!
+        component = DaggerLatestRatesComponent.factory().create(appComponent)
         super.onCreate(savedInstanceState)
     }
 
-    @Inject
-    lateinit var factory: FactoryRatesViewModel
-
 
     private val viewModel: RatesViewModel by viewModels {
-        factory
+        component.factoryRatesViewModel()
     }
 
 
@@ -104,7 +96,16 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private fun initRcView() = with(binding) {
         recyclerMainScreen.layoutManager = LinearLayoutManager(activity)
-        latestRatesAdapter = LatestRatesAdapter()
+        latestRatesAdapter = LatestRatesAdapter { item ->
+            val selectCurrencyFragment = SelectCurrencyFragment()
+            val bundle = Bundle()
+            bundle.putString("value", item.referenceCurrency.name)
+            selectCurrencyFragment.arguments = bundle
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.bottom_navigation_container, selectCurrencyFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
         recyclerMainScreen.adapter = latestRatesAdapter
         subject.addObserver(object : Observer<CountryModel?> {
 
@@ -120,6 +121,9 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
         fun newInstance() = LatestRatesFragment()
     }
 
+    private fun clickItem() = with(binding) {
+
+    }
 
     private fun showDialogWarning() {
         val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()

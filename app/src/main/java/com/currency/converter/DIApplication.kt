@@ -26,6 +26,10 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
+    fun networkRepository(): NetworkRepository
+
+    fun currencyRatesRepository(): CurrencyRatesRepository
+
     @Component.Factory
     interface Factory {
         fun create(
