@@ -48,12 +48,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-        private fun makeCurrentFragment(fragment: Fragment) {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.bottom_navigation_container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("selectedItemId", binding.bottomNavigation.selectedItemId)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val selectedItemId = savedInstanceState.getInt("selectedItemId")
+        binding.bottomNavigation.selectedItemId = selectedItemId
+    }
+
+    private fun makeCurrentFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.bottom_navigation_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 }
 
 

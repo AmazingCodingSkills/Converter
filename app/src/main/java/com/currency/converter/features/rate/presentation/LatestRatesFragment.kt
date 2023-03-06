@@ -7,46 +7,35 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.Observer
-import com.currency.converter.base.SelectedCurrencyRepositoryImpl
-import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
+import com.currency.converter.ConverterApplication.PreferencesManager.MY_REQUEST_KEY
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.network.NetworkRepositoryImpl
-import com.currency.converter.base.observer.EventBus.subject
+import com.currency.converter.base.showToast
 import com.currency.converter.features.favorite.MainFavoriteFragment
-import com.currency.converter.features.rate.countryname.CountryModel
-import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
-import com.currency.converter.features.rate.domain.UseCaseGetRates
+import com.currency.converter.features.rate.di.DaggerLatestRatesComponent
+import com.currency.converter.features.rate.di.LatestRatesComponent
 import com.example.converter.R
 import com.example.converter.databinding.FragmentLatestValueBinding
+import javax.inject.Inject
 
 
-class LatestRatesFragment : Fragment() {
+class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
 
-    private val viewModel: RatesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                return RatesViewModel(
-                    networkRepository = NetworkRepositoryImpl(ConverterApplication.application),
-                    selectedCurrencyRepository = SelectedCurrencyRepositoryImpl(),
-                    useCaseGetRates = UseCaseGetRates(
-                        FavouriteCurrencyRepositoryImpl(),
-                        CurrencyRatesRepositoryImpl()
-                    )
-                ) as T
-            }
-        }
+    private val component: LatestRatesComponent by lazy {
+        DaggerLatestRatesComponent.factory()
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
     }
+
+    private val viewModel: RatesViewModel by viewModels {
+        component.factoryRatesViewModel()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +60,7 @@ class LatestRatesFragment : Fragment() {
         }
         binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
             val bottomSheet = BaseCurrency()
-            bottomSheet.show(childFragmentManager, "TAG")
+            bottomSheet.show(parentFragmentManager, "TAG")
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -94,7 +83,10 @@ class LatestRatesFragment : Fragment() {
                     is RatesViewEvent.ShowErrorDialog -> {
                         showDialogWarning()
                         binding.swipeToRefreshMainScreen.isRefreshing = false
-                        showToast(RatesViewEvent.ShowErrorDialog.toString())
+                        context?.showToast(
+                            RatesViewEvent.ShowErrorDialog.toString(),
+                            Toast.LENGTH_LONG
+                        )
                     }
                 }
             }
@@ -103,16 +95,30 @@ class LatestRatesFragment : Fragment() {
 
     private fun initRcView() = with(binding) {
         recyclerMainScreen.layoutManager = LinearLayoutManager(activity)
-        latestRatesAdapter = LatestRatesAdapter()
-        recyclerMainScreen.adapter = latestRatesAdapter
-        subject.addObserver(object : Observer<CountryModel?> {
-
-            override fun update(value: CountryModel?) {
-                if (value != null) {
-                    viewModel.handleAction(RatesViewAction.UpdateCurrency)
-                }
+        latestRatesAdapter = LatestRatesAdapter { item ->
+            val selectCurrencyFragment = SelectCurrencyFragment()
+            val bundle = Bundle().apply {
+                putString("reference", item.referenceCurrency.name)
+                putString("base", item.baseCurrencyName)
             }
-        })
+            selectCurrencyFragment.arguments = bundle
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.bottom_navigation_container, selectCurrencyFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+        recyclerMainScreen.adapter = latestRatesAdapter
+
+        parentFragmentManager.setFragmentResultListener(
+            MY_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { key, result ->
+            val data = result.getSerializable("data")
+            if (data != null) {
+                viewModel.handleAction(RatesViewAction.UpdateCurrency)
+            }
+
+        }
     }
 
     companion object {
@@ -120,11 +126,11 @@ class LatestRatesFragment : Fragment() {
     }
 
     private fun showDialogWarning() {
-        val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
+        val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment().apply {
+            onReload = {
+                viewModel.loadRates()
+            }
+        }
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 }

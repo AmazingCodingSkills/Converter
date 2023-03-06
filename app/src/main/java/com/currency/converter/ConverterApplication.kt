@@ -7,7 +7,6 @@ import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURREN
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.currency.converter.base.favoritemodel.MetaCurrenciesResponse
-import com.currency.converter.base.retrofit.RetrofitProvider
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.data.CountryService
 import com.google.gson.GsonBuilder
@@ -15,8 +14,15 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class ConverterApplication : Application() {
+
+class ConverterApplication @Inject constructor() : Application() {
+
+
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory().create(application)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -34,7 +40,8 @@ class ConverterApplication : Application() {
     }
 
     private fun getAllCountryCurrency() {
-        RetrofitProvider.api.getNameCountryCurrency()
+        val currencyService = appComponent.providesCurrencyService()
+        currencyService.getNameCountryCurrency()
             .enqueue(object : Callback<MetaCurrenciesResponse> {
                 override fun onFailure(call: Call<MetaCurrenciesResponse>, t: Throwable) {
                     Log.d("commontag", "${t}")
@@ -45,7 +52,7 @@ class ConverterApplication : Application() {
                     response: Response<MetaCurrenciesResponse>
                 ) {
                     val response = response.body()?.response
-                    val itemModels: List<CurrencyItem>? = response?.let {responseCurrencies->
+                    val itemModels: List<CurrencyItem>? = response?.let { responseCurrencies ->
                         responseCurrencies.fiats.map {
                             CurrencyItem(
                                 id = it.value.currency_code,
@@ -67,6 +74,7 @@ class ConverterApplication : Application() {
         const val ALL_CURRENCY_KEY = "ALL_CURRENCIES_KEY"
         const val FAVORITE_CURRENCIES_KEY = "ONLY_SELECTED_CURRENCIES"
         const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "BASE_CURRENCY"
+        const val MY_REQUEST_KEY = "my_request_key"
 
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)

@@ -11,9 +11,10 @@ import com.example.converter.R
 import com.example.converter.databinding.DialogCustomBinding
 
 
-class NetworkAvailabilityDialogFragment : DialogFragment() {
+class NetworkAvailabilityDialogFragment() : DialogFragment() {
 
     private lateinit var binding: DialogCustomBinding
+    var onReload: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +31,14 @@ class NetworkAvailabilityDialogFragment : DialogFragment() {
         dialogWork()
     }
 
+
     private fun dialogWork() {
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         binding.repeatCheckInternetBtn.setOnClickListener {
+            onReload?.invoke()
             dismiss()
         }
         binding.goSettingsInternetBtn.setOnClickListener {
