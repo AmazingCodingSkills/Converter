@@ -82,7 +82,7 @@ class CalculatorViewModel(
     private fun isInputValid(input: String): Boolean =
         input.isNotEmpty() && input != "."
 
-    private fun convertCurrency(
+     fun convertCurrency(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String

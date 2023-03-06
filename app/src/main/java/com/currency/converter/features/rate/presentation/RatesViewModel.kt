@@ -37,7 +37,7 @@ class RatesViewModel @Inject constructor(
         }
     }
 
-    private fun loadRates() {
+     fun loadRates() {
         viewModelScope.launch {
             viewState.value = RatesViewState.Loading
             try {

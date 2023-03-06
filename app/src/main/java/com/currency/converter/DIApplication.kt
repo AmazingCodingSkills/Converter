@@ -3,12 +3,17 @@ package com.currency.converter
 import android.app.Application
 import com.currency.converter.base.currency.CurrencyRatesRepository
 import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
+import com.currency.converter.base.currency.CurrencyService
 import com.currency.converter.base.network.NetworkRepository
 import com.currency.converter.base.network.NetworkRepositoryImpl
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Scope
 import javax.inject.Singleton
 
@@ -30,6 +35,9 @@ interface AppComponent {
 
     fun currencyRatesRepository(): CurrencyRatesRepository
 
+    fun providesCurrencyService(): CurrencyService
+
+
     @Component.Factory
     interface Factory {
         fun create(
@@ -49,11 +57,24 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCurrencyRatesRepository(): CurrencyRatesRepository {
-        return CurrencyRatesRepositoryImpl()
+    fun provideCurrencyRatesRepository(currencyService: CurrencyService): CurrencyRatesRepository {
+        return CurrencyRatesRepositoryImpl(currencyService)
     }
 
+    @Provides
+    @Singleton
+    fun providesCurrencyService(): CurrencyService {
+        val retrofit = Retrofit.Builder().baseUrl("https://api.currencyscoop.com/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build()
+            ).build()
+        return retrofit.create(CurrencyService::class.java)
+    }
 }
+
 
 @Scope
 annotation class FragmentScope

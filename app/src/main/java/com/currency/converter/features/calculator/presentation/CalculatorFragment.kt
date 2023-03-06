@@ -23,22 +23,15 @@ import com.example.converter.databinding.FragmentConverterBinding
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
-import javax.inject.Inject
 
 
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentConverterBinding
 
-    @Inject
-    lateinit var factory: FactoryCalculatorViewModel
-
-    lateinit var component: CalculatorComponent
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val appComponent = (activity?.applicationContext as? ConverterApplication)?.appComponent!!
-        component = DaggerCalculatorComponent.factory().create(appComponent)
-        super.onCreate(savedInstanceState)
+    private val component: CalculatorComponent by lazy {
+        DaggerCalculatorComponent.factory()
+            .create((activity?.applicationContext as? ConverterApplication)?.appComponent!!)
     }
 
     private val viewModel: CalculatorViewModel by viewModels {

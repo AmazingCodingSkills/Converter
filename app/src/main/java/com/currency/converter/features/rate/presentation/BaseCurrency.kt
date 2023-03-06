@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.base.observer.EventBus.subject
-import com.currency.converter.features.rate.data.CountryService.countryList
+import com.currency.converter.ConverterApplication.PreferencesManager.MY_REQUEST_KEY
 import com.currency.converter.features.rate.countryname.CountryItem
 import com.currency.converter.features.rate.countryname.CountryModel
+import com.currency.converter.features.rate.data.CountryService.countryList
 import com.example.converter.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -18,6 +18,7 @@ class BaseCurrency : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentBottomSheetBinding
     private lateinit var baseCurrencyAdapter: BaseCurrencyAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +38,10 @@ class BaseCurrency : BottomSheetDialogFragment() {
             recyclerBottomSheetFromFirstScreen.layoutManager = LinearLayoutManager(activity)
             baseCurrencyAdapter = BaseCurrencyAdapter { item ->
                 saveItem(item.countryModel)
-                subject.update(item.countryModel)
+                val result = Bundle().apply {
+                    putSerializable("data", item.countryModel)
+                }
+                parentFragmentManager.setFragmentResult(MY_REQUEST_KEY,result)
                 dismiss()
             }
             recyclerBottomSheetFromFirstScreen.adapter = baseCurrencyAdapter

@@ -7,7 +7,6 @@ import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURREN
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.currency.converter.base.favoritemodel.MetaCurrenciesResponse
-import com.currency.converter.base.retrofit.RetrofitProvider
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.data.CountryService
 import com.google.gson.GsonBuilder
@@ -20,15 +19,14 @@ import javax.inject.Inject
 
 class ConverterApplication @Inject constructor() : Application() {
 
-    lateinit var appComponent: AppComponent
-   /* val appComponent: AppComponent by lazy {
+
+    val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(application)
-    }*/
+    }
 
     override fun onCreate() {
         super.onCreate()
         application = this
-        appComponent = DaggerAppComponent.factory().create(application)
         getAllCountryCurrency()
         PreferencesManager.with(this)
         val firstLaunchPref =
@@ -42,7 +40,8 @@ class ConverterApplication @Inject constructor() : Application() {
     }
 
     private fun getAllCountryCurrency() {
-        RetrofitProvider.api.getNameCountryCurrency()
+        val currencyService = appComponent.providesCurrencyService()
+        currencyService.getNameCountryCurrency()
             .enqueue(object : Callback<MetaCurrenciesResponse> {
                 override fun onFailure(call: Call<MetaCurrenciesResponse>, t: Throwable) {
                     Log.d("commontag", "${t}")
@@ -75,6 +74,7 @@ class ConverterApplication @Inject constructor() : Application() {
         const val ALL_CURRENCY_KEY = "ALL_CURRENCIES_KEY"
         const val FAVORITE_CURRENCIES_KEY = "ONLY_SELECTED_CURRENCIES"
         const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "BASE_CURRENCY"
+        const val MY_REQUEST_KEY = "my_request_key"
 
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)

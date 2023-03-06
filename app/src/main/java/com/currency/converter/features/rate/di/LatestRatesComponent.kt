@@ -35,8 +35,10 @@ class LatestRatesModule {
         FactoryRatesViewModel(networkRepository, selectedCurrencyRepository, useCaseGetRates)
 }
 
+
+
 @FragmentScope
-@Component(dependencies = [AppComponent::class],modules = [LatestRatesModule::class])
+@Component(dependencies = [AppComponent::class], modules = [LatestRatesModule::class])
 interface LatestRatesComponent {
 
     @Component.Factory
@@ -44,6 +46,7 @@ interface LatestRatesComponent {
         fun create(appComponent: AppComponent): LatestRatesComponent
     }
 
-   fun factoryRatesViewModel(): FactoryRatesViewModel
+    fun factoryRatesViewModel(): FactoryRatesViewModel
+
 
 }

@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.Observer
+import com.currency.converter.ConverterApplication.PreferencesManager.MY_REQUEST_KEY
 import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.observer.EventBus.subject
+import com.currency.converter.base.showToast
 import com.currency.converter.features.favorite.MainFavoriteFragment
-import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.di.DaggerLatestRatesComponent
 import com.currency.converter.features.rate.di.LatestRatesComponent
 import com.example.converter.R
@@ -27,14 +26,11 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
     private lateinit var binding: FragmentLatestValueBinding
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
-    lateinit var component: LatestRatesComponent
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val appComponent = (activity?.applicationContext as? ConverterApplication)?.appComponent!!
-        component = DaggerLatestRatesComponent.factory().create(appComponent)
-        super.onCreate(savedInstanceState)
+    private val component: LatestRatesComponent by lazy {
+        DaggerLatestRatesComponent.factory()
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
     }
-
 
     private val viewModel: RatesViewModel by viewModels {
         component.factoryRatesViewModel()
@@ -64,7 +60,7 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
         }
         binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
             val bottomSheet = BaseCurrency()
-            bottomSheet.show(childFragmentManager, "TAG")
+            bottomSheet.show(parentFragmentManager, "TAG")
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -87,7 +83,10 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
                     is RatesViewEvent.ShowErrorDialog -> {
                         showDialogWarning()
                         binding.swipeToRefreshMainScreen.isRefreshing = false
-                        showToast(RatesViewEvent.ShowErrorDialog.toString())
+                        context?.showToast(
+                            RatesViewEvent.ShowErrorDialog.toString(),
+                            Toast.LENGTH_LONG
+                        )
                     }
                 }
             }
@@ -98,8 +97,10 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
         recyclerMainScreen.layoutManager = LinearLayoutManager(activity)
         latestRatesAdapter = LatestRatesAdapter { item ->
             val selectCurrencyFragment = SelectCurrencyFragment()
-            val bundle = Bundle()
-            bundle.putString("value", item.referenceCurrency.name)
+            val bundle = Bundle().apply {
+                putString("reference", item.referenceCurrency.name)
+                putString("base", item.baseCurrencyName)
+            }
             selectCurrencyFragment.arguments = bundle
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.bottom_navigation_container, selectCurrencyFragment)
@@ -107,30 +108,29 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
             transaction.commit()
         }
         recyclerMainScreen.adapter = latestRatesAdapter
-        subject.addObserver(object : Observer<CountryModel?> {
 
-            override fun update(value: CountryModel?) {
-                if (value != null) {
-                    viewModel.handleAction(RatesViewAction.UpdateCurrency)
-                }
+        parentFragmentManager.setFragmentResultListener(
+            MY_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { key, result ->
+            val data = result.getSerializable("data")
+            if (data != null) {
+                viewModel.handleAction(RatesViewAction.UpdateCurrency)
             }
-        })
+
+        }
     }
 
     companion object {
         fun newInstance() = LatestRatesFragment()
     }
 
-    private fun clickItem() = with(binding) {
-
-    }
-
     private fun showDialogWarning() {
-        val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment()
+        val networkAvailabilityDialogFragment = NetworkAvailabilityDialogFragment().apply {
+            onReload = {
+                viewModel.loadRates()
+            }
+        }
         networkAvailabilityDialogFragment.show(childFragmentManager, "Dialog")
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 }
