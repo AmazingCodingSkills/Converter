@@ -11,6 +11,9 @@ import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.data.CountryService
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,13 +23,14 @@ import javax.inject.Inject
 class ConverterApplication @Inject constructor() : Application() {
 
 
-    val appComponent: AppComponent by lazy {
+    val appComponentCreate: AppComponent by lazy {
         DaggerAppComponent.factory().create(application)
     }
 
     override fun onCreate() {
         super.onCreate()
         application = this
+        appComponent = appComponentCreate
         getAllCountryCurrency()
         PreferencesManager.with(this)
         val firstLaunchPref =
@@ -37,10 +41,18 @@ class ConverterApplication @Inject constructor() : Application() {
                 BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
             )
         }
+        val firstLaunchDB = PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
+        GlobalScope.launch(Dispatchers.IO) {
+            if (appComponent.providesRoom().getCurrencyItem().equals(null)) {
+                if (firstLaunchDB != null) {
+                    appComponent.providesRoom().insertAll(firstLaunchDB)
+                }
+            }
+        }
     }
 
     private fun getAllCountryCurrency() {
-        val currencyService = appComponent.providesCurrencyService()
+        val currencyService = appComponentCreate.providesCurrencyService()
         currencyService.getNameCountryCurrency()
             .enqueue(object : Callback<MetaCurrenciesResponse> {
                 override fun onFailure(call: Call<MetaCurrenciesResponse>, t: Throwable) {
@@ -76,6 +88,7 @@ class ConverterApplication @Inject constructor() : Application() {
         const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "BASE_CURRENCY"
         const val MY_REQUEST_KEY = "my_request_key"
 
+
         fun with(application: Application) {
             sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
         }
@@ -93,6 +106,8 @@ class ConverterApplication @Inject constructor() : Application() {
 
     companion object {
         lateinit var application: Application
+            private set
+        lateinit var appComponent: AppComponent
             private set
     }
 }

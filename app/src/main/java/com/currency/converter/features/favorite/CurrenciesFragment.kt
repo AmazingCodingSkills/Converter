@@ -1,16 +1,18 @@
 package com.currency.converter.features.favorite
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.currency.converter.ConverterApplication
-import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_KEY
+import com.currency.converter.ConverterApplication.Companion.appComponent
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class CurrenciesFragment : Fragment() {
@@ -18,7 +20,7 @@ class CurrenciesFragment : Fragment() {
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterCurrencies: CurrenciesAdapter
     private lateinit var allCurrency: List<CurrencyItem>
-    private lateinit var selectFavoriteCurrency: List<CurrencyItem>
+    // private lateinit var selectFavoriteCurrency: List<CurrencyItem>
 
 
     override fun onCreateView(
@@ -44,23 +46,14 @@ class CurrenciesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        allCurrency =
-            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
-                ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
-            ).orEmpty()
-        selectFavoriteCurrency =
-            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(SELECT_KEY)
-                .orEmpty()
-        val chooseFavoriteItem = allCurrency.toMutableList()
-        for (item in selectFavoriteCurrency) {
-            val index = allCurrency.indexOfFirst { it.currencyName == item.currencyName }
-            if (index < 0) {
-                chooseFavoriteItem.add(item)
-            } else {
-                chooseFavoriteItem[index] = item
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val favoriteCurrencyItems = appComponent.providesRoom().getCurrencyItem()
+            /*appComponent.providesRoom().getCurrencyItem()*/
+            withContext(Dispatchers.Main) {
+                adapterCurrencies.submitList(favoriteCurrencyItems)
             }
         }
-        adapterCurrencies.submitList(chooseFavoriteItem)
     }
 
 
@@ -80,10 +73,13 @@ class CurrenciesFragment : Fragment() {
             currencies[updatedElementIndex] =
                 newAllCurrencyItem
         }
-        ConverterApplication.PreferencesManager.put(favoriteAllCurrencies, SELECT_KEY)
-        Log.d("qwerty", "${favoriteAllCurrencies}")
-        //обновляем на UI новым списком
-        adapterCurrencies.submitList(favoriteAllCurrencies)
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            appComponent.providesRoom().insertAll(favoriteAllCurrencies)
+            withContext(Dispatchers.Main) {
+                adapterCurrencies.submitList(favoriteAllCurrencies)
+            }
+        }
     }
 
     companion object {

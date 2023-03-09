@@ -7,10 +7,7 @@ import javax.inject.Inject
 
 class FavouriteCurrencyRepositoryImpl @Inject constructor() : FavouriteCurrencyRepository {
 
-    override fun favouritesCurrency(): List<CurrencyItem>? {
-        return ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
-            ConverterApplication.PreferencesManager.SELECT_KEY
-        )
+    override suspend fun favouritesCurrency(): List<CurrencyItem> {
+        return ConverterApplication.appComponent.providesRoom().getCurrencyItem()
     }
-
 }

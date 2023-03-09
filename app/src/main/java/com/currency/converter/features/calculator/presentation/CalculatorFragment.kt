@@ -31,7 +31,7 @@ class CalculatorFragment : Fragment() {
 
     private val component: CalculatorComponent by lazy {
         DaggerCalculatorComponent.factory()
-            .create((activity?.applicationContext as? ConverterApplication)?.appComponent!!)
+            .create((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!)
     }
 
     private val viewModel: CalculatorViewModel by viewModels {

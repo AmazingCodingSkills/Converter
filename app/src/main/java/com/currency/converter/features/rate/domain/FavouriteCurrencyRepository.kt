@@ -4,6 +4,6 @@ import com.currency.converter.base.favoritemodel.CurrencyItem
 
 interface FavouriteCurrencyRepository {
 
-    fun favouritesCurrency(): List<CurrencyItem>?
+    suspend fun favouritesCurrency(): List<CurrencyItem>?
 
 }

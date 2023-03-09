@@ -18,7 +18,7 @@ class SelectCurrencyFragment() : Fragment() {
 
         private val component: SelectCurrencyComponent by lazy {
             DaggerSelectCurrencyComponent.factory()
-                .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
+                .create(((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!))
         }
     private var argOne : String? = null
     private var argTwo : String? = null
