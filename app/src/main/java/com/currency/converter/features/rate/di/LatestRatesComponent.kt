@@ -4,6 +4,7 @@ import com.currency.converter.AppComponent
 import com.currency.converter.FragmentScope
 import com.currency.converter.base.SelectedCurrencyRepositoryImpl
 import com.currency.converter.base.network.NetworkRepository
+import com.currency.converter.base.room.CurrencyItemDao
 import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
 import com.currency.converter.features.rate.domain.FavouriteCurrencyRepository
 import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
@@ -22,8 +23,8 @@ class LatestRatesModule {
     }
 
     @Provides
-    fun provideFavouriteCurrencyRepository(): FavouriteCurrencyRepository {
-        return FavouriteCurrencyRepositoryImpl()
+    fun provideFavouriteCurrencyRepository(currencyItemDao: CurrencyItemDao): FavouriteCurrencyRepository {
+        return FavouriteCurrencyRepositoryImpl(currencyItemDao)
     }
 
     @Provides

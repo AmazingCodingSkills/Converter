@@ -52,7 +52,7 @@ interface AppComponent {
     }
 }
 
-@Module(includes = [RoomModule::class, RoomModule.RetrofitModule::class])
+@Module(includes = [RoomModule::class, RetrofitModule::class])
 object AppModule {
 
     @Provides
@@ -75,26 +75,27 @@ class RoomModule() {
     fun providesRoom(): CurrencyItemDao {
         val db = Room.databaseBuilder(
             application.applicationContext,
-            AppDatabase::class.java, "CurrencyItem"
+            AppDatabase::class.java, "Favorite"
         ).build()
         return db.currencyItemDao()
     }
 
-    @Module
-    class RetrofitModule() {
+}
 
-        @Provides
-        @Singleton
-        fun providesCurrencyService(): CurrencyService {
-            val retrofit = Retrofit.Builder().baseUrl("https://api.currencyscoop.com/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(
-                    OkHttpClient.Builder()
-                        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                        .build()
-                ).build()
-            return retrofit.create(CurrencyService::class.java)
-        }
+@Module
+class RetrofitModule() {
+
+    @Provides
+    @Singleton
+    fun providesCurrencyService(): CurrencyService {
+        val retrofit = Retrofit.Builder().baseUrl("https://api.currencyscoop.com/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build()
+            ).build()
+        return retrofit.create(CurrencyService::class.java)
     }
 }
 
