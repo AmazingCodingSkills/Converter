@@ -36,8 +36,10 @@ class CalculatorViewModelTest {
     )
 
     private val input = "100"
-    private val from = "RUB"
-    private val to = "AZN"
+    private val selectFrom = "RUB"
+    private val baseFrom = "USD"
+    private val baseTo = "EUR"
+    private val selectTo = "AZN"
     private val currencyRate = 0.83
     private val value = input.toDouble() * currencyRate
 
@@ -45,7 +47,7 @@ class CalculatorViewModelTest {
     fun setup() {
         runBlocking {
             whenever(networkRepository.isInternetAvailable()).thenReturn(true)
-            whenever(useCaseGetCurrentRates.getCurrentRate(from, to)).thenReturn(currencyRate)
+            whenever(useCaseGetCurrentRates.getCurrentRate(selectFrom, selectTo)).thenReturn(currencyRate)
         }
     }
 
@@ -53,14 +55,15 @@ class CalculatorViewModelTest {
     fun `WHEN should it set the value in the FROM`() = runBlocking {
 
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(from, input))
-
+            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
+            //viewModel.handleAction(CalculatorViewAction.CurrencySetTo(to, ""))
+            skipItems(1)
             assertEquals(
                 CalculatorViewState.Content(
-                    from = from,
+                    from = selectFrom,
                     resultFrom = null,
                     resultTo = null,
-                    to = to
+                    to = baseTo
                 ), awaitItem()
             )
         }
@@ -70,27 +73,32 @@ class CalculatorViewModelTest {
     @Test
     fun `WHEN should it set the value in the TO`() = runBlocking {
 
-
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(to, input))
+            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo, ""))
+            skipItems(1)
             assertEquals(
                 CalculatorViewState.Content(
-                    from = from,
+                    from = baseFrom,
                     resultFrom = null,
                     resultTo = null,
-                    to = to
+                    to = selectTo
                 ), awaitItem()
             )
         }
 
     }
 
+    // мне понадобилось ввести переменные с изначально использованными валютами
+    // если этого не сделать нужной реализации достичь не получиться, можно сделать один общий метод
+    // но я думаю, это не совсем то, что нужно
 
+
+    // nameing
     @Test
-    fun `WHEN on text InputChange`() = runBlocking {
+    fun `WHEN input changed FROM should calculate input TO`() = runBlocking {
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(from,""))
-            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(to,""))
+            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom,""))
+            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo,""))
             viewModel.handleAction(CalculatorViewAction.CurrencyConvertedOne(input))
             skipItems(3)
 
@@ -98,12 +106,15 @@ class CalculatorViewModelTest {
                 CalculatorViewState.Content(
                     resultFrom = value,
                     resultTo = null,
-                    from = from,
-                    to = to
+                    from = selectFrom,
+                    to = selectTo
                 ), awaitItem()
             )
         }
     }
+
+
+
 
     @Test
     fun `WHEN no internet connection Should show error`() = runTest {
