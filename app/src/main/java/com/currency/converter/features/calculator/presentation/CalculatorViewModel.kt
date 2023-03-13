@@ -89,7 +89,7 @@ class CalculatorViewModel(
     ) {
         val value = input.toDouble()
         viewModelScope.launch {
-            if (!networkRepository.isInternetUnavailable()) {
+            if (!networkRepository.isInternetAvailable()) {
                 try {
                     val currentRates = useCaseGetCurrentRates.getCurrentRate(
                         baseCurrencyCode,
@@ -123,7 +123,7 @@ class CalculatorViewModel(
 
     private fun internetErrorStart() {
         viewModelScope.launch {
-            if (networkRepository.isInternetUnavailable()) {
+            if (networkRepository.isInternetAvailable()) {
                 viewEvents.trySend(CalculatorViewEvent.ShowErrorDialog)
             }
         }
