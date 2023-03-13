@@ -4,31 +4,26 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface CurrencyItemDao {
 
 
-    @Query("SELECT * FROM Favorite")
-    fun getAllFavorites(): Flow<List<Favorite>>
-
-    @Query("SELECT * FROM Favorite WHERE isFavorite = 1")
-    fun getFavorites(): Flow<List<Favorite>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorite(favorite: Favorite)
 
     @Query("SELECT * FROM Favorite")
-    fun getAll(): List<Favorite>
+    suspend fun getAll(): List<Favorite>
+
+    @Query("SELECT * FROM Favorite WHERE isFavorite = 1")
+    suspend fun getFavoriteItems(): List<Favorite>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(favoriteList: List<Favorite>)
 
-    @Query("SELECT * FROM Favorite")
-    suspend fun getFavoriteItem(): List<Favorite>
-
+    @Query("UPDATE Favorite SET isFavorite = :update WHERE id = :id")
+    suspend fun update(id: String, update: Boolean)
 /*
 
 

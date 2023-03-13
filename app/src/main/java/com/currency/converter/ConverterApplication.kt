@@ -44,7 +44,7 @@ class ConverterApplication @Inject constructor() : Application() {
         }
         val firstLaunchDB = PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
         GlobalScope.launch(Dispatchers.IO) {
-            if (appComponent.providesRoom().getAll().isNullOrEmpty()) {
+            if (appComponent.providesRoom().getAll().isEmpty()) {
                 if (firstLaunchDB != null) {
                     appComponent.providesRoom().insertAll(firstLaunchDB.map { Favorite(it.id,it.currencyName,it.isFavorite) })
                 }

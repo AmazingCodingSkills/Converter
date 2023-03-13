@@ -8,6 +8,8 @@ import javax.inject.Inject
 class FavouriteCurrencyRepositoryImpl @Inject constructor(private val currencyItemDao: CurrencyItemDao) : FavouriteCurrencyRepository {
 
     override suspend fun favouritesCurrency(): List<CurrencyItem> {
-        return currencyItemDao.getFavoriteItem().map { CurrencyItem(it.id,it.currencyName,it.isFavorite) }
+        return currencyItemDao.getFavoriteItems().map { CurrencyItem(it.id,it.currencyName,it.isFavorite) }
     }
+
+
 }

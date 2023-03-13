@@ -10,9 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication.Companion.appComponent
 import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.room.Favorite
 import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,7 +22,9 @@ class CurrenciesFragment() : Fragment() {
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterCurrencies: CurrenciesAdapter
 
-    private lateinit var favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository = FavoriteRepository(
+        appComponent.providesRoom()
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,24 +49,12 @@ class CurrenciesFragment() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // замените это на желаемое значение isFavorite
-        favoriteRepository = FavoriteRepository(
-            appComponent.providesRoom()
-        )
-        lifecycleScope.launch {
-            favoriteRepository.favorites.collectLatest { favorites ->
-                adapterCurrencies.submitList(favorites.map { CurrencyItem(it.id, it.currencyName, it.isFavorite) })
-            }
-        }
+
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            /* val id =
-                 appComponent.providesRoom().getAll().firstOrNull()?.id ?: ""// замените это на реальный ID вашей сущности
-             val isFavorite = false
-             updateIsFavoriteForAll(isFavorite)*/
+
             val favoriteCurrencyItems = appComponent.providesRoom().getAll().map {
                 CurrencyItem(it.id, it.currencyName, it.isFavorite)
             }
-         //  appComponent.providesRoom().getCurrencyItem()
             withContext(Dispatchers.Main) {
                 adapterCurrencies.submitList(favoriteCurrencyItems)
             }
@@ -90,13 +80,15 @@ class CurrenciesFragment() : Fragment() {
         }
 
         adapterCurrencies.submitList(favoriteAllCurrencies)
-       /* viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val x = favoriteAllCurrencies.map { Favorite(it.id, it.currencyName, it.isFavorite) }
-            appComponent.providesRoom().insertAll(x)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val listFavorite =
+                favoriteAllCurrencies.map { Favorite(it.id, it.currencyName, it.isFavorite) }
+            val favoriteItem = listFavorite[updatedElementIndex]
+            favoriteRepository.update(favoriteItem.id,favoriteItem.isFavorite)
             withContext(Dispatchers.Main) {
                 adapterCurrencies.submitList(favoriteAllCurrencies)
             }
-        }*/
+        }
     }
 
     /*   private fun updateIsFavorite(id: String, isFavorite: Boolean) {
