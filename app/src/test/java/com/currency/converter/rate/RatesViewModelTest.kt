@@ -36,7 +36,7 @@ class RatesViewModelTest {
     @get:Rule
     var rule = CoroutineDispatchersRule()
 
-    // deps
+
     private val networkRepository: NetworkRepository = mock()
     private val selectedCurrencyRepository: SelectedCurrencyRepository = mock()
     private val useCaseGetRates: UseCaseGetRates = mock()
@@ -61,7 +61,7 @@ class RatesViewModelTest {
         )
     )
 
-    // перед каждым тестом
+
     @Before
     fun setup() {
         runBlocking {
@@ -93,6 +93,7 @@ class RatesViewModelTest {
 
     @Test
     fun `WHEN change currency Should recalculate currency rates`() = runTest {
+
         initViewModel()
 
         viewModel.state.test {
@@ -113,7 +114,7 @@ class RatesViewModelTest {
         }
     }
 
-    // Не был обработан вообще
+
     @Test
     fun `WHEN selected currency is empty Should show error`() = runTest {
         whenever(selectedCurrencyRepository.selectedCurrency()).thenReturn(null)

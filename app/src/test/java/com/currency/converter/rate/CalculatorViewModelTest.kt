@@ -31,7 +31,7 @@ class CalculatorViewModelTest {
     private val networkRepository: NetworkRepository = mock()
     private val useCaseGetCurrentRates: UseCaseGetCurrentRates = mock()
 
-    private var viewModel =  CalculatorViewModel(
+    private var viewModel = CalculatorViewModel(
         networkRepository = networkRepository,
         useCaseGetCurrentRates = useCaseGetCurrentRates
     )
@@ -48,17 +48,38 @@ class CalculatorViewModelTest {
     fun setup() {
         runBlocking {
             whenever(networkRepository.isInternetAvailable()).thenReturn(true)
-            whenever(useCaseGetCurrentRates.getCurrentRate(selectFrom, selectTo)).thenReturn(currencyRate)
+            whenever(useCaseGetCurrentRates.getCurrentRate(selectFrom, selectTo)).thenReturn(
+                currencyRate
+            )
         }
     }
 
+
     @Test
-    fun `WHEN should it set the value in the FROM`() = runBlocking {
+    fun `WHEN open tab calculator Should be installed base currency`() = runBlocking {
+
+        viewModel.state.test {
+            assertEquals(
+                CalculatorViewState.Content(
+                    from = baseFrom,
+                    resultFrom = null,
+                    resultTo = null,
+                    to = baseTo
+                ), awaitItem()
+            )
+        }
+
+    }
+
+
+    @Test
+    fun `WHEN change currency FROM should  set selected currency FROM`() = runBlocking {
 
         viewModel.state.test {
             viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
-            //viewModel.handleAction(CalculatorViewAction.CurrencySetTo(to, ""))
+
             skipItems(1)
+
             assertEquals(
                 CalculatorViewState.Content(
                     from = selectFrom,
@@ -72,11 +93,13 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `WHEN should it set the value in the TO`() = runBlocking {
+    fun `WHEN change currency TO should  set selected currency TO`() = runBlocking {
 
         viewModel.state.test {
             viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo, ""))
+
             skipItems(1)
+
             assertEquals(
                 CalculatorViewState.Content(
                     from = baseFrom,
@@ -89,18 +112,14 @@ class CalculatorViewModelTest {
 
     }
 
-    // мне понадобилось ввести переменные с изначально использованными валютами
-    // если этого не сделать нужной реализации достичь не получиться, можно сделать один общий метод
-    // но я думаю, это не совсем то, что нужно
 
-
-    // nameing
     @Test
     fun `WHEN input changed FROM should calculate input TO`() = runBlocking {
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom,""))
-            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo,""))
+            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
+            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo, ""))
             viewModel.handleAction(CalculatorViewAction.CurrencyConvertedOne(input))
+
             skipItems(3)
 
             assertEquals(
@@ -114,7 +133,25 @@ class CalculatorViewModelTest {
         }
     }
 
+    @Test
+    fun `WHEN input changed TO should calculate input FROM`() = runBlocking {
+        viewModel.state.test {
+            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectFrom, ""))
+            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectTo, ""))
+            viewModel.handleAction(CalculatorViewAction.CurrencyConvertedTwo(input))
 
+            skipItems(3)
+
+            assertEquals(
+                CalculatorViewState.Content(
+                    resultFrom = null,
+                    resultTo = value,
+                    from = selectTo,
+                    to = selectFrom
+                ), awaitItem()
+            )
+        }
+    }
 
 
     @Test
@@ -129,144 +166,3 @@ class CalculatorViewModelTest {
 }
 
 
-/*class CalculatorViewModelTest {
-
-    // Здесь нужно создать фиктивные зависимости для NetworkRepository и UseCaseGetCurrentRates,
-    // которые будут возвращать предопределенные результаты, чтобы мы могли тестировать
-    // взаимодействие с ними.
-
-    private val networkRepository = mockk<NetworkRepository>()
-    private val useCaseGetCurrentRates = mockk<UseCaseGetCurrentRates>()
-
-    private val viewModel = CalculatorViewModel(networkRepository, useCaseGetCurrentRates)
-
-    @Test
-    fun `test setFrom() function`() {
-        viewModel.setFrom("EUR", "100")
-        val expectedState = CalculatorViewState.Content(null, null, "EUR", "EUR")
-        assertEquals(expectedState, viewModel.state.value)
-
-        viewModel.setFrom("USD", "50")
-        val expectedState2 = CalculatorViewState.Content(null, null, "USD", "EUR")
-        assertEquals(expectedState2, viewModel.state.value)
-    }
-
-    @Test
-    fun `test setTo() function`() {
-        viewModel.setTo("GBP", "100")
-        val expectedState = CalculatorViewState.Content(null, null, "USD", "GBP")
-        assertEquals(expectedState, viewModel.state.value)
-
-        viewModel.setTo("CAD", "50")
-        val expectedState2 = CalculatorViewState.Content(null, null, "USD", "CAD")
-        assertEquals(expectedState2, viewModel.state.value)
-    }
-
-    @Test
-    fun `test onTextInputChanged() function with valid input`() {
-        viewModel.onTextInputChanged("50",*/
-
-
-/*class CalculatorViewModelTest {
-
-    @Mock
-    private lateinit var mockNetworkRepository: NetworkRepository
-
-    @Mock
-    private lateinit var mockUseCaseGetCurrentRates: UseCaseGetCurrentRates
-
-    private lateinit var calculatorViewModel: CalculatorViewModel
-
-    @BeforeEach
-    fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        calculatorViewModel = CalculatorViewModel(mockNetworkRepository, mockUseCaseGetCurrentRates)
-    }
-
-    @Test
-    fun `test setFrom`() = runBlocking {
-        val input = "100"
-        val base = "EUR"
-        val to = "USD"
-
-        calculatorViewModel.handleAction(CalculatorViewAction.CurrencySetFrom(base, input))
-
-        assertEquals(
-            CalculatorViewState.Content(
-                resultFrom = input.toDouble(),
-                resultTo = null,
-                from = base,
-                to = to
-            ),
-            calculatorViewModel.state.first()
-        )
-    }
-
-    @Test
-    fun `test setTo`() = runBlocking {
-        val input = "100"
-        val from = "USD"
-        val referenceCurrency = "EUR"
-
-        calculatorViewModel.handleAction(CalculatorViewAction.CurrencySetTo(referenceCurrency, input))
-
-        assertEquals(
-            CalculatorViewState.Content(
-                resultFrom = null,
-                resultTo = input.toDouble(),
-                from = from,
-                to = referenceCurrency
-            ),
-            calculatorViewModel.state.first()
-        )
-    }
-
-    @Test
-    fun `test convertCurrency with internet connection`() = runBlocking {
-        val input = "100"
-        val baseCurrencyCode = "USD"
-        val referenceCurrencyCode = "EUR"
-        val currentRate = 0.83
-
-        `when`(mockNetworkRepository.isInternetAvailable()).thenReturn(true)
-        `when`(mockUseCaseGetCurrentRates.getCurrentRate(baseCurrencyCode, referenceCurrencyCode)).thenReturn(currentRate)
-
-        calculatorViewModel.convertCurrency(baseCurrencyCode, input, referenceCurrencyCode)
-
-        assertEquals(
-            CalculatorViewState.Content(
-                resultFrom = null,
-                resultTo = input.toDouble() * currentRate,
-                from = baseCurrencyCode,
-                to = referenceCurrencyCode
-            ),
-            calculatorViewModel.state.first()
-        )
-    }
-
-    @Test
-    fun `test convertCurrency without internet connection`() = runBlocking {
-        val input = "100"
-        val baseCurrencyCode = "USD"
-        val referenceCurrencyCode = "EUR"
-        val exception = IOException("No internet connection")
-
-        `when`(mockNetworkRepository.isInternetAvailable()).thenReturn(false)
-
-        calculatorViewModel.convertCurrency(baseCurrencyCode, input, referenceCurrencyCode)
-
-        assertEquals(
-            CalculatorViewEvent.ShowErrorDialog,
-            calculatorViewModel.events.first()
-        )
-    }
-
-    @Test
-    fun `test convertCurrency with exception`() = runBlocking {
-        val input = "100"
-        val baseCurrencyCode = "USD"
-        val referenceCurrencyCode = "EUR"
-        val exception = IOException("No internet connection")
-
-        `when`(mockNetworkRepository.isInternetAvailable()).thenReturn(true)
-        `when`(mockUseCaseGetCurrentRates.getCurrentRate(base*/
