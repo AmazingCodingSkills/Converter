@@ -25,9 +25,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.util.*
 
-// junit - это фреймворк для тестирования
-// mockito - это фреймворк для создания моков
-// turbine - это фреймворк для тестирования flow
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
