@@ -1,21 +1,28 @@
 package com.currency.converter.features.favorite
 
+import CurrenciesAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.ConverterApplication.PreferencesManager.FAVORITE_CURRENCIES_KEY
 import com.currency.converter.base.favoritemodel.CurrencyItem
 import com.example.converter.databinding.FragmentTabLayoutFavoritesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class OnlyFavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentTabLayoutFavoritesBinding
     private lateinit var adapterSelectedFavorite: CurrenciesAdapter
+
+
+    private val component = ConverterApplication.appComponent.provideFavouriteCurrencyRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,22 +40,21 @@ class OnlyFavoritesFragment : Fragment() {
             binding.selectCurrencyRV.adapter = adapterSelectedFavorite
             this.itemAnimator = null
         }
+
     }
 
     override fun onResume() {
         super.onResume()
-        val favoriteItemFromSP =
-            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
-                ConverterApplication.PreferencesManager.SELECT_KEY
-            ).orEmpty()
 
-        val onlySelectedFavoriteItem = favoriteItemFromSP.filter { it.isFavorite }
-        ConverterApplication.PreferencesManager.put(
-            onlySelectedFavoriteItem,
-            FAVORITE_CURRENCIES_KEY
-        )
-        adapterSelectedFavorite.submitList(onlySelectedFavoriteItem)
-        displayEmpty(onlySelectedFavoriteItem)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val listFavourite = component.getFavoriteItems()
+            withContext(Dispatchers.Main) {
+                val listFavouriteForUI =
+                    listFavourite.map { CurrencyItem(it.id, it.currencyName, it.isFavorite) }
+                adapterSelectedFavorite.submitList(listFavouriteForUI)
+                displayEmpty(listFavouriteForUI)
+            }
+        }
     }
 
     private fun displayEmpty(value: List<CurrencyItem>) {
@@ -61,18 +67,22 @@ class OnlyFavoritesFragment : Fragment() {
         }
     }
 
-    private fun removeFavorite(removeItem: CurrencyItem) {
+    private fun removeFavorite(item: CurrencyItem) {
+
         val removeItemFromAllList =
             adapterSelectedFavorite.currentList.toMutableList()
         val removeElementIndex =
-            removeItemFromAllList.indexOf(removeItem)
+            removeItemFromAllList.indexOf(item)
         removeItemFromAllList.removeAt(removeElementIndex)
-        ConverterApplication.PreferencesManager.put(
-            removeItemFromAllList,
-            ConverterApplication.PreferencesManager.SELECT_KEY
-        )
         adapterSelectedFavorite.submitList(removeItemFromAllList)
         displayEmpty(removeItemFromAllList)
+        updateIsFavorite(item.id, !item.isFavorite)
+    }
+
+    private fun updateIsFavorite(id: String, isFavorite: Boolean) {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            component.update(id, isFavorite)
+        }
     }
 
     companion object {

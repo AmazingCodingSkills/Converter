@@ -29,7 +29,7 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private val component: LatestRatesComponent by lazy {
         DaggerLatestRatesComponent.factory()
-            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!))
     }
 
     private val viewModel: RatesViewModel by viewModels {

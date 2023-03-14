@@ -1,11 +1,17 @@
 package com.currency.converter
 
 import android.app.Application
+import androidx.room.Room
+import com.currency.converter.ConverterApplication.Companion.application
 import com.currency.converter.base.currency.CurrencyRatesRepository
 import com.currency.converter.base.currency.CurrencyRatesRepositoryImpl
 import com.currency.converter.base.currency.CurrencyService
 import com.currency.converter.base.network.NetworkRepository
 import com.currency.converter.base.network.NetworkRepositoryImpl
+import com.currency.converter.base.room.AppDatabase
+import com.currency.converter.base.room.CurrencyItemDao
+import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
+import com.currency.converter.features.rate.domain.FavouriteCurrencyRepository
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
@@ -17,15 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Scope
 import javax.inject.Singleton
 
-// AppCompoent (deps) -> Rates (deps) | Calculator (deps)
-
-// minunes
-// - build time
-// - links
-// 1 file
-
-
-// AppComponent (deps) |  AppCompoent -> Rates(deps)  | AppCompoent -> Calculator (deps)
 
 @Singleton
 @Component(modules = [AppModule::class])
@@ -37,6 +34,9 @@ interface AppComponent {
 
     fun providesCurrencyService(): CurrencyService
 
+    fun providesRoom(): CurrencyItemDao
+
+    fun provideFavouriteCurrencyRepository(): FavouriteCurrencyRepository
 
     @Component.Factory
     interface Factory {
@@ -46,7 +46,7 @@ interface AppComponent {
     }
 }
 
-@Module
+@Module(includes = [RoomModule::class, RetrofitModule::class])
 object AppModule {
 
     @Provides
@@ -63,6 +63,31 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideFavouriteCurrencyRepository(currencyItemDao: CurrencyItemDao): FavouriteCurrencyRepository {
+        return FavouriteCurrencyRepositoryImpl(currencyItemDao)
+    }
+
+}
+
+@Module
+class RoomModule() {
+    @Provides
+    @Singleton
+    fun providesRoom(): CurrencyItemDao {
+        val db = Room.databaseBuilder(
+            application.applicationContext,
+            AppDatabase::class.java, "Favorite"
+        ).build()
+        return db.currencyItemDao()
+    }
+
+}
+
+@Module
+class RetrofitModule() {
+
+    @Provides
+    @Singleton
     fun providesCurrencyService(): CurrencyService {
         val retrofit = Retrofit.Builder().baseUrl("https://api.currencyscoop.com/v1/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -74,7 +99,6 @@ object AppModule {
         return retrofit.create(CurrencyService::class.java)
     }
 }
-
 
 @Scope
 annotation class FragmentScope

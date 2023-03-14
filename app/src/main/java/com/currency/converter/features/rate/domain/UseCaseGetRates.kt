@@ -9,7 +9,7 @@ class UseCaseGetRates @Inject constructor(
 ) {
     suspend operator fun invoke(base: String): List<RateItem> {
         val favorites =
-            favouriteCurrencyRepository.favouritesCurrency()?.filter { it.isFavorite }.orEmpty()
+            favouriteCurrencyRepository.favouritesCurrency().orEmpty()
         val response = currencyRatesRepository.getLatestApiResult(base)
         val favoriteCurrencies = response.filter { item ->
             favorites.find { favorite -> item.referenceCurrency.name == favorite.id } != null

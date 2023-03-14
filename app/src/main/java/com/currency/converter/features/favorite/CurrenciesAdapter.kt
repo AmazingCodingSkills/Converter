@@ -1,5 +1,3 @@
-package com.currency.converter.features.favorite
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +11,16 @@ import com.example.converter.databinding.ListItemFavoriteBinding
 class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyItem) -> Unit) :
     ListAdapter<CurrencyItem, CurrenciesAdapter.Holder>(Comparator()) {
 
-    class Holder(view: View, private val onItemClickListener: (CurrencyItem) -> Unit) :
+
+    inner class Holder(view: View, private val onItemClickListener: (CurrencyItem) -> Unit) :
         RecyclerView.ViewHolder(view) {
 
         private val binding = ListItemFavoriteBinding.bind(view)
         private lateinit var currency: CurrencyItem
 
+
         init {
-            binding.favoriteImageButton.setOnClickListener {
+            binding.root.setOnClickListener {
                 onItemClickListener(currency)
             }
         }
@@ -55,9 +55,7 @@ class CurrenciesAdapter constructor(private val onItemClickListener: (CurrencyIt
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(getItem(position))
-
     }
 }
-
 
 

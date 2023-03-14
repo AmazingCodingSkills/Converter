@@ -4,8 +4,6 @@ import com.currency.converter.AppComponent
 import com.currency.converter.FragmentScope
 import com.currency.converter.base.SelectedCurrencyRepositoryImpl
 import com.currency.converter.base.network.NetworkRepository
-import com.currency.converter.features.rate.data.FavouriteCurrencyRepositoryImpl
-import com.currency.converter.features.rate.domain.FavouriteCurrencyRepository
 import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
 import com.currency.converter.features.rate.domain.UseCaseGetRates
 import com.currency.converter.features.rate.presentation.FactoryRatesViewModel
@@ -21,10 +19,6 @@ class LatestRatesModule {
         return SelectedCurrencyRepositoryImpl()
     }
 
-    @Provides
-    fun provideFavouriteCurrencyRepository(): FavouriteCurrencyRepository {
-        return FavouriteCurrencyRepositoryImpl()
-    }
 
     @Provides
     fun factoryRatesViewModel(

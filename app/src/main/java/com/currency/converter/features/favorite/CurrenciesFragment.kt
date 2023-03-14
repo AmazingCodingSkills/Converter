@@ -1,25 +1,28 @@
 package com.currency.converter.features.favorite
 
+import CurrenciesAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.currency.converter.ConverterApplication
-import com.currency.converter.ConverterApplication.PreferencesManager.SELECT_KEY
+import com.currency.converter.ConverterApplication.Companion.appComponent
 import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.currency.converter.base.room.Favorite
 import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-class CurrenciesFragment : Fragment() {
+class CurrenciesFragment() : Fragment() {
 
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterCurrencies: CurrenciesAdapter
-    private lateinit var allCurrency: List<CurrencyItem>
-    private lateinit var selectFavoriteCurrency: List<CurrencyItem>
 
+    private val component = appComponent.provideFavouriteCurrencyRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,53 +40,48 @@ class CurrenciesFragment : Fragment() {
                 updateFavorite(item)
             })
             binding.recyclerListCurrency.adapter = adapterCurrencies
-            this.itemAnimator =
-                null // это позволяет в Recycler View убрать анимацию клика одного контейнера
+            this.itemAnimator = null
         }
     }
 
     override fun onResume() {
         super.onResume()
-        allCurrency =
-            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(
-                ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
-            ).orEmpty()
-        selectFavoriteCurrency =
-            ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(SELECT_KEY)
-                .orEmpty()
-        val chooseFavoriteItem = allCurrency.toMutableList()
-        for (item in selectFavoriteCurrency) {
-            val index = allCurrency.indexOfFirst { it.currencyName == item.currencyName }
-            if (index < 0) {
-                chooseFavoriteItem.add(item)
-            } else {
-                chooseFavoriteItem[index] = item
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val favoriteCurrencyItems = component.getAll().map {
+                CurrencyItem(it.id, it.currencyName, it.isFavorite)
+            }
+            withContext(Dispatchers.Main) {
+                adapterCurrencies.submitList(favoriteCurrencyItems)
             }
         }
-        adapterCurrencies.submitList(chooseFavoriteItem)
     }
 
 
-    private fun updateFavorite(updatedItem: CurrencyItem) {
+    private fun updateFavorite(item: CurrencyItem) {
         val currentAllCurrencyItem =
-            adapterCurrencies.currentList // [0]..[178], [0] - currencyItem1, [1] - currencyItem2
+            adapterCurrencies.currentList
         val updatedElementIndex =
-            currentAllCurrencyItem.indexOf(updatedItem) // индекс для конкретного элемента, который сейчас выбран
-        //делаем избранным
-        // CurrencyItem("RUB", false) - before
-        // CurrentItem("RUB",true) - after
-        val newAllCurrencyItem = updatedItem.copy(
-            isFavorite = updatedItem.isFavorite.not()
+            currentAllCurrencyItem.indexOf(item)
+
+        val newAllCurrencyItem = item.copy(
+            isFavorite = item.isFavorite.not()
         )
-        //создаем новый список с измененным элементом
+
         val favoriteAllCurrencies = currentAllCurrencyItem.toMutableList().also { currencies ->
             currencies[updatedElementIndex] =
                 newAllCurrencyItem
         }
-        ConverterApplication.PreferencesManager.put(favoriteAllCurrencies, SELECT_KEY)
-        Log.d("qwerty", "${favoriteAllCurrencies}")
-        //обновляем на UI новым списком
-        adapterCurrencies.submitList(favoriteAllCurrencies)
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val listFavourite =
+                favoriteAllCurrencies.map { Favorite(it.id, it.currencyName, it.isFavorite) }
+            val favoriteItem = listFavourite[updatedElementIndex]
+            component.update(favoriteItem.id, favoriteItem.isFavorite)
+            withContext(Dispatchers.Main) {
+                adapterCurrencies.submitList(favoriteAllCurrencies)
+            }
+        }
     }
 
     companion object {
