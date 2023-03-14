@@ -51,6 +51,8 @@ class RatesViewModel @Inject constructor(
                     } else {
                         viewEvents.trySend(RatesViewEvent.ShowErrorDialog)
                     }
+                }else{
+                    viewEvents.trySend(RatesViewEvent.ShowErrorDialog)
                 }
             } catch (throwable: Throwable) {
                 viewEvents.trySend(RatesViewEvent.ShowErrorDialog)

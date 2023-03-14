@@ -51,13 +51,15 @@ class CalculatorViewModel(
 
     private fun setFrom(base: String, input: String) {
         from = base
-        viewState.value = CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+        viewState.value =
+            CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
         convert(input, base, to)
     }
 
     private fun setTo(referenceCurrency: String, input: String) {
         to = referenceCurrency
-        viewState.value = CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
+        viewState.value =
+            CalculatorViewState.Content(resultFrom = null, resultTo = null, from = from, to = to)
         convert(input, referenceCurrency, from)
     }
 
@@ -82,7 +84,7 @@ class CalculatorViewModel(
     private fun isInputValid(input: String): Boolean =
         input.isNotEmpty() && input != "."
 
-     fun convertCurrency(
+    fun convertCurrency(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String
