@@ -1,6 +1,5 @@
 package com.currency.converter.features.rate.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.currency.converter.base.network.NetworkRepository
@@ -37,7 +36,7 @@ class RatesViewModel @Inject constructor(
         }
     }
 
-     fun loadRates() {
+    fun loadRates() {
         viewModelScope.launch {
             viewState.value = RatesViewState.Loading
             try {
@@ -51,10 +50,11 @@ class RatesViewModel @Inject constructor(
                     } else {
                         viewEvents.trySend(RatesViewEvent.ShowErrorDialog)
                     }
+                }else{
+                    viewEvents.trySend(RatesViewEvent.ShowErrorDialog)
                 }
             } catch (throwable: Throwable) {
                 viewEvents.trySend(RatesViewEvent.ShowErrorDialog)
-                Log.d("kamshot", "$throwable")
             }
         }
     }
