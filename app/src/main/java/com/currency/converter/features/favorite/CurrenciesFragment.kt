@@ -22,9 +22,7 @@ class CurrenciesFragment() : Fragment() {
     private lateinit var binding: FragmentTabLayoutFavoritesAllBinding
     private lateinit var adapterCurrencies: CurrenciesAdapter
 
-    private val favoriteRepository: FavoriteRepository = FavoriteRepository(
-        appComponent.providesRoom()
-    )
+    private val component = appComponent.provideFavouriteCurrencyRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +40,7 @@ class CurrenciesFragment() : Fragment() {
                 updateFavorite(item)
             })
             binding.recyclerListCurrency.adapter = adapterCurrencies
-            this.itemAnimator =
-                null // это позволяет в Recycler View убрать анимацию клика одного контейнера
+            this.itemAnimator = null
         }
     }
 
@@ -51,8 +48,7 @@ class CurrenciesFragment() : Fragment() {
         super.onResume()
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-
-            val favoriteCurrencyItems = appComponent.providesRoom().getAll().map {
+            val favoriteCurrencyItems = component.getAll().map {
                 CurrencyItem(it.id, it.currencyName, it.isFavorite)
             }
             withContext(Dispatchers.Main) {
@@ -62,53 +58,31 @@ class CurrenciesFragment() : Fragment() {
     }
 
 
-    private fun updateFavorite(updatedItem: CurrencyItem) {
+    private fun updateFavorite(item: CurrencyItem) {
         val currentAllCurrencyItem =
-            adapterCurrencies.currentList // [0]..[178], [0] - currencyItem1, [1] - currencyItem2
+            adapterCurrencies.currentList
         val updatedElementIndex =
-            currentAllCurrencyItem.indexOf(updatedItem) // индекс для конкретного элемента, который сейчас выбран
-        //делаем избранным
-        // CurrencyItem("RUB", false) - before
-        // CurrentItem("RUB",true) - after
-        val newAllCurrencyItem = updatedItem.copy(
-            isFavorite = updatedItem.isFavorite.not()
+            currentAllCurrencyItem.indexOf(item)
+
+        val newAllCurrencyItem = item.copy(
+            isFavorite = item.isFavorite.not()
         )
-        //создаем новый список с измененным элементом
+
         val favoriteAllCurrencies = currentAllCurrencyItem.toMutableList().also { currencies ->
             currencies[updatedElementIndex] =
                 newAllCurrencyItem
         }
 
-        adapterCurrencies.submitList(favoriteAllCurrencies)
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val listFavorite =
+            val listFavourite =
                 favoriteAllCurrencies.map { Favorite(it.id, it.currencyName, it.isFavorite) }
-            val favoriteItem = listFavorite[updatedElementIndex]
-            favoriteRepository.update(favoriteItem.id,favoriteItem.isFavorite)
+            val favoriteItem = listFavourite[updatedElementIndex]
+            component.update(favoriteItem.id, favoriteItem.isFavorite)
             withContext(Dispatchers.Main) {
                 adapterCurrencies.submitList(favoriteAllCurrencies)
             }
         }
     }
-
-    /*   private fun updateIsFavorite(id: String, isFavorite: Boolean) {
-           viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-               val entity = appComponent.providesRoom().getById(id)
-               entity.isFavorite = isFavorite
-               appComponent.providesRoom().update(entity)
-           }
-       }
-
-       private fun updateIsFavoriteForAll(isFavorite: Boolean) {
-           viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-               val dao = appComponent.providesRoom()
-               val currencyItems = dao.getAll()
-               for (currencyItem in currencyItems) {
-                   currencyItem.isFavorite = false
-                   dao.update(currencyItem)
-               }
-           }
-       }*/
 
     companion object {
         fun newInstance() = CurrenciesFragment()

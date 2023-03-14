@@ -21,17 +21,8 @@ class OnlyFavoritesFragment : Fragment() {
     private lateinit var binding: FragmentTabLayoutFavoritesBinding
     private lateinit var adapterSelectedFavorite: CurrenciesAdapter
 
-    private val favoriteRepository: FavoriteRepository = FavoriteRepository(
-        ConverterApplication.appComponent.providesRoom()
-    )
 
-    /*private val component: AppComponent by lazy {
-        DaggerAppComponent.factory()
-            .create(application)
-    } // лучше привести к такому виду? и на остальном втором фрагменте?
-    // просто я думаю, что это получается второе создание?
-    // раз это не отдельный компонент
-*/
+    private val component = ConverterApplication.appComponent.provideFavouriteCurrencyRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,11 +47,12 @@ class OnlyFavoritesFragment : Fragment() {
         super.onResume()
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-           val favoriteItemFrom =  favoriteRepository.getFavoriteItems()
+            val listFavourite = component.getFavoriteItems()
             withContext(Dispatchers.Main) {
-                val x = favoriteItemFrom.map { CurrencyItem(it.id, it.currencyName, it.isFavorite) }
-                adapterSelectedFavorite.submitList(x)
-                displayEmpty(x)
+                val listFavouriteForUI =
+                    listFavourite.map { CurrencyItem(it.id, it.currencyName, it.isFavorite) }
+                adapterSelectedFavorite.submitList(listFavouriteForUI)
+                displayEmpty(listFavouriteForUI)
             }
         }
     }
@@ -75,29 +67,25 @@ class OnlyFavoritesFragment : Fragment() {
         }
     }
 
-    private fun removeFavorite(removeItem: CurrencyItem) {
+    private fun removeFavorite(item: CurrencyItem) {
 
         val removeItemFromAllList =
             adapterSelectedFavorite.currentList.toMutableList()
         val removeElementIndex =
-            removeItemFromAllList.indexOf(removeItem)
+            removeItemFromAllList.indexOf(item)
         removeItemFromAllList.removeAt(removeElementIndex)
         adapterSelectedFavorite.submitList(removeItemFromAllList)
         displayEmpty(removeItemFromAllList)
-        updateIsFavorite(removeItem.id,!removeItem.isFavorite)
+        updateIsFavorite(item.id, !item.isFavorite)
     }
 
     private fun updateIsFavorite(id: String, isFavorite: Boolean) {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
-            favoriteRepository.update(id,isFavorite)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            component.update(id, isFavorite)
         }
     }
-
-
-
 
     companion object {
         fun newInstance() = OnlyFavoritesFragment()
     }
 }
-/*appComponent.providesRoom().getItemsByUpdate(true).map { CurrencyItem(it.id,it.currencyName,it.isFavorite) }.toMutableList()*/

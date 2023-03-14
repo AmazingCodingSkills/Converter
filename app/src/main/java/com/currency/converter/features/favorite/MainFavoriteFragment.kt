@@ -50,15 +50,6 @@ class MainFavoriteFragment() : Fragment() {
         TabLayoutMediator(tabForFavourites, viewPagerFavouritesScreen) { tab, pos ->
             tab.text = tList[pos]
         }.attach()
-        /*tabForFavourites.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })*/
     }
 }
 

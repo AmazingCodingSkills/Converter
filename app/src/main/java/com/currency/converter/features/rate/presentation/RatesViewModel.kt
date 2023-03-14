@@ -44,7 +44,7 @@ class RatesViewModel @Inject constructor(
                 val allCurrency = selectedCurrencyRepository.selectedCurrency()
                 if (allCurrency != null) {
                     val base = allCurrency.baseCurrency
-                    if (!networkRepository.isInternetUnavailable()) {
+                    if (networkRepository.isInternetAvailable()) {
                         val rates = useCaseGetRates(base)
                         val icon = allCurrency.icon
                         viewState.value = RatesViewState.Content(rates, icon)
