@@ -6,7 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.currency.converter.features.rate.presentation.LatestRatesFragment">
 
-    <androidx.appcompat.widget.Toolbar
+
+    <com.currency.converter.base.CustomToolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbarMainScreen"
+        app:ctbTitle="@string/heading_converter"/>
+
+    <!--<androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarMainScreen"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -31,7 +38,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>-->
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

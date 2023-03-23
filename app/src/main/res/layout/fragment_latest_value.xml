@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeToRefreshMainScreen"
@@ -14,7 +13,15 @@
         tools:context="com.currency.converter.features.rate.presentation.LatestRatesFragment">
 
 
-        <androidx.appcompat.widget.Toolbar
+        <com.currency.converter.base.CustomToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbarMainScreen"
+            app:ctbTitle="@string/heading_main_screen"
+            app:ctbIsBtnStart="true"
+            />
+
+        <!--<androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarMainScreen"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -69,7 +76,7 @@
 
             </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>-->
 
         <TextView
             android:id="@+id/exchangeRatesMainScreen"

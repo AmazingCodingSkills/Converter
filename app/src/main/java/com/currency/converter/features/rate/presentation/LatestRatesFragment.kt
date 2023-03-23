@@ -24,6 +24,7 @@ import javax.inject.Inject
 class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
+
     private lateinit var latestRatesAdapter: LatestRatesAdapter
 
 
@@ -51,14 +52,14 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
             viewModel.handleAction(RatesViewAction.SelectCurrency)
         }
-        binding.changeCurrencyButton.setOnClickListener {
+        binding.toolbarMainScreen.setIconClickListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.bottom_navigation_container, MainFavoriteFragment())
                 addToBackStack(null)
                 commit()
             }
         }
-        binding.buttonOpenBottomSheetMainScreen.setOnClickListener {
+        binding.toolbarMainScreen.setIconClickListener {
             val bottomSheet = BaseCurrency()
             bottomSheet.show(parentFragmentManager, "TAG")
         }
@@ -69,7 +70,7 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
                     is RatesViewState.Content -> {
                         latestRatesAdapter.submitList(state.items)
                         binding.progressBarMainScreen.visibility = View.GONE
-                        binding.buttonOpenBottomSheetMainScreen.setImageResource(state.icon)
+                        binding.toolbarMainScreen.setStartButton(state.icon)
                         binding.swipeToRefreshMainScreen.isRefreshing = false
                     }
                     else -> {
