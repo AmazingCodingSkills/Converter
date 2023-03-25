@@ -2,7 +2,7 @@ package com.currency.converter.features.rate.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.currency.converter.base.network.NetworkRepository
+import com.converter.core.network.NetworkRepository
 import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
 import com.currency.converter.features.rate.domain.UseCaseGetRates
 import com.currency.converter.features.rate.presentation.RatesViewAction.UpdateCurrency

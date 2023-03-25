@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.currency.converter.features.rate.domain.RateItem
+import com.converter.core.currency.RateItem
 import com.example.converter.R
 import com.example.converter.databinding.ListItemBinding
 import java.text.DecimalFormat

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.converter.core.currency.CurrencyItem
 import com.example.converter.databinding.FragmentTabLayoutFavoritesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

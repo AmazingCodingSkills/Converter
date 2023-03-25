@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication.Companion.appComponent
-import com.currency.converter.base.favoritemodel.CurrencyItem
-import com.currency.converter.base.room.Favorite
+import com.converter.core.currency.CurrencyItem
+import com.converter.core.room.Favorite
 import com.example.converter.databinding.FragmentTabLayoutFavoritesAllBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

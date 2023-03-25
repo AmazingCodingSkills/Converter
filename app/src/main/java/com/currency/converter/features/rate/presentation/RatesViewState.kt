@@ -1,7 +1,7 @@
 package com.currency.converter.features.rate.presentation
 
 
-import com.currency.converter.features.rate.domain.RateItem
+import com.converter.core.currency.RateItem
 
 sealed interface RatesViewState {
 

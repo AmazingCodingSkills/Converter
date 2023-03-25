@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.converter.R
+import com.converter.core.R
 import com.example.converter.databinding.FragmentSettingsBinding
 
 

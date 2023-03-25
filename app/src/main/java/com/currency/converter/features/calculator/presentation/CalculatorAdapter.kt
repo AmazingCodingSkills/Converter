@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.currency.converter.base.favoritemodel.CurrencyItem
+import com.converter.core.currency.CurrencyItem
 import com.example.converter.R
 import com.example.converter.databinding.ListItemConverterBinding
 

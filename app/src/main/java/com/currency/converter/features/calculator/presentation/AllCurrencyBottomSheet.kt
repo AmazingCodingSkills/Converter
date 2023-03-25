@@ -11,9 +11,9 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
-import com.currency.converter.base.favoritemodel.CurrencyItem
-import com.currency.converter.base.hideKeyboard
-import com.currency.converter.base.showKeyboard
+import com.converter.core.currency.CurrencyItem
+import com.converter.core.hideKeyboard
+import com.converter.core.showKeyboard
 import com.example.converter.databinding.FragmentAllCurrencyBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

@@ -2,7 +2,7 @@ package com.currency.converter.features.calculator.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.currency.converter.base.network.NetworkRepository
+import com.converter.core.network.NetworkRepository
 import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
