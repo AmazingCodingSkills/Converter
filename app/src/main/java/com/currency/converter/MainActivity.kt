@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.currency.converter.features.calculator.presentation.CalculatorFragment
 import com.currency.converter.features.rate.presentation.LatestRatesFragment
-import com.currency.converter.features.settings.SettingsFragment
+import com.example.settings.SettingsFragment
 import com.example.converter.R
 import com.example.converter.databinding.ActivityMainBinding
 
