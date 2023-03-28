@@ -2,10 +2,10 @@ package com.currency.converter.rate
 
 import app.cash.turbine.test
 import com.currency.converter.CoroutineDispatchersRule
-import com.currency.converter.base.network.NetworkRepository
+import com.converter.core.network.NetworkRepository
 import com.currency.converter.features.rate.countryname.CountryModel
-import com.currency.converter.features.rate.domain.Currency
-import com.currency.converter.features.rate.domain.RateItem
+import com.converter.core.currency.Currency
+import com.converter.core.currency.RateItem
 import com.currency.converter.features.rate.domain.SelectedCurrencyRepository
 import com.currency.converter.features.rate.domain.UseCaseGetRates
 import com.currency.converter.features.rate.presentation.RatesViewAction

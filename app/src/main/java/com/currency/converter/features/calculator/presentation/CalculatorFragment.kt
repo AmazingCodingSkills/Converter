@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.converter.core.favoritemodel.CurrencyItem
 import com.currency.converter.ConverterApplication
-import com.currency.converter.base.favoritemodel.CurrencyItem
-import com.currency.converter.base.hideKeyboard
-import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.showKeyboard
+import com.converter.core.hideKeyboard
+import com.converter.core.network.NetworkAvailabilityDialogFragment
+import com.converter.core.showKeyboard
 import com.currency.converter.features.calculator.di.CalculatorComponent
 import com.currency.converter.features.calculator.di.DaggerCalculatorComponent
 import com.example.converter.databinding.FragmentConverterBinding

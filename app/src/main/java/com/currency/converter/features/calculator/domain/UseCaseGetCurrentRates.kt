@@ -1,6 +1,6 @@
 package com.currency.converter.features.calculator.domain
 
-import com.currency.converter.base.currency.CurrencyRatesRepository
+import com.converter.core.currency.CurrencyRatesRepository
 import javax.inject.Inject
 
 class UseCaseGetCurrentRates @Inject constructor(private val currencyRatesRepository: CurrencyRatesRepository) {

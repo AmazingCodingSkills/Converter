@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.currency.converter.base.VpAdapter
-import com.example.converter.R
+import com.converter.core.R
+import com.converter.core.VpAdapter
 import com.example.converter.databinding.FragmentFavouritesBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -22,7 +22,8 @@ class MainFavoriteFragment() : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         flist = listOf(OnlyFavoritesFragment.newInstance(), CurrenciesFragment.newInstance())
-        tList = listOf(context.getString(R.string.only_favorite), context.getString(R.string.all_favorite))
+        tList = listOf(context.getString(R.string.only_favorite), context.getString(
+            R.string.all_favorite))
     }
 
     override fun onCreateView(

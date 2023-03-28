@@ -2,7 +2,7 @@ package com.currency.converter.rate
 
 import app.cash.turbine.test
 import com.currency.converter.CoroutineDispatchersRule
-import com.currency.converter.base.network.NetworkRepository
+import com.converter.core.network.NetworkRepository
 import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
 import com.currency.converter.features.calculator.presentation.CalculatorViewAction
 import com.currency.converter.features.calculator.presentation.CalculatorViewEvent

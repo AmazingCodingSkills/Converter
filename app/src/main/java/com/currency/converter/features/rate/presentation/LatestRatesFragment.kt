@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.currency.converter.ConverterApplication
 import com.currency.converter.ConverterApplication.PreferencesManager.MY_REQUEST_KEY
-import com.currency.converter.base.network.NetworkAvailabilityDialogFragment
-import com.currency.converter.base.showToast
+import com.converter.core.network.NetworkAvailabilityDialogFragment
+import com.converter.core.showToast
 import com.currency.converter.features.favorite.MainFavoriteFragment
 import com.currency.converter.features.rate.di.DaggerLatestRatesComponent
 import com.currency.converter.features.rate.di.LatestRatesComponent

@@ -3,11 +3,11 @@ package com.currency.converter
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
+import com.converter.core.favoritemodel.CurrencyItem
+import com.converter.core.favoritemodel.MetaCurrenciesResponse
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.currency.converter.base.favoritemodel.CurrencyItem
-import com.currency.converter.base.favoritemodel.MetaCurrenciesResponse
-import com.currency.converter.base.room.Favorite
+import com.converter.core.room.Favorite
 import com.currency.converter.features.rate.countryname.CountryModel
 import com.currency.converter.features.rate.data.CountryService
 import com.google.gson.GsonBuilder
