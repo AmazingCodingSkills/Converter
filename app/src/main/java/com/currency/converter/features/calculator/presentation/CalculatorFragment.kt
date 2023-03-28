@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.converter.core.favoritemodel.CurrencyItem
 import com.currency.converter.ConverterApplication
-import com.converter.core.currency.CurrencyItem
 import com.converter.core.hideKeyboard
 import com.converter.core.network.NetworkAvailabilityDialogFragment
 import com.converter.core.showKeyboard

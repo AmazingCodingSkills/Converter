@@ -1,6 +1,6 @@
 package com.currency.converter.features.rate.domain
 
-import com.converter.core.currency.CurrencyItem
+import com.converter.core.favoritemodel.CurrencyItem
 import com.converter.core.room.Favorite
 
 interface FavouriteCurrencyRepository {

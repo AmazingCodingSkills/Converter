@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.example.converter.R
-import com.example.converter.databinding.CustomToolbarBinding
+import com.converter.core.databinding.CustomToolbarBinding
+
+
 
 class CustomToolbar @JvmOverloads constructor(
     context: Context,

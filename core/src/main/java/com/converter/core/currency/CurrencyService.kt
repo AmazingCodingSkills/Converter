@@ -1,5 +1,7 @@
 package com.converter.core.currency
 
+import com.converter.core.favoritemodel.MetaCurrenciesResponse
+import com.converter.core.ratemodel.RatesMetaResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

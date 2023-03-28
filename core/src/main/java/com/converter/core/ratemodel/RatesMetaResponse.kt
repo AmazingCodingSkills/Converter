@@ -1,4 +1,4 @@
-package com.converter.core.currency
+package com.converter.core.ratemodel
 
 import com.google.gson.annotations.SerializedName
 

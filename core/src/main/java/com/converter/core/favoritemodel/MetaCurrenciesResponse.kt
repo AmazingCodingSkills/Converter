@@ -1,4 +1,6 @@
-package com.converter.core.currency
+package com.converter.core.favoritemodel
+
+import com.converter.core.ratemodel.Meta
 
 
 data class MetaCurrenciesResponse(

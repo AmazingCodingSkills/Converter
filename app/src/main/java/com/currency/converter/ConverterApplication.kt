@@ -3,8 +3,8 @@ package com.currency.converter
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
-import com.converter.core.currency.CurrencyItem
-import com.converter.core.currency.MetaCurrenciesResponse
+import com.converter.core.favoritemodel.CurrencyItem
+import com.converter.core.favoritemodel.MetaCurrenciesResponse
 import com.currency.converter.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
 import com.currency.converter.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.converter.core.room.Favorite

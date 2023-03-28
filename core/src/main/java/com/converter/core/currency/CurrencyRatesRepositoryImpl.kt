@@ -1,5 +1,6 @@
 package com.converter.core.currency
 
+import com.converter.core.mappers.RateItemMapper
 import javax.inject.Inject
 
 

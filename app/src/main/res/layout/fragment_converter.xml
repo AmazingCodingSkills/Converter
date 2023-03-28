@@ -7,7 +7,7 @@
     tools:context="com.currency.converter.features.rate.presentation.LatestRatesFragment">
 
 
-    <com.currency.converter.base.CustomToolbar
+    <com.converter.core.CustomToolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbarMainScreen"
