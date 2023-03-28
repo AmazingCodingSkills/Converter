@@ -3,10 +3,8 @@
 
     <declare-styleable name="CustomToolbar">
         <attr name="ctbTitle" format="string" />
-        <attr name="ctbButtonChangeCountry" format="reference"/>
-        <attr name="ctbButtonChangeFavourites" format="reference"/>
-        <attr name="ctbIsBtnEnd" format="boolean"/>
-        <attr name="ctbIsBtnStart" format="boolean"/>
+        <attr name="ctbIsBtnChangeCurrency" format="boolean"/>
+        <attr name="ctbIsBtnChangeCountry" format="boolean"/>
     </declare-styleable>
 
 

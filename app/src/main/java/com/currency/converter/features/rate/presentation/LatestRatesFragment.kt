@@ -52,14 +52,14 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
         binding.swipeToRefreshMainScreen.setOnRefreshListener {
             viewModel.handleAction(RatesViewAction.SelectCurrency)
         }
-        binding.toolbarMainScreen.setIconClickListener {
+        binding.toolbarMainScreen.setFavouriteCurrencyListener {
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.bottom_navigation_container, MainFavoriteFragment())
                 addToBackStack(null)
                 commit()
             }
         }
-        binding.toolbarMainScreen.setIconClickListener {
+        binding.toolbarMainScreen.setCountryClickListener {
             val bottomSheet = BaseCurrency()
             bottomSheet.show(parentFragmentManager, "TAG")
         }
@@ -70,7 +70,7 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
                     is RatesViewState.Content -> {
                         latestRatesAdapter.submitList(state.items)
                         binding.progressBarMainScreen.visibility = View.GONE
-                        binding.toolbarMainScreen.setStartButton(state.icon)
+                        binding.toolbarMainScreen.setBaseCountryBtn(state.icon)
                         binding.swipeToRefreshMainScreen.isRefreshing = false
                     }
                     else -> {
