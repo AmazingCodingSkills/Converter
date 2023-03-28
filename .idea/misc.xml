@@ -67,6 +67,7 @@
         <entry key="..\:/Work/Converter/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.119" />
         <entry key="..\:/Work/Converter/core/src/main/res/drawable/dialog_corner.xml" value="0.1265" />
         <entry key="..\:/Work/Converter/core/src/main/res/layout/dialog_custom.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/settings/src/main/res/layout/fragment_settings.xml" value="0.2427536231884058" />
       </map>
     </option>
   </component>
