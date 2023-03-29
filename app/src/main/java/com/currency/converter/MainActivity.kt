@@ -3,11 +3,12 @@ package com.currency.converter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.currency.converter.features.calculator.presentation.CalculatorFragment
-import com.currency.converter.features.rate.presentation.LatestRatesFragment
+import com.converter.core.databinding.ActivityMainBinding
+import com.example.rate.presentation.LatestRatesFragment
+import com.example.calculator.presentation.CalculatorFragment
 import com.example.settings.SettingsFragment
-import com.example.converter.R
-import com.example.converter.databinding.ActivityMainBinding
+import com.converter.core.R
+
 
 class MainActivity : AppCompatActivity() {
 

@@ -30,6 +30,7 @@
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.1215" />
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1215" />
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_home_24_second.xml" value="0.119" />
+        <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1265" />
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1215" />
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_star_border_24.xml" value="0.1215" />
         <entry key="..\:/Work/Converter/app/src/main/res/drawable/ic_baseline_star_border_24_white.xml" value="0.1385" />
@@ -65,8 +66,31 @@
         <entry key="..\:/Work/Converter/app/src/main/res/layout/list_item_favorite.xml" value="0.22826086956521738" />
         <entry key="..\:/Work/Converter/app/src/main/res/menu/nav_menu.xml" value="0.264" />
         <entry key="..\:/Work/Converter/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.119" />
+        <entry key="..\:/Work/Converter/calculator/src/main/res/layout/fragment_all_currency_bottom_sheet.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/calculator/src/main/res/layout/fragment_converter.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/calculator/src/main/res/layout/list_item_converter.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/core/src/main/res/drawable/child_select.xml" value="0.1265" />
         <entry key="..\:/Work/Converter/core/src/main/res/drawable/dialog_corner.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/core/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/core/src/main/res/drawable/ic_baseline_home_24.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/core/src/main/res/drawable/ic_baseline_share_24.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/core/src/main/res/layout/activity_main.xml" value="0.2427536231884058" />
         <entry key="..\:/Work/Converter/core/src/main/res/layout/dialog_custom.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/core/src/main/res/menu/nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/drawable/ic_baseline_star_border_24.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/drawable/ic_baseline_star_border_24_white.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/drawable/ic_baseline_star_border_blue24.xml" value="0.1265" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/fragment_bottom_sheet.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/fragment_latest_value.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/fragment_select_currency.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/fragment_tab_layout_favorites.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/fragment_tab_layout_favorites_all.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/ic_baseline_star_border_24.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/ic_baseline_star_border_24_white.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/ic_baseline_star_border_blue24.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/list_item.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/list_item_country_bottom.xml" value="0.2427536231884058" />
+        <entry key="..\:/Work/Converter/rate/src/main/res/layout/list_item_favorite.xml" value="0.2427536231884058" />
         <entry key="..\:/Work/Converter/settings/src/main/res/layout/fragment_settings.xml" value="0.2427536231884058" />
       </map>
     </option>
