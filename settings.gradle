@@ -16,3 +16,5 @@ rootProject.name = "Converter"
 include ':app'
 include ':core'
 include ':settings'
+include ':calculator'
+include ':rate'

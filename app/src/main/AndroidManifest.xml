@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name="com.currency.converter.ConverterApplication"
+        android:name="com.converter.core.ConverterApplication"
         android:allowBackup="true"
         android:icon="@drawable/main_icon"
         android:label="@string/app_name"

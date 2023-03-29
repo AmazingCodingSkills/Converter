@@ -3,11 +3,11 @@ package com.currency.converter.rate
 import app.cash.turbine.test
 import com.currency.converter.CoroutineDispatchersRule
 import com.converter.core.network.NetworkRepository
-import com.currency.converter.features.calculator.domain.UseCaseGetCurrentRates
-import com.currency.converter.features.calculator.presentation.CalculatorViewAction
-import com.currency.converter.features.calculator.presentation.CalculatorViewEvent
-import com.currency.converter.features.calculator.presentation.CalculatorViewModel
-import com.currency.converter.features.calculator.presentation.CalculatorViewState
+import com.example.calculator.domain.UseCaseGetCurrentRates
+import com.example.calculator.presentation.CalculatorViewAction
+import com.example.calculator.presentation.CalculatorViewEvent
+import com.example.calculator.presentation.CalculatorViewModel
+import com.example.calculator.presentation.CalculatorViewState
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -31,7 +31,7 @@ class CalculatorViewModelTest {
     private val networkRepository: NetworkRepository = mock()
     private val useCaseGetCurrentRates: UseCaseGetCurrentRates = mock()
 
-    private var viewModel = CalculatorViewModel(
+    private var viewModel = com.example.calculator.presentation.CalculatorViewModel(
         networkRepository = networkRepository,
         useCaseGetCurrentRates = useCaseGetCurrentRates
     )
@@ -60,7 +60,7 @@ class CalculatorViewModelTest {
 
         viewModel.state.test {
             assertEquals(
-                CalculatorViewState.Content(
+                com.example.calculator.presentation.CalculatorViewState.Content(
                     from = baseFrom,
                     resultFrom = null,
                     resultTo = null,
@@ -76,12 +76,12 @@ class CalculatorViewModelTest {
     fun `WHEN change currency FROM should  set selected currency FROM`() = runBlocking {
 
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
 
             skipItems(1)
 
             assertEquals(
-                CalculatorViewState.Content(
+                com.example.calculator.presentation.CalculatorViewState.Content(
                     from = selectFrom,
                     resultFrom = null,
                     resultTo = null,
@@ -96,12 +96,12 @@ class CalculatorViewModelTest {
     fun `WHEN change currency TO should  set selected currency TO`() = runBlocking {
 
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo, ""))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencySetTo(selectTo, ""))
 
             skipItems(1)
 
             assertEquals(
-                CalculatorViewState.Content(
+                com.example.calculator.presentation.CalculatorViewState.Content(
                     from = baseFrom,
                     resultFrom = null,
                     resultTo = null,
@@ -116,14 +116,14 @@ class CalculatorViewModelTest {
     @Test
     fun `WHEN input changed FROM should calculate input TO`() = runBlocking {
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
-            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectTo, ""))
-            viewModel.handleAction(CalculatorViewAction.CurrencyConvertedOne(input))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencySetFrom(selectFrom, ""))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencySetTo(selectTo, ""))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencyConvertedOne(input))
 
             skipItems(3)
 
             assertEquals(
-                CalculatorViewState.Content(
+                com.example.calculator.presentation.CalculatorViewState.Content(
                     resultFrom = value,
                     resultTo = null,
                     from = selectFrom,
@@ -136,14 +136,14 @@ class CalculatorViewModelTest {
     @Test
     fun `WHEN input changed TO should calculate input FROM`() = runBlocking {
         viewModel.state.test {
-            viewModel.handleAction(CalculatorViewAction.CurrencySetTo(selectFrom, ""))
-            viewModel.handleAction(CalculatorViewAction.CurrencySetFrom(selectTo, ""))
-            viewModel.handleAction(CalculatorViewAction.CurrencyConvertedTwo(input))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencySetTo(selectFrom, ""))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencySetFrom(selectTo, ""))
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.CurrencyConvertedTwo(input))
 
             skipItems(3)
 
             assertEquals(
-                CalculatorViewState.Content(
+                com.example.calculator.presentation.CalculatorViewState.Content(
                     resultFrom = null,
                     resultTo = value,
                     from = selectTo,
@@ -159,8 +159,8 @@ class CalculatorViewModelTest {
         whenever(networkRepository.isInternetAvailable()).thenReturn(false)
 
         viewModel.events.test {
-            viewModel.handleAction(CalculatorViewAction.InternetError)
-            assertEquals(CalculatorViewEvent.ShowErrorDialog, awaitItem())
+            viewModel.handleAction(com.example.calculator.presentation.CalculatorViewAction.InternetError)
+            assertEquals(com.example.calculator.presentation.CalculatorViewEvent.ShowErrorDialog, awaitItem())
         }
     }
 }

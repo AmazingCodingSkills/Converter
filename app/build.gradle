@@ -37,6 +37,8 @@ kapt {
     }
 }
 dependencies {
+    implementation project(':rate')
+    implementation project(':calculator')
     implementation project(':settings')
     implementation project(':core')
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.10'

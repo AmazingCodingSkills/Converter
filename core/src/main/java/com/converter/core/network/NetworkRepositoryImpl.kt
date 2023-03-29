@@ -6,8 +6,7 @@ import android.net.ConnectivityManager
 import javax.inject.Inject
 
 
-class NetworkRepositoryImpl @Inject constructor(private val application: Application) :
-    NetworkRepository {
+class NetworkRepositoryImpl @Inject constructor(private val application: Application) : NetworkRepository {
     // если я тут указываю Inject
     // то это мне позволяет не делать provide в модуле
     // по факту при создании мы говорим, что нужно инжектать этот конструктор
