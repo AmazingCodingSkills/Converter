@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.converter.core.favoritemodel.CurrencyItem
+import com.converter.core.data.currencymodel.CurrencyItem
 import com.example.calculator.R
 import com.example.calculator.databinding.ListItemConverterBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class CalculatorAdapter(val onClick: (CurrencyItem) -> Unit) :
+internal class CalculatorAdapter(val onClick: suspend CoroutineScope.(CurrencyItem) -> Unit)  :
     RecyclerView.Adapter<CalculatorAdapter.NewMyViewHolder>() {
 
-    var currencyList: List<CurrencyItem> = mutableListOf()
+    private var currencyList: List<CurrencyItem> = mutableListOf()
     fun addAll(items: List<CurrencyItem>) {
         currencyList = items
     }
@@ -28,12 +31,15 @@ class CalculatorAdapter(val onClick: (CurrencyItem) -> Unit) :
             convertCodeCurrency.text = item.id
         }
 
-        init {
+        fun init(coroutineScope: CoroutineScope) {
             itemView.setOnClickListener {
-                onClick(country)
+                coroutineScope.launch {
+                    onClick(country)
+                }
             }
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun setFilteredList(currencyList: List<CurrencyItem>) {
         this.currencyList = currencyList
@@ -57,5 +63,7 @@ class CalculatorAdapter(val onClick: (CurrencyItem) -> Unit) :
     override fun onBindViewHolder(holder: NewMyViewHolder, position: Int) {
         val country = currencyList[position]
         holder.bind(country)
+        holder.init(GlobalScope)
+
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Converter</string>
+    <string name="latest_value">Latest Value</string>
+    <string name="historical">Historical</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_name">Your name</string>
+    <string name="save_button">Save</string>
+    <string name="exchange_rates_main_screen">Exchange rates</string>
+    <string name="heading_main_screen">Main</string>
+    <string name="button_change_currency">Change</string>
+    <string name="heading_favourite_screen">Favourite</string>
+    <string name="heading_for_first_tab_favourites">Exchange rates</string>
+    <string name="heading_for_second_tab_favourites">All</string>
+    <string name="heading_bottom_sheet">Country</string>
+    <string name="only_favorite">Favourite</string>
+    <string name="all_favorite">All</string>
+    <string name="main_screen_name">Main</string>
+    <string name="converter_screen_name">Converter</string>
+    <string name="share_screen_name">Share</string>
+    <string name="heading_converter">Converter</string>
+    <string name="entry_values_currency_from">Enter a value</string>
+    <string name="convert_button">Convert</string>
+    <string name="hint_converter_entry_value">0</string>
+    <string name="list_all_currency">List of all currencies</string>
+    <string name="hint_empty_screen">Sorry, there are no elements to display yet. To select your favorite currencies, go to the \'All\' tab</string>
+    <string name="text_custom_dialog">Turn on WI-FI or mobile internet</string>
+    <string name="hint_empty_screen_converter">Sorry, nothing was found. Try changing the search criteria.</string>
+    <string name="dialog_button_no">CANCEL</string>
+    <string name="dialog_button_repeat_check_internet">TRY AGAIN</string>
+    <string name="heading_dialog_custom">No internet connection</string>
+    <string name="go_settings_on_internet">Settings</string>
+    <string name="message_for_exception_calculator">Enter a number that does not start with "." </string>
+    <string name="russia">Russia </string>
+    <string name="base_currency">Base currency:</string>
+    <string name="favourite_currency">Favourite currency:</string>
+    <string name="hint_no_internet">Sorry, </string>
+</resources>

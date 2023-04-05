@@ -1,16 +1,14 @@
 package com.example.rate.di
 
-import com.converter.core.AppComponent
-import com.converter.core.FragmentScope
-import com.example.rate.presentation.FactorySelectCurrencyViewModel
+import com.converter.core.di.AppComponent
+import com.converter.core.di.FragmentScope
+import com.example.rate.presentation.selectcurrency.FactorySelectCurrencyViewModel
 import dagger.Component
 import dagger.Module
 
 
 @Module
-class SelectCurrencyModule() {
-
-}
+class SelectCurrencyModule
 
 @FragmentScope
 @Component(dependencies = [AppComponent::class], modules = [SelectCurrencyModule::class])

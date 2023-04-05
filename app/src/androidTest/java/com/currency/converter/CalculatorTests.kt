@@ -10,7 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.converter.R
+import com.converter.core.R
 import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
@@ -30,18 +30,18 @@ class CalculatorTests {
 
         onView(withId(R.id.ic_convert)).perform(click())
 
-        onView(withId(R.id.firstEditText)).check(matches(isDisplayed()))
+        onView(withId(com.example.calculator.R.id.firstEditText)).check(matches(isDisplayed()))
             .perform(typeText("1"))
         Thread.sleep(2000L)
 
-        onView(withId(R.id.secondEditText)).check(matches(isDisplayed()))
+        onView(withId(com.example.calculator.R.id.secondEditText)).check(matches(isDisplayed()))
             .perform(clearText(), typeText("1"))
         Thread.sleep(2000L)
 
-        onView(withId(R.id.firstCurrency)).check(matches(isDisplayed()))
+        onView(withId(com.example.calculator.R.id.firstCurrency)).check(matches(isDisplayed()))
             .perform(click())
 
-        onView(withId(R.id.recyclerAllCurrencies)).perform(
+        onView(withId(com.example.calculator.R.id.recyclerAllCurrencies)).perform(
             RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                 ViewMatchers.hasDescendant(ViewMatchers.withText("GEL"))
             )
@@ -56,10 +56,10 @@ class CalculatorTests {
             )
         Thread.sleep(2000L)
 
-        onView(withId(R.id.secondCurrency)).check(matches(isDisplayed()))
+        onView(withId(com.example.calculator.R.id.secondCurrency)).check(matches(isDisplayed()))
             .perform(click())
 
-        onView(withId(R.id.recyclerAllCurrencies)).perform(
+        onView(withId(com.example.calculator.R.id.recyclerAllCurrencies)).perform(
             RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                 ViewMatchers.hasDescendant(ViewMatchers.withText("SAR"))
             )

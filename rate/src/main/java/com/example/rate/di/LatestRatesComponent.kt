@@ -1,10 +1,11 @@
 package com.example.rate.di
 
-import com.converter.core.AppComponent
-import com.converter.core.FragmentScope
-import com.converter.core.network.NetworkRepository
-import com.example.rate.presentation.FactoryRatesViewModel
-import com.example.rate.presentation.SelectedCurrencyRepository
+import com.converter.core.di.AppComponent
+import com.converter.core.di.FragmentScope
+import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
+import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.example.rate.presentation.latestrates.FactoryRatesViewModel
+import com.example.rate.presentation.selectcurrency.SelectedCurrencyRepository
 import com.example.rate.presentation.SelectedCurrencyRepositoryImpl
 import com.example.rate.domain.UseCaseGetRates
 import dagger.Component
@@ -24,12 +25,11 @@ class LatestRatesModule {
     fun factoryRatesViewModel(
         networkRepository: NetworkRepository,
         selectedCurrencyRepository: SelectedCurrencyRepository,
-        useCaseGetRates: UseCaseGetRates
+        useCaseGetRates: UseCaseGetRates,
+        favouriteCurrencyRepository: FavouriteCurrencyRepository
     ): FactoryRatesViewModel =
-        FactoryRatesViewModel(networkRepository, selectedCurrencyRepository, useCaseGetRates)
+        FactoryRatesViewModel(networkRepository, selectedCurrencyRepository, useCaseGetRates,favouriteCurrencyRepository)
 }
-
-
 
 @FragmentScope
 @Component(dependencies = [AppComponent::class], modules = [LatestRatesModule::class])

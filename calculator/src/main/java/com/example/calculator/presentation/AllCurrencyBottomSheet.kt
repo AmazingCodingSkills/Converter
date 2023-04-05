@@ -9,20 +9,20 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.converter.core.ConverterApplication
-import com.converter.core.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
-import com.converter.core.favoritemodel.CurrencyItem
-import com.converter.core.hideKeyboard
-import com.converter.core.showKeyboard
+import com.converter.core.data.Constants.ALL_CURRENCY_KEY
+import com.converter.core.PreferencesManager
+import com.converter.core.data.currencymodel.CurrencyItem
+import com.converter.core.presentation.hideKeyboard
+import com.converter.core.presentation.showKeyboard
 import com.example.calculator.databinding.FragmentAllCurrencyBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
+internal class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentAllCurrencyBottomSheetBinding
     private lateinit var calculatorAdapter: CalculatorAdapter
-    val allCountryList =
-        ConverterApplication.PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
+    private val allCountryList =
+        PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
             .orEmpty()
 
 
@@ -42,17 +42,9 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         launchRV()
-        /*val offsetFromTop = 200
-        (dialog as? BottomSheetDialog)?.behavior?.apply {
-            isFitToContents = false
-            setExpandedOffset(offsetFromTop)
-            state = BottomSheetBehavior.STATE_EXPANDED
-        }*/
     }
 
-
-
-    fun launchRV() {
+    private fun launchRV() {
         binding.apply {
             recyclerAllCurrencies.layoutManager = LinearLayoutManager(activity)
             calculatorAdapter = CalculatorAdapter() { item ->
@@ -70,7 +62,7 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
 
             calculatorAdapter.addAll(allCountryList)
 
-            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }
@@ -85,10 +77,12 @@ class AllCurrencyBottomSheet : BottomSheetDialogFragment() {
 
 
     private fun filterSearchList(query: String?) {
+
         if (query != null) {
             binding.recyclerAllCurrencies.visibility = View.VISIBLE
             binding.hintEmptyScreenConverter.visibility = View.GONE
-            val filteredList = allCountryList.filter { it.currencyName.contains(query)
+            val filteredList = allCountryList.filter {
+                it.currencyName.contains(query)
             }
             if (filteredList.isEmpty()) {
                 binding.recyclerAllCurrencies.visibility = View.GONE

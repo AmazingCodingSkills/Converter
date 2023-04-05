@@ -2,7 +2,7 @@ package com.example.calculator.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.converter.core.network.NetworkRepository
+import com.converter.core.presentation.networkfragment.NetworkRepository
 import com.example.calculator.domain.UseCaseGetCurrentRates
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -84,7 +84,7 @@ class CalculatorViewModel(
     private fun isInputValid(input: String): Boolean =
         input.isNotEmpty() && input != "."
 
-    fun convertCurrency(
+    private fun convertCurrency(
         baseCurrencyCode: String,
         input: String,
         referenceCurrencyCode: String

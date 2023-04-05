@@ -9,7 +9,8 @@ import androidx.fragment.app.Fragment
 import com.example.settings.databinding.FragmentSettingsBinding
 
 
-class SettingsFragment : Fragment(){
+class SettingsFragment : Fragment() {
+
     private lateinit var binding: FragmentSettingsBinding
 
     override fun onCreateView(
@@ -17,19 +18,20 @@ class SettingsFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSettingsBinding.inflate(inflater,container,false)
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
         shareApp()
         return binding.root
 
     }
-    private fun shareApp() = with(binding){
+
+    private fun shareApp() = with(binding) {
         shareButton.setOnClickListener {
-           val myIntent = Intent(Intent.ACTION_SEND)
-           myIntent.type = getString(R.string.type_plain)
-           myIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_link))
-           myIntent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.share_app))
-           startActivity(Intent.createChooser(myIntent,getString(R.string.share_app)))
-       }
+            val myIntent = Intent(Intent.ACTION_SEND)
+            myIntent.type = getString(R.string.type_plain)
+            myIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+            myIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_app))
+            startActivity(Intent.createChooser(myIntent, getString(R.string.share_app)))
+        }
     }
 }
 

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rate.presentation.OnlyFavoritesFragment">
+    tools:context="com.example.rate.presentation.favourite.onlyfavourite.OnlyFavoritesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tabFavourites"
@@ -20,7 +20,7 @@
             tools:itemCount="3"
             tools:listitem="@layout/list_item_favorite" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/hintEmptyScreen"
             style="@style/TextAppearance.MyApp.Headline1"
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </TextView>
+        </androidx.appcompat.widget.AppCompatTextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

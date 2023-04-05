@@ -8,7 +8,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.converter.R
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +25,7 @@ class RatesTest {
     fun show_favorite_currency_rates() {
         Thread.sleep(2000L)
 
-        onView(withId(R.id.recyclerMainScreen))
+        onView(withId(com.example.rate.R.id.recyclerMainScreen))
             .check(matches(isDisplayed()))
             .check(matches(hasChildCount(8)))
 
@@ -40,7 +39,7 @@ class RatesTest {
 
         Thread.sleep(1000L)
 
-        onView(withId(R.id.recyclerListCurrency))
+        onView(withId(com.example.rate.R.id.recyclerListCurrency))
             .perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                     hasDescendant(withText("Euro"))
@@ -50,7 +49,7 @@ class RatesTest {
                 RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
                     allOf(
                         hasDescendant(withText("Euro")),
-                        hasDescendant(withId(R.id.favoriteImageButton))
+                        hasDescendant(withId(com.example.rate.R.id.favoriteImageButton))
                     ),
                     click()
                 )
@@ -58,22 +57,22 @@ class RatesTest {
 
         Thread.sleep(1000L)
 
-        onView(withId(R.id.viewPagerFavouritesScreen))
+        onView(withId(com.example.rate.R.id.viewPagerFavouritesScreen))
             .perform(swipeRight())
 
         Thread.sleep(1000L)
 
-        onView(withId(R.id.buttonBackMain))
+        onView(withId(com.example.rate.R.id.buttonBackMain))
             .check(matches(isDisplayed()))
             .perform(click())
 
         Thread.sleep(1000L)
 
-        onView(withId(R.id.swipeToRefreshMainScreen)).perform(swipeDown());
+        onView(withId(com.example.rate.R.id.swipeToRefreshMainScreen)).perform(swipeDown());
 
         Thread.sleep(2000L)
 
-        onView(withId(R.id.recyclerMainScreen))
+        onView(withId(com.example.rate.R.id.recyclerMainScreen))
             .check(matches(isDisplayed()))
             .check(
                 matches(

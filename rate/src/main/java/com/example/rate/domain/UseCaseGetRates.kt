@@ -1,8 +1,8 @@
 package com.example.rate.domain
 
-import com.converter.core.favouritecurrency.FavouriteCurrencyRepository
-import com.converter.core.currency.CurrencyRatesRepository
-import com.converter.core.currency.RateItem
+import com.converter.core.data.currencyrate.CurrencyRatesRepository
+import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
+import com.converter.core.data.currencyrate.RateItem
 import javax.inject.Inject
 
 class UseCaseGetRates @Inject constructor(

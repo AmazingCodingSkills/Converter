@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardViewForShareItem"
@@ -14,43 +13,39 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutListItemConverter"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:background="?attr/colorOnPrimary"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="12dp">
 
-        <TextView
-            android:id="@+id/convertCurrency"
-            style="@style/TextAppearance.MyApp.Headline1"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutListItemConverter"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="210dp"
-            tools:text="Mexican peso" />
+            android:background="?attr/colorOnPrimary">
 
-        <TextView
-            android:id="@+id/convertCodeCurrency"
-            style="@style/TextAppearance.MyApp.Headline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="210dp"
-            tools:text="MXN" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/convertCurrency"
+                style="@style/TextAppearance.MyApp.Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Mexican peso" />
 
-        <View
-            android:id="@+id/viewConverterScreen"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@id/convertCurrency" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/convertCodeCurrency"
+                style="@style/TextAppearance.MyApp.Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="MXN" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

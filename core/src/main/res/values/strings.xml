@@ -1,4 +1,6 @@
+
 <resources>
+    <!-- TODO #5 -->
     <string name="app_name">Converter</string>
     <string name="latest_value">Latest Value</string>
     <string name="historical">Historical</string>
@@ -31,5 +33,7 @@
     <string name="go_settings_on_internet">НАСТРОЙКИ</string>
     <string name="message_for_exception_calculator">Введите число, которое не начиначется с "." </string>
     <string name="russia">Россия </string>
-
+    <string name="base_currency">Базовая валюта:</string>
+    <string name="favourite_currency">Избранная валюта:</string>
+    <string name="hint_no_internet">Sorry, currency exchange rates cannot be displayed. To display courses, turn on the Internet. </string>
 </resources>

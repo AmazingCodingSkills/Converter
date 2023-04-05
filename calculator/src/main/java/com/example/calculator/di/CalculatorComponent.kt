@@ -1,9 +1,9 @@
 package com.example.calculator.di
 
 
-import com.converter.core.network.NetworkRepository
-import com.converter.core.AppComponent
-import com.converter.core.FragmentScope
+import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.di.AppComponent
+import com.converter.core.di.FragmentScope
 import com.example.calculator.presentation.FactoryCalculatorViewModel
 import com.example.calculator.domain.UseCaseGetCurrentRates
 import dagger.Component

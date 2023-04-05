@@ -7,16 +7,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.converter.core.ConverterApplication
-import com.converter.core.favoritemodel.CurrencyItem
-import com.converter.core.hideKeyboard
-import com.converter.core.network.NetworkAvailabilityDialogFragment
-import com.converter.core.showKeyboard
+import com.converter.core.data.currencymodel.CurrencyItem
+import com.converter.core.presentation.hideKeyboard
+import com.converter.core.presentation.networkfragment.NetworkAvailabilityDialogFragment
+import com.converter.core.presentation.showKeyboard
 import com.example.calculator.di.CalculatorComponent
 import com.example.calculator.databinding.FragmentConverterBinding
 import com.example.calculator.di.DaggerCalculatorComponent
@@ -25,7 +26,7 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 
-open class CalculatorFragment : Fragment() {
+class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentConverterBinding
 
@@ -40,6 +41,8 @@ open class CalculatorFragment : Fragment() {
 
     private lateinit var textWatcherOne: TextWatcher
     private lateinit var textWatcherTwo: TextWatcher
+    private var firstSetText: EditText? = null
+    private var secondSetText: EditText? = null
 
     private val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         decimalSeparator = '.'
@@ -59,19 +62,19 @@ open class CalculatorFragment : Fragment() {
         viewModel.handleAction(CalculatorViewAction.InternetError)
         binding.firstEditText.requestFocus()
         binding.firstEditText.showKeyboard()
+        firstSetText = binding.firstEditText
+        secondSetText = binding.secondEditText
         clickSearchButtons()
+        observedChangesScreen()
 
     }
 
-    override fun onStart() {
-        super.onStart()
 
-        val firstEditText = binding.firstEditText
-        val secondEditText = binding.secondEditText
+    private fun observedChangesScreen() {
 
         textWatcherOne = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val input = firstEditText.text.toString()
+                val input = firstSetText?.text.toString()
                 viewModel.handleAction(CalculatorViewAction.CurrencyConvertedOne(input))
             }
 
@@ -89,7 +92,7 @@ open class CalculatorFragment : Fragment() {
 
         textWatcherTwo = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val input = secondEditText.text.toString()
+                val input = secondSetText?.text.toString()
                 viewModel.handleAction(CalculatorViewAction.CurrencyConvertedTwo(input))
             }
 
@@ -105,8 +108,8 @@ open class CalculatorFragment : Fragment() {
             }
         }
 
-        firstEditText.addTextChangedListener(textWatcherOne)
-        secondEditText.addTextChangedListener(textWatcherTwo)
+        firstSetText?.addTextChangedListener(textWatcherOne)
+        secondSetText?.addTextChangedListener(textWatcherTwo)
 
         setFragmentResultListener("CURRENCY_KEY") { requestKey, bundle ->
             Log.d("TAG", "Result = $requestKey, $bundle")
@@ -152,8 +155,8 @@ open class CalculatorFragment : Fragment() {
                 }
             }
         }
-
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -162,14 +165,12 @@ open class CalculatorFragment : Fragment() {
 
     private fun clickSearchButtons() = with(binding) {
         firstCurrency.setOnClickListener {
-            val allCurrencyBottomSheet =
-                com.example.calculator.presentation.AllCurrencyBottomSheet()
+            val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "FROM")
         }
 
         secondCurrency.setOnClickListener {
-            val allCurrencyBottomSheet =
-                com.example.calculator.presentation.AllCurrencyBottomSheet()
+            val allCurrencyBottomSheet = AllCurrencyBottomSheet()
             allCurrencyBottomSheet.show(childFragmentManager, "TO")
         }
     }

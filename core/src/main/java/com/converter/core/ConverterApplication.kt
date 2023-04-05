@@ -1,28 +1,27 @@
 package com.converter.core
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.util.Log
-import com.converter.core.favoritemodel.CurrencyItem
-import com.converter.core.favoritemodel.MetaCurrenciesResponse
-import com.converter.core.ConverterApplication.PreferencesManager.ALL_CURRENCY_KEY
-import com.converter.core.ConverterApplication.PreferencesManager.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.converter.core.basecountry.CountryService
-import com.converter.core.room.Favorite
-import com.currency.converter.features.rate.countryname.CountryModel
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.converter.core.data.Constants.ALL_CURRENCY_KEY
+import com.converter.core.data.Constants.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+import com.converter.core.data.currencymodel.CurrencyItem
+import com.converter.core.data.BaseCountryService
+import com.converter.core.data.currencymodel.MetaCurrenciesResponse
+import com.converter.core.di.AppComponent
+import com.converter.core.di.DaggerAppComponent
+import com.converter.core.data.room.Favorite
+import com.converter.core.data.favouritecurrencymodel.CountryModel
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
 import javax.inject.Inject
 
 
 class ConverterApplication @Inject constructor() : Application() {
 
+    private val myScope = CoroutineScope(Job() + Dispatchers.Default)
 
     val appComponentCreate: AppComponent by lazy {
         DaggerAppComponent.factory().create(application)
@@ -32,25 +31,11 @@ class ConverterApplication @Inject constructor() : Application() {
         super.onCreate()
         application = this
         appComponent = appComponentCreate
-        getAllCountryCurrency()
         PreferencesManager.with(this)
-        val firstLaunchPref =
-            PreferencesManager.get<CountryModel>(BASE_CURRENCIES_FOR_VARIOUS_COUNTRY)
-        if (firstLaunchPref == null) { // с помощью этой проверки префов могу установить значение при первом запуске
-            PreferencesManager.put(
-                CountryService.countryList().first(),
-                BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-            )
-        }
-        val firstLaunchDB = PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
-        GlobalScope.launch(Dispatchers.IO) {
-            if (appComponent.providesRoom().getAll().isEmpty()) {
-                if (firstLaunchDB != null) {
-                    appComponent.providesRoom().insertAll(firstLaunchDB.map { Favorite(it.id,it.currencyName,it.isFavorite) })
-                }
-            }
-        }
+        firstSetValuePrefs()
+        getAllCountryCurrency()
     }
+
 
     private fun getAllCountryCurrency() {
         val currencyService = appComponentCreate.providesCurrencyService()
@@ -75,36 +60,63 @@ class ConverterApplication @Inject constructor() : Application() {
                         }
                     }
                     PreferencesManager.put(itemModels, ALL_CURRENCY_KEY)
-
+                    firstSetValueDB()
                 }
             })
     }
 
-    object PreferencesManager {
+    /*private suspend fun getAllCountryCurrency(): List<CurrencyItem>? {
+        val currencyService = appComponentCreate.providesCurrencyService()
+        val response = currencyService.getNameCountryCurrency().awaitResponse()
+        return if (response.isSuccessful) {
+            val response = response.body()?.response
+            response?.fiats?.map {
+                CurrencyItem(
+                    id = it.value.currency_code,
+                    currencyName = it.value.currency_name,
+                    isFavorite = false
+                )
+            }?.also {
+                PreferencesManager.put(it, ALL_CURRENCY_KEY)
+                firstSetValueDB()
+            }
 
-        lateinit var sp: SharedPreferences
-        private const val PREFERENCES_FILE_NAME = "PREFERENCES_FILE_NAME"
-        const val SELECT_KEY = "FAVORITE_CURRENCIES_KEY"
-        const val ALL_CURRENCY_KEY = "ALL_CURRENCIES_KEY"
-        const val FAVORITE_CURRENCIES_KEY = "ONLY_SELECTED_CURRENCIES"
-        const val BASE_CURRENCIES_FOR_VARIOUS_COUNTRY = "BASE_CURRENCY"
-        const val MY_REQUEST_KEY = "my_request_key"
-
-
-        fun with(application: Application) {
-            sp = application.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE)
+        } else {
+            null
         }
 
-        fun <T> put(`object`: T, key: String) {
-            val jsonString = GsonBuilder().create().toJson(`object`)
-            sp.edit().putString(key, jsonString).apply()
-        }
+    }*/
 
-        inline fun <reified T> get(key: String): T? {
-            val value = sp.getString(key, null)
-            return GsonBuilder().create().fromJson(value, object : TypeToken<T>() {}.type)
+    private fun firstSetValuePrefs() {
+        val firstLaunchPref =
+            PreferencesManager.get<CountryModel>(BASE_CURRENCIES_FOR_VARIOUS_COUNTRY)
+        if (firstLaunchPref == null) {
+            PreferencesManager.put(
+                BaseCountryService.countryList().first(),
+                BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+            )
         }
     }
+
+    private  fun firstSetValueDB() {
+        myScope.launch {
+            withContext(Dispatchers.IO) {
+                if (appComponent.providesRoom().getAll().isEmpty()) {
+                    val itemModels = PreferencesManager.get<List<CurrencyItem>>(ALL_CURRENCY_KEY)
+                    if (itemModels != null && itemModels.isNotEmpty()) {
+                        appComponent.providesRoom().insertAll(itemModels.map {
+                            Favorite(
+                                it.id,
+                                it.currencyName,
+                                it.isFavorite
+                            )
+                        })
+                    }
+                }
+            }
+        }
+    }
+
 
     companion object {
         lateinit var application: Application
@@ -113,3 +125,4 @@ class ConverterApplication @Inject constructor() : Application() {
             private set
     }
 }
+

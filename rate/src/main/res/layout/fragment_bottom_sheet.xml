@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.rate.presentation.BaseCurrency"
-    android:background="?attr/colorPrimaryVariant">
+    android:background="?attr/colorPrimaryVariant"
+    tools:context="com.example.rate.presentation.basecurrency.BaseCurrency">
 
-    <TextView
-        android:id="@+id/headingBottomSheet"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/titleCountry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.MyApp.Headline1"
-        android:gravity="center"
-        android:text="@string/heading_bottom_sheet"
-        android:textColor="@color/color_button_and_heading"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:cardBackgroundColor="?attr/colorPrimaryVariant">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/recyclerBottomSheetFromFirstScreen"
-       tools:itemCount="3"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@+id/headingBottomSheet"
-       tools:listitem="@layout/list_item_favorite">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/headingBottomSheet"
+            style="@style/TextAppearance.MyApp.Headline1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/heading_bottom_sheet"
+            android:textColor="@color/color_button_and_heading"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.card.MaterialCardView>
 
-   </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerBottomSheetFromFirstScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleCountry"
+        tools:itemCount="3"
+        tools:listitem="@layout/list_item_favorite" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

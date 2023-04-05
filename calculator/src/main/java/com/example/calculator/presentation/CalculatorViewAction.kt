@@ -6,5 +6,4 @@ sealed interface CalculatorViewAction {
     data class CurrencySetFrom(val currencyCode: String,val input: String) : CalculatorViewAction
     data class CurrencySetTo(val currencyCode: String,val input: String) : CalculatorViewAction
     object InternetError: CalculatorViewAction
-    //object CurrencyConverted: CalculatorViewAction
 }

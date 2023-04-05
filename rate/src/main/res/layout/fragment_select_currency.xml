@@ -1,21 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/buttonGoMainPage"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorOnPrimary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/btnBackFromSelect"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="?attr/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextAppearance.MyApp.Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingStart="35dp"
+                android:text="@string/select_currency"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/baseCurrencyTitle"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/base_currency"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingPrefix"
+        tools:text="Базовая валюта:" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/baseCurrency"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/baseCurrencyTitle"
+        app:layout_constraintRight_toRightOf="@id/baseCurrencyTitle"
+        app:layout_constraintTop_toBottomOf="@id/baseCurrencyTitle"
+        tools:ignore="MissingPrefix"
+        tools:text="RUB" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/valueBaseCurrency"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:text="1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/baseCurrencyTitle"
+        app:layout_constraintRight_toRightOf="@id/baseCurrencyTitle"
+        app:layout_constraintTop_toBottomOf="@id/baseCurrency"
+        tools:ignore="MissingPrefix"
+        tools:text="1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/equalsSign"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:text="="
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/baseCurrencyTitle"
+        app:layout_constraintRight_toRightOf="@id/selectCurrencyTitle"
+        app:layout_constraintTop_toBottomOf="@id/baseCurrency"
+        tools:ignore="MissingPrefix"
+        tools:text="=" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/selectCurrencyTitle"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/favourite_currency"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingPrefix"
+        tools:text="Избранная валюта:" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/selectCurrency"
         style="@style/TextAppearance.MyApp.Headline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/selectCurrencyTitle"
+        app:layout_constraintRight_toRightOf="@id/selectCurrencyTitle"
+        app:layout_constraintTop_toBottomOf="@id/selectCurrencyTitle"
         tools:ignore="MissingPrefix"
-        tools:text = "RUB"/>
+        tools:text="USD" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/valueSelectCurrency"
+        style="@style/TextAppearance.MyApp.Headline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/selectCurrencyTitle"
+        app:layout_constraintRight_toRightOf="@id/selectCurrencyTitle"
+        app:layout_constraintTop_toBottomOf="@id/selectCurrency"
+        tools:ignore="MissingPrefix"
+        tools:text="0.15" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
