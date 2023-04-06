@@ -19,6 +19,8 @@ By clicking on a specific currency, you can see more details.
 <p align="center">  
   -Settings screen with possibility share app.                                                    
 </p>
+
+![image](https://user-images.githubusercontent.com/106435152/230350531-48363d79-6905-46fb-829f-b07fc6df1122.png)
 <img src="/preview/screenshot.png"/>
 
 
