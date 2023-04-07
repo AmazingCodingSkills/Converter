@@ -2,8 +2,8 @@ package com.example.rate.presentation.favourite.onlyfavourite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.converter.core.data.currencymodel.CurrencyItem
-import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
+import com.converter.core.currency.domain.CurrencyItem
+import com.converter.core.favorite.domain.FavouriteCurrencyRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

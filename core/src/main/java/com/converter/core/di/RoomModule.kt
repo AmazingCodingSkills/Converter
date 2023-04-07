@@ -2,8 +2,8 @@ package com.converter.core.di
 
 import androidx.room.Room
 import com.converter.core.ConverterApplication
-import com.converter.core.data.room.AppDatabase
-import com.converter.core.data.room.CurrencyItemDao
+import com.converter.core.room.AppDatabase
+import com.converter.core.favorite.data.CurrencyItemDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -9,11 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.converter.core.data.Constants.ALL_CURRENCY_KEY
+import com.converter.core.Constants.ALL_CURRENCY_KEY
 import com.converter.core.PreferencesManager
-import com.converter.core.data.currencymodel.CurrencyItem
-import com.converter.core.presentation.hideKeyboard
-import com.converter.core.presentation.showKeyboard
+import com.converter.core.currency.domain.CurrencyItem
+import com.converter.core.view.hideKeyboard
+import com.converter.core.view.showKeyboard
 import com.example.calculator.databinding.FragmentAllCurrencyBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

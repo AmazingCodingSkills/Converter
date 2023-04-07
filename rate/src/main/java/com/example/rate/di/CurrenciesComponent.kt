@@ -1,6 +1,6 @@
 package com.example.rate.di
 
-import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
+import com.converter.core.favorite.domain.FavouriteCurrencyRepository
 import com.converter.core.di.AppComponent
 import com.converter.core.di.FragmentScope
 import com.example.rate.presentation.favourite.allcurrency.CurrenciesViewModelFactory

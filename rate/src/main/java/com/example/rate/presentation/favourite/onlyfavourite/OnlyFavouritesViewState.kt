@@ -1,7 +1,6 @@
 package com.example.rate.presentation.favourite.onlyfavourite
 
-import com.converter.core.data.currencymodel.CurrencyItem
-import com.example.rate.presentation.latestrates.RatesViewState
+import com.converter.core.currency.domain.CurrencyItem
 
 sealed interface OnlyFavouritesViewState {
 

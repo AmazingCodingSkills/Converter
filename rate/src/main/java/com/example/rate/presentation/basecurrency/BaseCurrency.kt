@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.converter.core.data.Constants.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.converter.core.data.Constants.MY_REQUEST_KEY
+import com.converter.core.Constants.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
+import com.converter.core.Constants.MY_REQUEST_KEY
 import com.converter.core.PreferencesManager
-import com.converter.core.data.favouritecurrencymodel.CountryItem
-import com.converter.core.data.favouritecurrencymodel.CountryModel
-import com.converter.core.data.BaseCountryService.countryList
+import com.converter.core.country.data.CountryItem
+import com.converter.core.country.data.CountryModel
+import com.converter.core.country.data.BaseCountryService.countryList
 import com.example.rate.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -48,7 +48,7 @@ class BaseCurrency : BottomSheetDialogFragment() {
                 PreferencesManager.get<CountryModel>(
                     BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
                 )
-            val countries = countryList()
+            val countries = countryList(requireContext())
             val listCountryItem: List<CountryItem> = countries.map {
                 CountryItem(
                     countryModel = it,

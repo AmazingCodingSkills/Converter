@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.converter.core.data.currencyrate.RateItem
+import com.converter.core.currency.domain.RateItem
 import com.example.rate.R
 import com.example.rate.databinding.ListItemBinding
 import java.text.DecimalFormat
@@ -14,7 +14,7 @@ import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal class LatestRatesAdapter(val onClick: (RateItem) -> Unit) :
+ class LatestRatesAdapter(val onClick: (RateItem) -> Unit) :
     ListAdapter<RateItem, LatestRatesAdapter.Holder>(
         Comparator()
     ) {

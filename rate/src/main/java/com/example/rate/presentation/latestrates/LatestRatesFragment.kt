@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.converter.core.data.Constants.MY_REQUEST_KEY
+import com.converter.core.Constants.MY_REQUEST_KEY
 import com.converter.core.ConverterApplication
-import com.converter.core.presentation.networkfragment.NetworkAvailabilityDialogFragment
+import com.converter.core.network.presentation.NetworkAvailabilityDialogFragment
 import com.example.rate.databinding.FragmentLatestValueBinding
 import javax.inject.Inject
 import com.converter.core.R
@@ -32,7 +32,7 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private val component: LatestRatesComponent by lazy {
         DaggerLatestRatesComponent.factory()
-            .create(((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!))
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
     }
 
     private val viewModel: RatesViewModel by viewModels {

@@ -3,7 +3,7 @@ package com.example.calculator.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.network.domain.NetworkRepository
 import com.example.calculator.domain.UseCaseGetCurrentRates
 import javax.inject.Inject
 

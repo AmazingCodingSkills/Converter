@@ -23,6 +23,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:elevation="12dp"
+            android:layout_gravity="center"
             app:cardCornerRadius="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,8 +31,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/countryFlag"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY" />
 

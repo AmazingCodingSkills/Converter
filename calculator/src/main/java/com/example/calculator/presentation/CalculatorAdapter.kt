@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.converter.core.data.currencymodel.CurrencyItem
+import com.converter.core.currency.domain.CurrencyItem
 import com.example.calculator.R
 import com.example.calculator.databinding.ListItemConverterBinding
 import kotlinx.coroutines.CoroutineScope

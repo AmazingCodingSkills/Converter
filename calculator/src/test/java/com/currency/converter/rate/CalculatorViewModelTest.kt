@@ -2,7 +2,7 @@ package com.currency.converter.rate
 
 import app.cash.turbine.test
 import com.currency.converter.CoroutineDispatchersRule
-import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.network.domain.NetworkRepository
 import com.example.calculator.domain.UseCaseGetCurrentRates
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi

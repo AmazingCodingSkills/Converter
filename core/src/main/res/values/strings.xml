@@ -32,8 +32,21 @@
     <string name="heading_dialog_custom">Нет интернет соедениения</string>
     <string name="go_settings_on_internet">НАСТРОЙКИ</string>
     <string name="message_for_exception_calculator">Введите число, которое не начиначется с "." </string>
-    <string name="russia">Россия </string>
     <string name="base_currency">Базовая валюта:</string>
     <string name="favourite_currency">Избранная валюта:</string>
     <string name="hint_no_internet">Sorry, currency exchange rates cannot be displayed. To display courses, turn on the Internet. </string>
+    <string name="russia">Россия </string>
+    <string name="kazakhstan">Казахстан </string>
+    <string name="azerbaidzhan">Азербайджан </string>
+    <string name="armenia">Армения </string>
+    <string name="georgia">Грузия </string>
+    <string name="uzbekhistan">Узбекистан </string>
+    <string name="kirghizstan">Кыргызстан </string>
+    <string name="belarus">Беларусь </string>
+    <string name="tajikistan">Таджикистан </string>
+    <string name="moldova">Молдова </string>
+    <string name="turkmenistan">Туркменистан </string>
+    <string name="ukraine">Украина </string>
+    <string name="usa">Соединенные штаты Америки </string>
+    <string name="eu">Европейский союз </string>
 </resources>

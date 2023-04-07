@@ -19,7 +19,7 @@ internal class SelectCurrencyFragment() : Fragment() {
     private val entryFormat = DecimalFormat("#####.####")
     private val component: SelectCurrencyComponent by lazy {
         DaggerSelectCurrencyComponent.factory()
-            .create(((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!))
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
     }
     private var argOne: String? = null
     private var argTwo: String? = null

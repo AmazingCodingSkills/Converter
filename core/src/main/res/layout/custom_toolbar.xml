@@ -25,8 +25,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/buttonOpenBottomSheetMainScreen"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="start"
                 android:scaleType="fitXY" />
         </com.google.android.material.card.MaterialCardView>

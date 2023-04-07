@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.converter.core.data.favouritecurrencymodel.CountryItem
+import com.converter.core.country.data.CountryItem
 import com.example.rate.R
 import com.example.rate.presentation.basecurrency.BaseCurrencyAdapter.MyViewHolder
 import com.example.rate.databinding.ListItemCountryBottomBinding

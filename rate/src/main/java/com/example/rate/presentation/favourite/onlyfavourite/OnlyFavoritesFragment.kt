@@ -23,7 +23,7 @@ internal class OnlyFavoritesFragment : Fragment() {
 
     private val component: OnlyFavouritesComponent by lazy {
         DaggerOnlyFavouritesComponent.factory()
-            .create(((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!))
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
     }
 
     private val viewModel: OnlyFavoritesViewModel by viewModels {

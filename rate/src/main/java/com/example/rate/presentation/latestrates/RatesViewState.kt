@@ -1,7 +1,7 @@
 package com.example.rate.presentation.latestrates
 
 
-import com.converter.core.data.currencyrate.RateItem
+import com.converter.core.currency.domain.RateItem
 
 sealed interface RatesViewState {
 

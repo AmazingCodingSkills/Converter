@@ -2,8 +2,8 @@ package com.example.rate.di
 
 import com.converter.core.di.AppComponent
 import com.converter.core.di.FragmentScope
-import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
-import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.favorite.domain.FavouriteCurrencyRepository
+import com.converter.core.network.domain.NetworkRepository
 import com.example.rate.presentation.latestrates.FactoryRatesViewModel
 import com.example.rate.presentation.selectcurrency.SelectedCurrencyRepository
 import com.example.rate.presentation.SelectedCurrencyRepositoryImpl

@@ -2,7 +2,7 @@ package com.example.calculator.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.network.domain.NetworkRepository
 import com.example.calculator.domain.UseCaseGetCurrentRates
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -14,7 +14,7 @@ class CalculatorViewModel(
 ) : ViewModel() {
 
     private var from = "USD"
-    private var to = "EUR"
+    private var to = "RUB"
 
     private val viewState = MutableStateFlow<CalculatorViewState>(
         CalculatorViewState.Content(

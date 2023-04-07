@@ -2,8 +2,8 @@ package com.example.rate.presentation.latestrates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
-import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.favorite.domain.FavouriteCurrencyRepository
+import com.converter.core.network.domain.NetworkRepository
 import com.example.rate.presentation.latestrates.RatesViewAction.UpdateCurrency
 import com.example.rate.domain.UseCaseGetRates
 import com.example.rate.presentation.selectcurrency.SelectedCurrencyRepository

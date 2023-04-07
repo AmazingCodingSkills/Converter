@@ -13,7 +13,7 @@
         tools:context="com.example.rate.presentation.latestrates.LatestRatesFragment">
 
 
-        <com.converter.core.presentation.CustomToolbar
+        <com.converter.core.view.CustomToolbar
             android:id="@+id/toolbarMainScreen"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

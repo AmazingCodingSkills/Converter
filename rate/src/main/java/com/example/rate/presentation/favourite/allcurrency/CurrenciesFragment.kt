@@ -24,7 +24,7 @@ internal class CurrenciesFragment() : Fragment() {
 
     private val component: CurrenciesComponent by lazy {
         DaggerCurrenciesComponent.factory()
-            .create(((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!))
+            .create(((activity?.applicationContext as? ConverterApplication)?.appComponent!!))
     }
 
     private val viewModel: CurrenciesViewModel by viewModels {

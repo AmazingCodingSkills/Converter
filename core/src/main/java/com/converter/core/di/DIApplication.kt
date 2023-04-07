@@ -1,11 +1,11 @@
 package com.converter.core.di
 
 import android.app.Application
-import com.converter.core.data.currencyrate.CurrencyRatesRepository
-import com.converter.core.data.CurrencyService
-import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
-import com.converter.core.presentation.networkfragment.NetworkRepository
-import com.converter.core.data.room.CurrencyItemDao
+import com.converter.core.currency.domain.CurrencyRatesRepository
+import com.converter.core.currency.data.CurrencyService
+import com.converter.core.favorite.domain.FavouriteCurrencyRepository
+import com.converter.core.network.domain.NetworkRepository
+import com.converter.core.favorite.data.CurrencyItemDao
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Scope

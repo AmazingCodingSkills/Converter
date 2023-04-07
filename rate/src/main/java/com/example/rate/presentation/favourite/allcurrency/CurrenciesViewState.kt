@@ -1,6 +1,6 @@
 package com.example.rate.presentation.favourite.allcurrency
 
-import com.converter.core.data.currencymodel.CurrencyItem
+import com.converter.core.currency.domain.CurrencyItem
 
 sealed interface CurrenciesViewState {
 

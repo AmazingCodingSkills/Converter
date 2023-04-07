@@ -14,10 +14,10 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.converter.core.ConverterApplication
-import com.converter.core.data.currencymodel.CurrencyItem
-import com.converter.core.presentation.hideKeyboard
-import com.converter.core.presentation.networkfragment.NetworkAvailabilityDialogFragment
-import com.converter.core.presentation.showKeyboard
+import com.converter.core.currency.domain.CurrencyItem
+import com.converter.core.view.hideKeyboard
+import com.converter.core.network.presentation.NetworkAvailabilityDialogFragment
+import com.converter.core.view.showKeyboard
 import com.example.calculator.di.CalculatorComponent
 import com.example.calculator.databinding.FragmentConverterBinding
 import com.example.calculator.di.DaggerCalculatorComponent
@@ -32,7 +32,7 @@ class CalculatorFragment : Fragment() {
 
     private val component: CalculatorComponent by lazy {
         DaggerCalculatorComponent.factory()
-            .create((activity?.applicationContext as? ConverterApplication)?.appComponentCreate!!)
+            .create((activity?.applicationContext as? ConverterApplication)?.appComponent!!)
     }
 
     private val viewModel: CalculatorViewModel by viewModels {

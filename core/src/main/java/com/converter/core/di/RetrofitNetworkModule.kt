@@ -1,6 +1,6 @@
 package com.converter.core.di
 
-import com.converter.core.data.CurrencyService
+import com.converter.core.currency.data.CurrencyService
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor

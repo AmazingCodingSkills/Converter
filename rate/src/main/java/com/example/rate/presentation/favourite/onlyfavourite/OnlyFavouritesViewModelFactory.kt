@@ -3,7 +3,7 @@ package com.example.rate.presentation.favourite.onlyfavourite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.converter.core.data.favouritecurrencymodel.FavouriteCurrencyRepository
+import com.converter.core.favorite.domain.FavouriteCurrencyRepository
 
 import javax.inject.Inject
 

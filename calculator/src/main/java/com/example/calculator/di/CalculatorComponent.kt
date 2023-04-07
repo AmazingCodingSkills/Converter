@@ -1,7 +1,7 @@
 package com.example.calculator.di
 
 
-import com.converter.core.presentation.networkfragment.NetworkRepository
+import com.converter.core.network.domain.NetworkRepository
 import com.converter.core.di.AppComponent
 import com.converter.core.di.FragmentScope
 import com.example.calculator.presentation.FactoryCalculatorViewModel

@@ -2,10 +2,10 @@ package com.converter.core
 
 import android.app.Application
 import android.util.Log
-import com.converter.core.Constants.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
-import com.converter.core.country.data.BaseCountryService
 import com.converter.core.di.AppComponent
 import com.converter.core.di.DaggerAppComponent
+import com.converter.core.country.data.BaseCountryService
+import com.converter.core.Constants.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
 import com.converter.core.country.data.CountryModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -31,7 +31,9 @@ class ConverterApplication @Inject constructor() : Application() {
         myScope.launch {
             try {
                 appComponent.currencyRatesRepository().loadAllValueCurrency()
-                appComponent.provideFavouriteCurrencyRepository().loadRatesInInitDB()
+                withContext(Dispatchers.IO) {
+                    appComponent.provideFavouriteCurrencyRepository().loadRatesInInitDB()
+                }
             } catch (e: Throwable) {
                 Log.e("errorDB", "$e")
             }
@@ -43,7 +45,7 @@ class ConverterApplication @Inject constructor() : Application() {
             PreferencesManager.get<CountryModel>(BASE_CURRENCIES_FOR_VARIOUS_COUNTRY)
         if (firstLaunchPref == null) {
             PreferencesManager.put(
-                BaseCountryService.countryList().first(),
+                BaseCountryService.countryList(baseContext).first(),
                 BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
             )
         }

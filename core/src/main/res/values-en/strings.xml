@@ -31,8 +31,21 @@
     <string name="heading_dialog_custom">No internet connection</string>
     <string name="go_settings_on_internet">Settings</string>
     <string name="message_for_exception_calculator">Enter a number that does not start with "." </string>
-    <string name="russia">Russia </string>
     <string name="base_currency">Base currency:</string>
     <string name="favourite_currency">Favourite currency:</string>
     <string name="hint_no_internet">Sorry, </string>
+    <string name="russia">Russia </string>
+    <string name="kazakhstan">Kazakhstan </string>
+    <string name="azerbaidzhan">Azerbaidzhan </string>
+    <string name="armenia">Armenia </string>
+    <string name="georgia">Georgia </string>
+    <string name="uzbekhistan">Uzbekhistan</string>
+    <string name="kirghizstan">Kirghizstan</string>
+    <string name="belarus">Belarus</string>
+    <string name="tajikistan">Tajikistan </string>
+    <string name="moldova">Moldova </string>
+    <string name="turkmenistan">Turkmenistan </string>
+    <string name="ukraine">Ukraine </string>
+    <string name="usa">United state of America</string>
+    <string name="eu">European union </string>
 </resources>

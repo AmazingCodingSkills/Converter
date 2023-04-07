@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.converter.core.domain.VpAdapter
+import com.converter.core.view.VpAdapter
 import com.example.rate.databinding.FragmentFavouritesBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.converter.core.R
