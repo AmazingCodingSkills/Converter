@@ -1,4 +1,4 @@
-package com.currency.converter.rate
+package com.currency.converter.calculator
 
 import app.cash.turbine.test
 import com.currency.converter.CoroutineDispatchersRule
@@ -33,9 +33,9 @@ class CalculatorViewModelTest {
     )
 
     private val input = "100"
-    private val selectFrom = "RUB"
+    private val selectFrom = "EUR"
     private val baseFrom = "USD"
-    private val baseTo = "EUR"
+    private val baseTo = "RUB"
     private val selectTo = "AZN"
     private val currencyRate = 0.83
     private val value = input.toDouble() * currencyRate
