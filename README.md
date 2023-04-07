@@ -11,12 +11,12 @@ By clicking on a specific currency, you can see more details.
 - Calculator screen to convert currency pairs.                                                     
 - Settings screen with possibility share app.                                                    
 </p>
-<img src="/preview/screenshot.png"/>
+<img src="/preview/screenshot.JPG"/>
 
 ## Download
 Go to the [Releases]() to download the latest APK.
 
-<img src="/preview/preview.gif" align="right" width="320"/>
+<img src="/preview/right-gif-en.gif" align="right" width="320"/>
 
 
 ## Tech stack & Open-source libraries
@@ -57,7 +57,7 @@ The application is divided according to the principle of multimodularity, within
 ### Architecture Overview
 
 **Converter** is based on the MVVM architecture and the Repository pattern, which follows the [Google's official architecture guidance](https://developer.android.com/topic/architecture).
-![image](https://user-images.githubusercontent.com/106435152/230314584-e727242a-5368-4a93-923e-351358bd1438.png)
+![image](https://user-images.githubusercontent.com/106435152/230627531-04eeaa85-49dc-487e-a4ff-b9e5e6edc8b2.png)
 
 ## Result
 Application completely in Kotlin. Support for changing device configuration has been implemented, the main logic is covered by unit tests, ui is covered by UI tests.
