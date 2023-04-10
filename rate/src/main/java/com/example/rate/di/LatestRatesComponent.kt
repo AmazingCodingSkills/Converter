@@ -6,7 +6,7 @@ import com.converter.core.favorite.domain.FavouriteCurrencyRepository
 import com.converter.core.network.domain.NetworkRepository
 import com.example.rate.presentation.latestrates.FactoryRatesViewModel
 import com.example.rate.presentation.selectcurrency.SelectedCurrencyRepository
-import com.example.rate.presentation.SelectedCurrencyRepositoryImpl
+import com.example.rate.data.SelectedCurrencyRepositoryImpl
 import com.example.rate.domain.UseCaseGetRates
 import dagger.Component
 import dagger.Module

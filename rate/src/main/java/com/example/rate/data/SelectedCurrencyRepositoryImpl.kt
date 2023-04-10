@@ -1,4 +1,4 @@
-package com.example.rate.presentation
+package com.example.rate.data
 
 
 import com.converter.core.Constants.BASE_CURRENCIES_FOR_VARIOUS_COUNTRY
