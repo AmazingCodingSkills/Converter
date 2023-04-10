@@ -142,6 +142,7 @@ class CalculatorFragment : Fragment() {
                     is CalculatorViewState.Empty -> {
                         clearFrom()
                         clearTo()
+                        setCurrenciesCode(state.defaultFrom, state.defaultTo)
                     }
                 }
             }

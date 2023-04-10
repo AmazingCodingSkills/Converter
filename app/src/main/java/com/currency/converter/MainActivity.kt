@@ -1,192 +1,125 @@
 package com.currency.converter
 
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.commit
 import com.converter.core.databinding.ActivityMainBinding
 import com.example.rate.presentation.latestrates.LatestRatesFragment
 import com.example.calculator.presentation.CalculatorFragment
 import com.example.settings.SettingsFragment
 import com.converter.core.R
-import kotlin.properties.Delegates
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var currentTab: Int = R.id.ic_home
-
-    private val latestValueFragment = LatestRatesFragment.newInstance()
-    private val calculatorFragment = CalculatorFragment.newInstance()
-    private val settingsFragment = SettingsFragment()
+    private var currentTab: Int? = null
+    private var firstTabVisited: Boolean = false
+    private var secondTabVisited: Boolean = false
+    private var thirdTabVisited: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actionBar?.title = "Main"
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            makeCurrentFragment(latestValueFragment)
+            setInitialScreen()
         }
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.ic_home -> {
-                    makeCurrentFragment(latestValueFragment)
-                    currentTab = R.id.ic_home
+                    switchTab(LatestRatesFragment.newInstance(), RATES, R.id.ic_home)
                 }
                 R.id.ic_convert -> {
-                    makeCurrentFragment(calculatorFragment)
-                    currentTab = R.id.ic_convert
+                    switchTab(CalculatorFragment.newInstance(), CALCULATOR, R.id.ic_convert)
                 }
                 R.id.ic_settings -> {
-                    makeCurrentFragment(settingsFragment)
-                    currentTab = R.id.ic_settings
+                    switchTab(SettingsFragment(), SETTINGS, R.id.ic_settings)
                 }
             }
             true
         }
-        binding.bottomNavigation.selectedItemId = currentTab
-
+        currentTab?.let { binding.bottomNavigation.selectedItemId }
     }
 
     override fun onBackPressed() {
-        val fragmentList = supportFragmentManager.fragments
-        var handled = false
-        for (fragment in fragmentList) {
-            if (fragment.isVisible) {
-                if (fragment is LatestRatesFragment) {
-                    handled = false
-                } else {
-                    makeCurrentFragment(latestValueFragment)
-                    currentTab = R.id.ic_home
-                    binding.bottomNavigation.selectedItemId = currentTab
-                    handled = true
-                }
-                break
-            }
-        }
-        if (!handled) {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                finish()
-            } else {
-                super.onBackPressed()
-            }
+        super.onBackPressed()
+
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            finish()
         }
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("selectedItemId", binding.bottomNavigation.selectedItemId)
+        outState.putInt("selectedItemId", requireNotNull(currentTab))
+        outState.putBoolean("firstTabVisited", firstTabVisited)
+        outState.putBoolean("secondTabVisited", secondTabVisited)
+        outState.putBoolean("thirdTabVisited", thirdTabVisited)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val selectedItemId = savedInstanceState.getInt("selectedItemId")
-        binding.bottomNavigation.selectedItemId = selectedItemId
+        firstTabVisited = savedInstanceState.getBoolean("firstTabVisited", firstTabVisited)
+        secondTabVisited = savedInstanceState.getBoolean("secondTabVisited", secondTabVisited)
+        thirdTabVisited = savedInstanceState.getBoolean("thirdTabVisited", thirdTabVisited)
+        currentTab = selectedItemId
     }
 
-    private fun makeCurrentFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.bottom_navigation_container, fragment)
-        //transaction.addToBackStack(fragment.javaClass.simpleName)
-        transaction.commit()
+    private fun setInitialScreen() {
+        val fragment = LatestRatesFragment.newInstance()
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(
+                R.id.bottom_navigation_container,
+                fragment,
+                fragment::javaClass.name
+            )
+            addToBackStack(RATES)
+        }
+        currentTab = R.id.ic_home
+        firstTabVisited = true
+    }
+
+    private fun switchTab(fragment: Fragment, tab: String, menuId: Int) {
+        with(supportFragmentManager) {
+            when (currentTab) {
+                R.id.ic_home -> {
+                    firstTabVisited = true
+                    supportFragmentManager.saveBackStack(RATES)
+                }
+                R.id.ic_convert -> {
+                    secondTabVisited = true
+                    supportFragmentManager.saveBackStack(CALCULATOR)
+                }
+                R.id.ic_settings -> {
+                    thirdTabVisited = true
+                    supportFragmentManager.saveBackStack(SETTINGS)
+                }
+            }
+            currentTab = menuId
+
+            if (firstTabVisited.not() || secondTabVisited.not() || thirdTabVisited.not()) {
+                commit {
+                    setReorderingAllowed(true)
+                    replace(R.id.bottom_navigation_container, fragment, fragment::class.simpleName)
+                    addToBackStack(tab)
+                }
+            } else {
+                restoreBackStack(tab)
+            }
+        }
+    }
+
+    private companion object {
+        const val RATES = "rates"
+        const val CALCULATOR = "calculator"
+        const val SETTINGS = "settings"
     }
 }
 
-/*
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    private var currentTab: Int = R.id.ic_home
-
-    private val latestValueFragment = LatestRatesFragment.newInstance()
-    private val calculatorFragment = CalculatorFragment.newInstance()
-    private val settingsFragment = SettingsFragment()
-
-    private val screens = listOf(latestValueFragment, calculatorFragment, settingsFragment)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        actionBar?.title = "Main"
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        if (savedInstanceState == null) {
-            screens.forEach {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.bottom_navigation_container, it)
-                    .hide(it)
-                    .commit()
-            }
-            makeCurrentFragment(latestValueFragment)
-        }
-
-        binding.bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.ic_home -> {
-                    makeCurrentFragment(latestValueFragment)
-                    currentTab = R.id.ic_home
-                }
-                R.id.ic_convert -> {
-                    makeCurrentFragment(calculatorFragment)
-                    currentTab = R.id.ic_convert
-                }
-                R.id.ic_settings -> {
-                    makeCurrentFragment(settingsFragment)
-                    currentTab = R.id.ic_settings
-                }
-            }
-            true
-        }
-        binding.bottomNavigation.selectedItemId = currentTab
-
-    }
-
-    override fun onBackPressed() {
-        val fragmentList = supportFragmentManager.fragments
-        var handled = false
-        for (fragment in fragmentList) {
-            if (fragment.isVisible) {
-                if (fragment is LatestRatesFragment) {
-                    handled = false
-                } else {
-                    makeCurrentFragment(latestValueFragment)
-                    currentTab = R.id.ic_home
-                    binding.bottomNavigation.selectedItemId = currentTab
-                    handled = true
-                }
-                break
-            }
-        }
-
-        this.onBackPressedDispatcher.addCallback {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                finish()
-            } else {
-                super.onBackPressed()
-            }
-        }
-    }
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("selectedItemId", binding.bottomNavigation.selectedItemId)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val selectedItemId = savedInstanceState.getInt("selectedItemId")
-        binding.bottomNavigation.selectedItemId = selectedItemId
-    }
-
-    private fun makeCurrentFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        //transaction.replace(R.id.bottom_navigation_container, fragment)
-        transaction.show(fragment)
-        //transaction.addToBackStack(fragment.javaClass.simpleName)
-        transaction.commit()
-    }
-}*/

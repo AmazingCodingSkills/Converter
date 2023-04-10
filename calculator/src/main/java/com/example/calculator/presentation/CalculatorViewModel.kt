@@ -77,7 +77,7 @@ class CalculatorViewModel(
         if (isInputValid(input)) {
             convertCurrency(from, input, to)
         } else {
-            viewState.value = CalculatorViewState.Empty
+            viewState.value = CalculatorViewState.Empty(from, to)
         }
     }
 

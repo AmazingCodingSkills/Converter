@@ -26,9 +26,7 @@ import com.example.rate.presentation.selectcurrency.SelectCurrencyFragment
 class LatestRatesFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLatestValueBinding
-
     private lateinit var latestRatesAdapter: LatestRatesAdapter
-
 
     private val component: LatestRatesComponent by lazy {
         DaggerLatestRatesComponent.factory()
@@ -38,7 +36,6 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
     private val viewModel: RatesViewModel by viewModels {
         component.factoryRatesViewModel()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,9 +53,10 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
         }
         binding.toolbarMainScreen.setFavouriteCurrencyListener {
             requireActivity().supportFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).apply {
                     replace(R.id.bottom_navigation_container, MainFavoriteFragment())
-                    addToBackStack(null)
+                    addToBackStack("rates")
                     commit()
                 }
         }
@@ -113,14 +111,16 @@ class LatestRatesFragment @Inject constructor() : Fragment() {
             }
             selectCurrencyFragment.arguments = bundle
             val transaction =
-                requireActivity().supportFragmentManager.beginTransaction().setCustomAnimations(
-                    com.example.rate.R.anim.fragment_slide_left_enter,
-                    com.example.rate.R.anim.fragment_slide_left_exit,
-                    com.example.rate.R.anim.fragment_slide_left_enter,
-                    com.example.rate.R.anim.fragment_slide_left_exit
-                )
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .setCustomAnimations(
+                        com.example.rate.R.anim.fragment_slide_left_enter,
+                        com.example.rate.R.anim.fragment_slide_left_exit,
+                        com.example.rate.R.anim.fragment_slide_left_enter,
+                        com.example.rate.R.anim.fragment_slide_left_exit
+                    )
             transaction.replace(R.id.bottom_navigation_container, selectCurrencyFragment)
-            transaction.addToBackStack(null)
+            transaction.addToBackStack("rates")
             transaction.commit()
         }
         recyclerMainScreen.adapter = latestRatesAdapter

@@ -48,4 +48,5 @@
     <string name="ukraine">Ukraine </string>
     <string name="usa">United state of America</string>
     <string name="eu">European union </string>
+    <string name="select_currency">Selected currency pair</string>
 </resources>
