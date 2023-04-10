@@ -14,7 +14,7 @@ By clicking on a specific currency, you can see more details.
 <img src="/preview/screenshot.JPG"/>
 
 ## Download
-Go to the [Releases]() to download the latest APK.
+Go to the [Releases](https://github.com/AmazingCodingSkills/Converter/releases/tag/1.0.0) to download the latest APK.
 
 <img src="/preview/right-gif-en.gif" align="right" width="320"/>
 
