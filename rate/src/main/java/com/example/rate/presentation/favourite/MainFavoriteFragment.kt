@@ -60,5 +60,3 @@ internal class MainFavoriteFragment() : Fragment() {
 
 
 
-
-

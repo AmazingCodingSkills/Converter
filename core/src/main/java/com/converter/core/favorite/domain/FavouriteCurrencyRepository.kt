@@ -8,8 +8,6 @@ interface FavouriteCurrencyRepository {
 
     fun onUpdate(): Flow<Unit>
 
-    fun onUpdateItem(): Flow<CurrencyItem>
-
     suspend fun favouritesCurrency(): List<CurrencyItem>?
 
     suspend fun getAll(): List<Favorite>

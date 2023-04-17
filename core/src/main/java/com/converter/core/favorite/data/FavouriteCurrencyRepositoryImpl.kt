@@ -15,12 +15,8 @@ class FavouriteCurrencyRepositoryImpl @Inject constructor(private val currencyIt
 
     private val onEvent = MutableSharedFlow<Unit>(replay = 1)
 
-    private val onEventItem = MutableSharedFlow<CurrencyItem>(replay = 1)
-
     override fun onUpdate(): Flow<Unit> = onEvent
 
-
-    override fun onUpdateItem(): Flow<CurrencyItem> = onEventItem
 
     override suspend fun favouritesCurrency(): List<CurrencyItem> {
         return currencyItemDao.getFavoriteItems()
@@ -38,7 +34,6 @@ class FavouriteCurrencyRepositoryImpl @Inject constructor(private val currencyIt
     override suspend fun update(id: String, update: Boolean) {
         currencyItemDao.update(id, update)
         onEvent.tryEmit(Unit)
-        onEventItem.tryEmit(CurrencyItem(id, id, update))
     }
 
     override suspend fun insertAll(favorite: List<Favorite>) {

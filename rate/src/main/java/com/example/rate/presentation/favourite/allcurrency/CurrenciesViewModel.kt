@@ -19,13 +19,6 @@ internal class CurrenciesViewModel @Inject constructor(
     val state: StateFlow<CurrenciesViewState> = viewState.asStateFlow()
 
 
-    /*init {
-        favouriteCurrencyRepository.onUpdateItem().onEach {
-            updateFavourite(it)
-        }.launchIn(viewModelScope)
-    }*/
-
-
     fun handleAction(action: CurrenciesViewAction, item: CurrencyItem) {
         when (action) {
             CurrenciesViewAction.UpdateList -> updateFavourite(item)

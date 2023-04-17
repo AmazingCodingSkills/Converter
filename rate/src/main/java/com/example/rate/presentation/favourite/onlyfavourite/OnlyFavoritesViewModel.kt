@@ -19,12 +19,6 @@ internal class OnlyFavoritesViewModel @Inject constructor(
     val state: StateFlow<OnlyFavouritesViewState> = viewState.asStateFlow()
 
 
-    /*init {
-        favouriteCurrencyRepository.onUpdateItem().onEach {
-            removeFavourite(it)
-        }.launchIn(viewModelScope)
-    }*/
-
     fun handleAction(action: OnlyFavouritesViewAction, item: CurrencyItem) {
         when (action) {
             OnlyFavouritesViewAction.RemoveItem -> removeFavourite(item)
